@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container-fluid my-5">
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+
+
+
+
+		<div th:object="${employee}" th:remove="tag">
+
+
+
+			<ul class="list-group">
+				<li class="list-group-item" th:text="${employee.name}"></li>
+				<li class="list-group-item" th:text="${employee.phone}"></li>
+				<li class="list-group-item" th:text="${employee.email}"></li>
+				<li class="list-group-item" th:text="${employee.createAt}"></li>
+			</ul>
+
+			<br />
+
+
+			<h4 class="card-title">
+				<a
+					th:href="@{/employee/form/}+${employee.company.id}+@{/}+${employee.id}"
+					class="btn btn-outline-info btn-xs mr-2">Modificar</a> <a
+					class="btn btn-outline-danger btn-xs mr-2"
+					onclick="return confirm('Segur que vols eliminar?');"
+					th:href="@{/employee/delete/} + ${employee.id}"
+					th:text="'Eliminar'"></a> <a class="btn btn-outline-info btn-xs mr-2"
+						th:href="@{/task/form/} +${employee.company.id} + @{/} + ${employee.id}">Nova Tasca</a>
+			</h4>
+
+
+
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

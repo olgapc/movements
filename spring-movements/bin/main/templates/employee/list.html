@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container-fluid my-5">
+
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+
+
+
+		<div class="row">
+			<div class="col-sm-6">
+				<input class="form-control pr-0" id="tableSearch" type="text"
+					placeholder="escriu el que vols buscar">
+			</div>
+			<a th:href="@{/company/form}"
+				class="btn btn-outline-info btn-xs mr-2">Nova Empresa</a> <a
+				th:href="@{/employee/form}" class="btn btn-outline-info btn-xs">Nou
+				Treballador</a>
+		</div>
+
+		<br />
+		<table class="table table-responsive table-hover">
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>nom</th>
+					<th>mail</th>
+					<th>telèfon</th>
+					<th>data</th>
+					<th>empresa</th>
+					<th>opcions</th>
+
+				</tr>
+			</thead>
+			<tbody id="myTable">
+				<tr th:each="employee: ${employees}">
+					<td><a class="btn btn-outline-info btn-xs"
+						th:href="@{/employee/view/} + ${employee.id}"
+						th:text="${employee.id}"></a></td>
+					<td th:text="${employee.name}"></td>
+					<td th:text="${employee.email}"></td>
+					<td th:text="${employee.phone}"></td>
+					<td th:text="${employee.createAt}"></td>
+					<td><a class="btn btn-outline-info btn-xs"
+						th:href="@{/company/view/} +${employee.company.id}"
+						th:text="${employee.company.name}"></a></td>
+					<td><a class="btn btn-outline-info btn-xs"
+						th:href="@{/employee/form/} +${employee.company.id}+ @{/} + ${employee.id}">Modificar</a>
+						<a class="btn btn-outline-info btn-xs"
+						th:href="@{/task/form/} +${employee.company.id}+ @{/} + ${employee.id}">Nova Tasca</a>
+						<a class="btn btn-outline-danger btn-xs"
+						th:href="@{/employee/delete/} +${employee.company.id}+ @{/} + ${employee.id}"
+						th:text="'Eliminar'"
+						onclick="return confirm('Segur que vols eliminar?');"></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script src="/js/search-in-table.js"></script>
+</body>
+
+</html>

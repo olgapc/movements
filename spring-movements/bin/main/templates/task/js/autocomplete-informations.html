@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<script type="text/javascript" th:fragment="javascript">
+		$(document).ready(function() {
+			$("#search_information").autocomplete({
+				source : function(request, response) {
+					$.ajax({
+						url : "/task/upload-informations/" + request.term,
+						dataType : "json",
+						data : {
+							term : request.term
+						},
+						success : function(data) {
+							response($.map(data, function(item) {
+								return {
+									value : item.id,
+									label : item.description,
+								};
+							}));
+						}
+					});
+				},
+				select : function(event, ui) {
+					
+					if(itemsHelper.hasInformation(ui.item.value)){
+						return false;
+					}
+						
+					var row = $("#templateTaskInformations").html();
+					row = row.replace(/{ID}/g, ui.item.value);
+					row = row.replace(/{DESCRIPTION}/g, ui.item.label);
+					
+					$("#uploadInformationsTask tbody").append(row);
+					return false;
+				}
+
+			});
+			$("form").submit(function(){
+				$("#templateTaskInformations").remove();
+				return;
+				
+			});
+		});
+		
+		var itemsHelper ={
+				hasInformation: function(id){
+					var find = false;
+					$('input[name="information_id[]"]').each(function(){
+						if(parseInt(id) == parseInt($(this).val()) ) {
+							find = true;		
+						}
+						
+					});
+					return find;	
+				},
+				
+				deleteTaskInformation: function(id){
+					$("#row_" + id).remove();
+				}
+		}
+				
+				
+		
+	</script>
+</body>
+</html>

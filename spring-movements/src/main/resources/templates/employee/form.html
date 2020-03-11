@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container-fluid my-5">
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+
+
+
+		<div th:object="${employee}" th:remove="tag">
+			<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+				<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
+			</ul>
+
+		</div>
+
+		<form th:action="@{/employee/form}" th:object="${employee}"
+			method="post">
+
+			<div th:if="${employee.company != null}" class="form-group row">
+				<label class="col-sm-2 col-form-label" th:text="'Empresa'"></label>
+				<div class="col-sm-6">
+					<input th:value="${employee.company.name}" class="form-control"
+						disabled="disabled" /> <input th:value="${employee.company.id}"
+						type="hidden" class="form-control" name="company_id"
+						id="company_id" />
+				</div>
+			</div>
+
+
+
+			<div th:if="${employee.company == null}" id="result_company"
+				class="form-group row">
+				<label for="search_company" class="col-sm-2 col-form-label"
+					th:text="'Buscar empresa'"></label>
+
+				<div class="col-sm-6">
+					<input type="search" name="search_company" id="search_company"
+						class="form-control" />
+				</div>
+				<a th:href="@{/company/form}" class="btn btn-outline-info btn-xs">Nova
+					Empresa</a> <input type="hidden" class="form-control"
+					name="search_company_id" id="search_company_id" />
+			</div>
+
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Nom treballador</label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{name}" class="form-control"
+						th:errorclass="'form-control alert-danger'" /> <small
+						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
+						th:errors="*{name}"></small>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Nif</label>
+				<div class="col-sm-6">
+					<input type="search" th:field="*{nif}" class="form-control"
+						th:errorclass="'form-control alert-danger'" /> <small
+						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
+						th:errors="*{nif}"></small>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Naf</label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{naf}" class="form-control"
+						th:errorclass="'form-control alert-danger'" /> <small
+						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
+						th:errors="*{naf}"></small>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Mail</label>
+				<div class="col-sm-6">
+					<input type="email" th:field="*{email}" class="form-control"
+						th:errorclass="'form-control alert-danger'" /> <small
+						class="form-text text-danger"
+						th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Telèfon</label>
+				<div class="col-sm-6">
+					<input type="tel" th:field="*{phone}" class="form-control"
+						th:errorclass="'form-control alert-danger'" /> <small
+						class="form-text text-danger"
+						th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
+
+				</div>
+			</div>
+
+
+			<div class="form-group row">
+				<div class="col-sm-6">
+					<input type="submit" value="Guardar" class="btn btn-outline-info" />
+				</div>
+			</div>
+
+		</form>
+
+	</div>
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script th:replace="task/js/autocomplete-companies :: javascript"></script>
+</body>
+</html>

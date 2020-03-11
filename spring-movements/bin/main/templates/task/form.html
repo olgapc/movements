@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container-fluid my-5">
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+
+
+		<div th:object="${task}" th:remove="tag">
+			<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+				<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
+			</ul>
+
+		</div>
+
+		<form th:action="@{/task/form}" th:object="${task}" method="post">
+			<div th:if="${task.company != null}" class="form-group row">
+				<label class="col-sm-2 col-form-label" th:text="'Empresa'"></label>
+				<div class="col-sm-6">
+					<input th:value="${task.company.name}" class="form-control"
+						disabled="disabled" /> <input th:value="${task.company.id}"
+						type="hidden" class="form-control" name="company_id"
+						id="company_id" />
+				</div>
+			</div>
+			<div th:if="${task.employee != null}" class="form-group row">
+				<label class="col-sm-2 col-form-label"
+					th:text="'Treballador implicat'"></label>
+				<div class="col-sm-6">
+					<input th:value="${task.employee.name}" class="form-control"
+						disabled="disabled" /> <input th:value="${task.employee.id}"
+						type="hidden" class="form-control" name="employee_id"
+						id="employee_id" />
+				</div>
+			</div>
+
+
+			<div th:if="${!(task.company != null or task.employee != null)}"
+				id="result_company" class="form-group row">
+				<label for="search_company" class="col-sm-2 col-form-label"
+					th:text="'Buscar empresa'"></label>
+				<div class="col-sm-6">
+					<input type="search" name="search_company" id="search_company"
+						class="form-control" /> <input type="hidden" class="form-control"
+						name="search_company_id" id="search_company_id" /> <a
+						th:href="@{/company/form}" target="_blank"
+						class="btn btn-outline-info btn-xs mr-2">Nova Empresa</a>
+
+				</div>
+				<input type="hidden" class="form-control" name="search_company_id"
+					id="search_company_id" />
+			</div>
+
+			<div th:if="${!(task.company != null or task.employee != null)}"
+				id="result_employee" class="form-group row">
+				<label for="search_employee" class="col-sm-2 col-form-label"
+					th:text="'Buscar treballador'"></label>
+				<div class="col-sm-6">
+					<input type="search" name="search_employee" id="search_employee"
+						class="form-control" /> <input type="hidden" class="form-control"
+						name="search_employee_id" id="search_employee_id" /> <a
+						th:href="@{/employee/form}" class="btn btn-outline-info btn-xs">Nou
+						Treballador</a>
+
+				</div>
+			</div>
+
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Descripció</label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{description}" class="form-control"
+						th:errorclass="'form-control is-invalid'" /> <small
+						class="invalid-feedback"
+						th:if="${#fields.hasErrors('description')}"
+						th:errors="*{description}"></small>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Càlcul termini</label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{numberToCalculateDeadlineToSend}"
+						class="form-control" th:errorclass="'form-control is-invalid'" />
+					<small class="invalid-feedback"
+						th:if="${#fields.hasErrors('numberToCalculateDeadlineToSend')}"
+						th:errors="*{numberToCalculateDeadlineToSend}"></small>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Tipus càlcul</label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{typeCalculationDeadline}"
+						class="form-control" th:errorclass="'form-control is-invalid'" />
+					<small class="invalid-feedback"
+						th:if="${#fields.hasErrors('typeCalculationDeadline')}"
+						th:errors="*{typeCalculationDeadline}"></small>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Dies per correcció
+					d'errors</label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{daysToFixError}"
+						class="form-control" th:errorclass="'form-control is-invalid'" />
+					<small class="invalid-feedback"
+						th:if="${#fields.hasErrors('daysToFixError')}"
+						th:errors="*{daysToFixError}"></small>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Data</label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{deadline}" class="form-control"
+						th:errorclass="'form-control is-invalid'" /> <small
+						class="invalid-feedback" th:if="${#fields.hasErrors('deadline')}"
+						th:errors="*{deadline}"></small>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Opcional</label>
+				<div class="col-sm-1">
+					<input type="checkbox" th:field="*{optionalSubtask}"
+						class="form-control move-left big-checkbox" /> <small
+						class="invalid-feedback"
+						th:if="${#fields.hasErrors('optionalSubtask')}"
+						th:errors="*{optionalSubtask}"></small>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="search_information" class="col-sm-2 col-form-label"
+					th:text="'Afegir informació necessària'"></label>
+				<div class="col-sm-6">
+					<input type="search" name="search_information"
+						id="search_information" class="form-control" /> <input
+						type="hidden" class="form-control" name="search_information_id"
+						id="search_information_id" />
+				</div>
+			</div>
+
+			<table th:replace="task/informations-template :: taskInformations"></table>
+
+			<table id="uploadInformationsTask"
+				class="table table-responsive table-hover">
+				<h2 class="text-info">Informació necessària</h2>
+				<thead>
+					<tr>
+						<th>Descripció</th>
+						<th>Comentari</th>
+						<th>fet</th>
+						<th>Opcions</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+
+
+			<div class="form-group row">
+				<div class="col-sm-6">
+					 <input type="submit"
+						value="Guardar" class="btn btn-outline-info" />
+				</div>
+			</div>
+
+		</form>
+
+	</div>
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script th:replace="task/js/autocomplete-companies :: javascript"></script>
+	<script th:replace="task/js/autocomplete-employees :: javascript"></script>
+	<script th:replace="task/js/autocomplete-informations :: javascript"></script>
+</body>
+</html>

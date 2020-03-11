@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<script type="text/javascript" th:fragment="javascript">
+		$(document).ready(function() {
+			$("#search_employee").autocomplete({
+				source : function(request, response) {
+					$.ajax({
+						url : "/upload-employees/" + $("#search_company_id").val() + "/" + request.term ,
+						//data: JSON.stringify(data),
+						dataType : "json",
+						data: { //datos a enviar al servidor
+							term: request.term//,
+							//idcompany : $("#search_company_id").val()
+						},
+						success : function(data) {
+							response($.map(data, function(item) {
+								return {
+									value : item.id,
+									label : item.name
+								};
+							}));
+						},
+					});
+				},
+				select : function(event, ui) {
+					$("#search_employee").val(ui.item.label);
+					$("#search_employee_id").val(ui.item.value);
+					return false;
+				},
+				change : function(event, ui) {
+					$("#search_employee_id").val(ui.item? ui.item.value : null);
+				}
+			});
+		});
+	</script>
+</body>
+</html>

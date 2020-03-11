@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container-fluid my-5">
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+	
+
+		<ul th:if="${task.employee != null}" class="list-group">
+			<li class="list-group-item list-group-item-info"
+				th:text="'Dades del treballador'"></li>
+			<li class="list-group-item" th:text="${task.employee}"></li>
+		</ul>
+
+		<ul 
+			class="list-group">
+			<li class="list-group-item list-group-item-info"
+				th:text="'Dades de l'empresa'"></li>
+			<li class="list-group-item" th:text="${task.company}"></li>
+		</ul>
+
+		<ul class="list-group">
+			<li class="list-group-item list-group-item-warning"
+				th:text="'Dades de la tasca'"></li>
+			<li class="list-group-item" th:text="'Tasca: ' + ${task.id}"></li>
+			<li class="list-group-item"
+				th:text="'Descripció: ' + ${task.description}"></li>
+			<li class="list-group-item" th:text="'Data: ' + ${task.deadline}"></li>
+			<li class="list-group-item"
+				th:text="'Data Creació: ' + ${task.createAt}"></li>
+		</ul>
+
+
+
+
+
+	</div>
+
+
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+
+	<div class="container-fluid my-5">
+
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+
+
+
+		<div th:object="${company}" th:remove="tag">
+
+			<img
+				th:if="${company.logo != null && #strings.length(company.logo)>0}"
+				class="img-thumbnail rounded float-left" style="max-width: 28%;"
+				th:src="@{'/uploads/' + ${company.logo}}" th:alt="${company.logo}" />
+
+			<ul class="list-group">
+				<li class="list-group-item" th:text="${company.name}"></li>
+				<li class="list-group-item" th:text="${company.phone}"></li>
+				<li class="list-group-item" th:text="${company.email}"></li>
+				<li class="list-group-item" th:text="${company.createAt}"></li>
+			</ul>
+
+			<br /> <a class="btn btn-outline-info btn-xs mr-2"
+				th:href="@{/company/form/} + ${company.id}">Modificar</a> <a
+				class="btn btn-outline-danger btn-xs mr-2"
+				onclick="return confirm('Eliminar empresa i treballadors?');"
+				th:href="@{/company/delete/} + ${company.id}" th:text="'Eliminar'"></a>
+			<a class="btn btn-outline-info btn-xs mr-2"
+				th:href="@{/task/form/} +${company.id}">Nova Tasca</a> <br /> <br />
+
+			<div th:if="${#lists.isEmpty(company.employees)}">
+				<div class="alert alert-info my-4"
+					th:text="'L\'empresa ' + ${company.name} + ' no té treballadors assignats.'"></div>
+
+				<a th:href="@{/employee/form/}+${company.id}"
+					class="btn btn-outline-info btn-xs mr-2 float-left">Nou
+					Treballador</a>
+			</div>
+
+			<div th:if="${not #lists.isEmpty(company.employees)}" class="row">
+				<div class="col-sm-6">
+					<input class="form-control pr-0" id="tableSearch" type="text"
+						placeholder="escriu el que vols buscar">
+				</div>
+				<a th:href="@{/employee/form/}+${company.id}"
+					class="btn btn-outline-info btn-xs mr-2 float-left">Nou
+					Treballador</a>
+			</div>
+			</br>
+
+
+			<table th:if="${not #lists.isEmpty(company.employees)}"
+				class="table table-responsive table-hover my-4">
+				<h2 class="text-info">Llistat de treballadors</h2>
+				<thead>
+					<tr>
+						<th>id</th>
+						<th>nom</th>
+						<th>nif</th>
+						<th>naf</th>
+						<th>email</th>
+						<th>data creació</th>
+						<th>opcions</th>
+					</tr>
+				</thead>
+				<tbody id="myTable">
+					<tr th:each="employee: ${company.employees}">
+						<td><a class="btn btn-outline-info btn-xs"
+							th:href="@{/employee/view/} + ${company.id} + @{/} + ${employee.id}"
+							th:text="${employee.id}"></a></td>
+
+						<td th:text="${employee.name}"></td>
+						<td th:text="${employee.nif}"></td>
+						<td th:text="${employee.naf}"></td>
+						<td th:text="${employee.email}"></td>
+						<td th:text="${employee.createAt}"></td>
+						<td><a class="btn btn-outline-info btn-xs"
+							th:href="@{/task/form/} + ${company.id} + @{/}+ ${employee.id}">Nova
+								Tasca</a> <a class="btn btn-outline-info btn-xs"
+							th:href="@{/employee/form/} + ${company.id} + @{/}+ ${employee.id}">Modificar</a>
+							<a class="btn btn-outline-danger btn-xs"
+							th:href="@{/employee/delete/} +${company.id}+ @{/} + ${employee.id}"
+							th:text="'Eliminar'"
+							onclick="return confirm('Segur que vols eliminar?');"></a></td>
+
+					</tr>
+				</tbody>
+
+			</table>
+
+		</div>
+
+
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script src="/js/search-in-table.js"></script>
+</body>
+</html>
