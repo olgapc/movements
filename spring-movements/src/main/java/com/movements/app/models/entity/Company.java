@@ -148,7 +148,7 @@ public class Company implements Serializable {
 	
 	@Override
 	public String toString() {
-		return name + " " + email + " T. " + phone + "]";
+		return name.toUpperCase() + ",\n " + email + ", T. " + phone;
 	}
 
 

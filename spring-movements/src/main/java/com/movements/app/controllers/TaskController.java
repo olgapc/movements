@@ -112,7 +112,7 @@ public class TaskController {
 		Task task = null;
 
 		if (id > 0) {
-			task = taskService.findOne(id);
+			task = taskService.findTaskById(id);
 
 			if (task == null) {
 				flash.addFlashAttribute("error", "La tasca no existeix a la BdD");
@@ -154,13 +154,9 @@ public class TaskController {
 	}
 
 	@PostMapping("/form")
-	public String save(@Valid Task task, 
-			BindingResult result, 
-			Model model,
-			// @RequestParam(name = "search_company_id", required = false) Long
-			// searchCompanyId,
-			// @RequestParam(name = "search_employee_id", required = false) Long
-			// searchEmployeeId,
+	public String save(@Valid Task task, BindingResult result, Model model,
+			@RequestParam(name = "search_company_id", required = false) Long searchCompanyId,
+			@RequestParam(name = "search_employee_id", required = false) Long searchEmployeeId,
 			@RequestParam(name = "information_id[]", required = false) Long[] informationId,
 			@RequestParam(name = "comment[]", required = false) String[] comment,
 			@RequestParam(name = "checkbox_done[]", required = false) Boolean[][] checkbox_done,
@@ -171,17 +167,19 @@ public class TaskController {
 			return "task/form";
 		}
 
-		/*
-		 * if (searchCompanyId != null) {Company company = new Company(); company =
-		 * taskService.findCompanyById(searchCompanyId); task.setCompany(company);
-		 * company.addTask(task); }
-		 */
+		if (searchCompanyId != null) {
+			Company company = new Company();
+			company = taskService.findCompanyById(searchCompanyId);
+			task.setCompany(company);
+			company.addTask(task);
+		}
 
-		/*
-		 * if (searchEmployeeId != null) { Employee employee = new Employee(); employee
-		 * = taskService.findEmployeeById(searchEmployeeId); task.setEmployee(employee);
-		 * employee.addTask(task); }
-		 */
+		if (searchEmployeeId != null) {
+			Employee employee = new Employee();
+			employee = taskService.findEmployeeById(searchEmployeeId);
+			task.setEmployee(employee);
+			employee.addTask(task);
+		}
 
 		if (informationId != null) {
 			for (int i = 0; i < informationId.length; i++) {
@@ -194,14 +192,15 @@ public class TaskController {
 				task.addTaskInformation(taskInformation);
 
 				if (comment.length > 0) {
-					if (comment[i].isEmpty()) {
+					if (!comment[i].isEmpty()) {
 						taskInformation.setComment(comment[i]);
 					}
 				}
 				if (checkbox_done[i][0] != null) {
 					done = true;
+					
 				}
-				task.setDone(done);
+				taskInformation.setDone(done);
 				task.addTaskInformation(taskInformation);
 
 			}
@@ -215,19 +214,42 @@ public class TaskController {
 	}
 
 	@GetMapping("/view/{id}")
-	public String view(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+	public String view(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 
-		Task task = taskService.findOne(id);
+		Task task = taskService.findTaskById(id);
 
 		if (task == null) {
 			flash.addAttribute("error", "La tasca no existeix a la BdD");
-			return "redirect:/list";
+			return "redirect:/task/list";
 		}
 
-		model.addAttribute("task", task);
-		model.addAttribute("title", "Task : ".concat(task.getDescription()));
+		model.put("task", task);
+		model.put("title", "Tasca : ".concat(task.getDescription()));
+		if (task.getCompany() != null) {
+			model.put("companyName", task.getCompany().getName());
+		}
+		if (task.getEmployee() != null) {
+			model.put("employeeName", task.getEmployee().getName());
+		}
 
 		return "task/view";
 
 	}
+	
+	@GetMapping("/delete/{id}")
+	public String delete(@PathVariable(value="id") Long id, RedirectAttributes flash){
+		Task task = taskService.findTaskById(id);
+		
+		if(task != null) {
+			taskService.delete(id);
+			flash.addFlashAttribute("success", "Tasca eliminada correctament");
+			return "redirect:/task/list";
+			
+		}
+		flash.addFlashAttribute("error", "La tasca no existeix a la BdD, no s'ha pogut eliminar");
+		return "redirect:/task/list";
+		
+		
+	}
+	
 }

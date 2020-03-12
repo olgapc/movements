@@ -16,8 +16,6 @@ public interface ITaskService {
 
 		public void save(Task task);
 
-		public Task findOne(Long id);
-
 		public void delete(Long id);
 		
 		public Employee findEmployeeById(Long id);
@@ -27,5 +25,9 @@ public interface ITaskService {
 		public List<Information> findByDescription(String term);
 		
 		public Information findInformationById(Long id);
+		
+		public Task findTaskById(Long id);
+		
+		
 	
 }

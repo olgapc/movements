@@ -129,7 +129,9 @@
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Opcional</label>
 				<div class="col-sm-1">
-					<input type="checkbox" th:field="*{optionalSubtask}"
+	
+				
+					<input type="checkbox" name="active" th:checked="${optionalSubtask}"
 						class="form-control move-left big-checkbox" /> <small
 						class="invalid-feedback"
 						th:if="${#fields.hasErrors('optionalSubtask')}"

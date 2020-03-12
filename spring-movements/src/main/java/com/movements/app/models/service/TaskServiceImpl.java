@@ -45,11 +45,6 @@ public class TaskServiceImpl implements ITaskService{
 		taskDao.save(task);	
 	}
 
-	@Override
-	@Transactional(readOnly=true)
-	public Task findOne(Long id) {
-		return taskDao.findById(id).orElse(null);
-	}
 
 	@Override
 	@Transactional
@@ -72,7 +67,6 @@ public class TaskServiceImpl implements ITaskService{
 	@Override
 	@Transactional (readOnly=true)
 	public List<Information> findByDescription(String term) {
-		
 		return informationDao.findByDescriptionLikeIgnoreCase("%"+term+"%");
 	}
 
@@ -80,6 +74,12 @@ public class TaskServiceImpl implements ITaskService{
 	@Transactional (readOnly=true)
 	public Information findInformationById(Long id) {
 		return informationDao.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional (readOnly=true)
+	public Task findTaskById(Long id) {
+		return taskDao.findById(id).orElse(null);
 	}
 
 

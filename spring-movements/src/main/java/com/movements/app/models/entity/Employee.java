@@ -155,7 +155,7 @@ public class Employee implements Serializable {
 
 	@Override
 	public String toString() {
-		return name + " de " + company +". NIF:" + nif + " NAF:" + naf + " " + email;
+		return name.toUpperCase()+ ". \n NIF: " + nif + ", NAF:" + naf + ", " + email;
 	}
 
 

@@ -8,35 +8,83 @@
 
 		<h1 class="text-warning" th:text="${title}"></h1>
 
+
+		<ul class="list-group ml-5 col-md-2 font-weight-bold ">
+			<li class="list-group-item list-group-item-warning"
+				th:text="${task.deadline}"></li>
+		</ul>
+
+
+
+		<table th:if="${task.company != null}"
+			class="table table-responsive table-hover my-4">
+			<!--  h2 class="text-info" th:text="${companyName}"></h2>-->
+			<tbody id="myTable">
+				<tr>
+					<td><a
+						class="btn btn-outline-info btn-xs text-info font-weight-bold"
+						th:href="@{/company/view/} + ${task.company.id}"
+						th:text="${task.company.name}"></a></td>
+					<td th:text="${task.company.email}"></td>
+					<td th:text="${task.company.phone}"></td>
+					<td> <a class="btn btn-outline-info btn-xs"
+						th:href="@{/company/form/} + ${task.company.id}">Modificar</a>
+						</td>
+				</tr>
+			</tbody>
+		</table>
+		<table th:if="${task.employee != null}"
+			class="table table-responsive table-hover my-4">
+
+			<tbody id="myTable">
+				<tr>
+					<td><a
+						class="btn btn-outline-info btn-xs text-info font-weight-bold"
+						th:href="@{/employee/view/} + ${task.company.id} + @{/} + ${task.employee.id}"
+						th:text="${task.employee.name}"></a></td>
+					<td th:text="${task.employee.nif}"></td>
+					<td th:text="${task.employee.naf}"></td>
+					<td th:text="${task.employee.email}"></td>
+					<td> <a class="btn btn-outline-info btn-xs"
+						th:href="@{/employee/form/} + ${task.company.id} + @{/}+ ${task.employee.id}">Modificar</a>
+						</a></td>
+
+				</tr>
+			</tbody>
+
+		</table>
+
 		<br />
-	
 
-		<ul th:if="${task.employee != null}" class="list-group">
-			<li class="list-group-item list-group-item-info"
-				th:text="'Dades del treballador'"></li>
-			<li class="list-group-item" th:text="${task.employee}"></li>
-		</ul>
+		<table th:if="${not #lists.isEmpty(task.taskInformations)}"
+			class="table table-responsive table-hover my-4">
+			<h2 class="text-info">Informacions</h2>
 
-		<ul 
-			class="list-group">
-			<li class="list-group-item list-group-item-info"
-				th:text="'Dades de l'empresa'"></li>
-			<li class="list-group-item" th:text="${task.company}"></li>
-		</ul>
+			<thead>
+				<tr>
+					<th>Descripció</th>
+					<th>Comentari</th>
+					<th>Fet</th>
+					
+				</tr>
+			</thead>
+			<tbody id="myTable">
+				<tr th:each="row: ${task.taskInformations}">
+					<td th:text="${row.information.description}"></td>
+					<td th:text="${row.comment}"></td>
+					<td> <input type="checkbox" name="active" th:checked="${row.done}" /></td>
+				</tr>
+
+			</tbody>
+		</table>
+
 
 		<ul class="list-group">
 			<li class="list-group-item list-group-item-warning"
-				th:text="'Dades de la tasca'"></li>
-			<li class="list-group-item" th:text="'Tasca: ' + ${task.id}"></li>
-			<li class="list-group-item"
-				th:text="'Descripció: ' + ${task.description}"></li>
-			<li class="list-group-item" th:text="'Data: ' + ${task.deadline}"></li>
+				th:text="'Tasca: ' + ${task.description}"></li>
 			<li class="list-group-item"
 				th:text="'Data Creació: ' + ${task.createAt}"></li>
 		</ul>
-
-
-
 
 
 	</div>

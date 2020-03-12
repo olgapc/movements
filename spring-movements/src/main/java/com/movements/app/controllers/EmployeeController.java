@@ -47,8 +47,8 @@ public class EmployeeController {
 			return "redirect:/company/list";
 		}
 		model.put("employee", employee);
-		model.put("title", employee.getCompany().getName() + ": " + employee.getName());
-		System.out.println(employee);
+		model.put("title", employee.getName());
+		model.put("companyName", employee.getCompany().getName());
 		return "/employee/view";
 	}
 
@@ -62,8 +62,8 @@ public class EmployeeController {
 			return "redirect:/company/list";
 		}
 		model.put("employee", employee);
-		model.put("title", employee.getCompany().getName() + ": " + employee.getName());
-		System.out.println(employee);
+		model.put("title", employee.getName());
+		model.put("companyName", employee.getCompany().getName());
 		return "/employee/view";
 	}
 

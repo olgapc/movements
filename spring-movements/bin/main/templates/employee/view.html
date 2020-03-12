@@ -8,17 +8,13 @@
 
 		<h1 class="text-warning" th:text="${title}"></h1>
 
+
+		<h2 class="text-info" th:text="${companyName}"></h2>
 		<br />
-
-
-
-
 		<div th:object="${employee}" th:remove="tag">
 
 
-
 			<ul class="list-group">
-				<li class="list-group-item" th:text="${employee.name}"></li>
 				<li class="list-group-item" th:text="${employee.phone}"></li>
 				<li class="list-group-item" th:text="${employee.email}"></li>
 				<li class="list-group-item" th:text="${employee.createAt}"></li>
@@ -34,8 +30,10 @@
 					class="btn btn-outline-danger btn-xs mr-2"
 					onclick="return confirm('Segur que vols eliminar?');"
 					th:href="@{/employee/delete/} + ${employee.id}"
-					th:text="'Eliminar'"></a> <a class="btn btn-outline-info btn-xs mr-2"
-						th:href="@{/task/form/} +${employee.company.id} + @{/} + ${employee.id}">Nova Tasca</a>
+					th:text="'Eliminar'"></a> <a
+					class="btn btn-outline-info btn-xs mr-2"
+					th:href="@{/task/form/} +${employee.company.id} + @{/} + ${employee.id}">Nova
+					Tasca</a>
 			</h4>
 
 
