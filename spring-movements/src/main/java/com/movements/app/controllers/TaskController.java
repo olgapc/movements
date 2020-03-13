@@ -1,5 +1,9 @@
 package com.movements.app.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.movements.app.models.entity.Company;
@@ -33,7 +38,6 @@ import com.movements.app.models.service.IEmployeeService;
 import com.movements.app.models.service.ITaskService;
 
 @Controller
-@RequestMapping("/task")
 @SessionAttributes("task")
 public class TaskController {
 
@@ -48,7 +52,7 @@ public class TaskController {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	@GetMapping("/form/{companyId}/{employeeId}")
+	@GetMapping("/task/form/{companyId}/{employeeId}")
 	public String create(@PathVariable(value = "companyId", required = false) Long companyId,
 			@PathVariable(value = "employeeId", required = false) Long employeeId, Map<String, Object> model,
 			RedirectAttributes flash) {
@@ -83,7 +87,7 @@ public class TaskController {
 		return "/task/form";
 	}
 
-	@GetMapping("/form/{companyId}")
+	@GetMapping("/task/form/{companyId}")
 	public String create(@PathVariable(value = "companyId", required = false) Long companyId, Map<String, Object> model,
 			RedirectAttributes flash) {
 
@@ -105,7 +109,7 @@ public class TaskController {
 		return "/task/form";
 	}
 
-	@GetMapping("/form/task/{taskId}")
+	@GetMapping("/task/form/task/{taskId}")
 	public String edit(@PathVariable(value = "taskId", required = false) Long id, Map<String, Object> model,
 			RedirectAttributes flash) {
 
@@ -127,7 +131,6 @@ public class TaskController {
 		model.put("title", "Crear tasca");
 
 		return "/task/form";
-
 	}
 
 //	@GetMapping(value = "/upload-employees/{term}", produces= {"application/json"})
@@ -141,26 +144,31 @@ public class TaskController {
 
 	// }
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/task/list", method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("title", "Llistat de tasques");
 		model.addAttribute("tasks", taskService.findAll());
 		return "/task/list";
 	}
 
-	@GetMapping(value = "/upload-informations/{term}", produces = { "application/json" })
+	@GetMapping(value = "/task/upload-informations/{term}", produces = { "application/json" })
 	public @ResponseBody List<Information> uploadInformations(@PathVariable String term) {
 		return taskService.findByDescription(term);
 	}
 
-	@PostMapping("/form")
+	@PostMapping("/task/form")
 	public String save(@Valid Task task, BindingResult result, Model model,
 			@RequestParam(name = "search_company_id", required = false) Long searchCompanyId,
 			@RequestParam(name = "search_employee_id", required = false) Long searchEmployeeId,
 			@RequestParam(name = "information_id[]", required = false) Long[] informationId,
 			@RequestParam(name = "comment[]", required = false) String[] comment,
-			@RequestParam(name = "checkbox_done[]", required = false) Boolean[][] checkbox_done,
-			RedirectAttributes flash, SessionStatus status) {
+			@RequestParam(name = "checkbox_done[]", required = false) Boolean[] checkbox_done, RedirectAttributes flash,
+			SessionStatus status) {
+
+		System.out.println("AQUI: " + checkbox_done.toString());
+
+		int[] array = { 1, 3, 4, 5, 8 };
+		System.out.println("AQUI: " + array.toString());
 
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Crear tasca");
@@ -191,14 +199,15 @@ public class TaskController {
 				taskInformation.setTask(task);
 				task.addTaskInformation(taskInformation);
 
+				System.out.println("INFORMACIONS: " + informationId[i]);
 				if (comment.length > 0) {
 					if (!comment[i].isEmpty()) {
 						taskInformation.setComment(comment[i]);
 					}
 				}
-				if (checkbox_done[i][0] != null) {
+				if (checkbox_done[i] != null) {
 					done = true;
-					
+					System.out.println("RESULTATS CHECKBOX: " + checkbox_done[i]);
 				}
 				taskInformation.setDone(done);
 				task.addTaskInformation(taskInformation);
@@ -213,7 +222,7 @@ public class TaskController {
 
 	}
 
-	@GetMapping("/view/{id}")
+	@GetMapping("/task/view/{id}")
 	public String view(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 
 		Task task = taskService.findTaskById(id);
@@ -235,21 +244,107 @@ public class TaskController {
 		return "task/view";
 
 	}
-	
-	@GetMapping("/delete/{id}")
-	public String delete(@PathVariable(value="id") Long id, RedirectAttributes flash){
+
+	@GetMapping("/task/delete/{id}")
+	public String delete(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 		Task task = taskService.findTaskById(id);
-		
-		if(task != null) {
+
+		if (task != null) {
 			taskService.delete(id);
 			flash.addFlashAttribute("success", "Tasca eliminada correctament");
 			return "redirect:/task/list";
-			
+
 		}
 		flash.addFlashAttribute("error", "La tasca no existeix a la BdD, no s'ha pogut eliminar");
 		return "redirect:/task/list";
-		
-		
 	}
+
+	@RequestMapping(value = "/information/list", method = RequestMethod.GET)
+	public String listInformations(Model model) {
+		model.addAttribute("title", "Llistat d'informacions");
+		model.addAttribute("informations", taskService.findAllInformations());
+		return "/information/list";
+	}
+
+	@GetMapping("/information/view/{id}")
+	public String viewInformation(@PathVariable(value = "id") Long id, Map<String, Object> model,
+			RedirectAttributes flash) {
+
+		Information information = taskService.findInformationById(id);
+
+		if (information == null) {
+			flash.addAttribute("error", "La informació no existeix a la BdD");
+			return "redirect:/information/list";
+		}
+
+		model.put("information", information);
+		model.put("title", "Informació : ".concat(information.getDescription()));
+
+		return "information/view";
+	}
+
+	@GetMapping("/information/form/{id}")
+	public String editInformation(@PathVariable(value = "id", required = false) Long id, Map<String, Object> model,
+			RedirectAttributes flash) {
+
+		Information information = null;
+
+		if (id > 0) {
+			information = taskService.findInformationById(id);
+			
+			
+			if (information == null) {
+				flash.addFlashAttribute("error", "La informació no existeix a la BdD");
+				return "redirect:/information/list";
+			}
+		} else {
+			flash.addFlashAttribute("error", "L'identificador de la informació no pot ser zero");
+			return "redirect:/information/list";
+		}
+		System.out.println("hello " + information + information.getId());
+		model.put("information", information);
+		model.put("title", "Crear informació");
+
+		return "/information/form";
+	}
+
+	@GetMapping(value = "/information/form")
+	public String createInformation(Map<String, Object> model) {
+		
+		Information information = new Information();
+		
+		model.put("information", information);
+		model.put("title", "Formulari d'Informació");
+		return "/information/form";
+	}
+
+	@RequestMapping(value = "/information/form", method = RequestMethod.POST)
+	public String saveInformation(@Valid Information information, BindingResult result, Model model,
+			RedirectAttributes flash, SessionStatus status) {
+		if (result.hasErrors()) {
+			model.addAttribute("title", "Formulari d'Informació");
+			return "/information/form";
+		}
+		System.out.println("AQui: " +  information.getId());
+		
+		String flashMessage = (information.getId() != null) ? "Informació modificada correctament"
+				: "Informació creada correctament";
+
+		taskService.saveInformation(information);
+		status.setComplete();
+		flash.addFlashAttribute("success", flashMessage);
+		return "redirect:/information/list";
+	}
+
 	
+	@RequestMapping(value = "/information/delete/{id}")
+	public String deleteInformation(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+		if (id > 0) {
+			taskService.deleteInformation(id);
+			flash.addFlashAttribute("success", "Informació eliminada correctament");
+		}
+		return "redirect:/information/list";
+
+	}
+
 }

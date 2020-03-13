@@ -82,8 +82,25 @@ public class TaskServiceImpl implements ITaskService{
 		return taskDao.findById(id).orElse(null);
 	}
 
+	@Override
+	@Transactional
+	public void deleteInformation(Long id) {
+		informationDao.deleteById(id);
+	}
 
+	@Override
+	@Transactional (readOnly=true)
+	public List<Information> findAllInformations() {
+		return (List<Information>) informationDao.findAll();
+	}
 
+	@Override
+	@Transactional
+	public void saveInformation(Information information) {
+		informationDao.save(information);
+		
+	}
+	
 	
 	
 }

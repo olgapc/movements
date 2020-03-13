@@ -35,7 +35,6 @@ public class Information implements Serializable {
 	@Size(min = 2, max = 250)
 	private String description;
 
-	@NotNull
 	@Column(name = "create_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createAt;

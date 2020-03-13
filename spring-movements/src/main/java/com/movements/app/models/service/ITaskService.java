@@ -28,6 +28,11 @@ public interface ITaskService {
 		
 		public Task findTaskById(Long id);
 		
+		public void deleteInformation(Long id);
+		
+		public List<Information> findAllInformations();
+		
+		public void saveInformation(Information information);
 		
 	
 }
