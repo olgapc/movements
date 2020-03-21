@@ -75,7 +75,7 @@ public class TaskController {
 		return "/task/form";
 	}
 
-	@GetMapping(value = "/form")
+	@GetMapping(value = "task/form")
 	public String create(Map<String, Object> model) {
 		Task task = new Task();
 		task.setCompany(null);
@@ -162,13 +162,12 @@ public class TaskController {
 			@RequestParam(name = "search_employee_id", required = false) Long searchEmployeeId,
 			@RequestParam(name = "information_id[]", required = false) Long[] informationId,
 			@RequestParam(name = "comment[]", required = false) String[] comment,
-			@RequestParam(name = "checkbox_done[]", required = false) Boolean[] checkbox_done, RedirectAttributes flash,
+			@RequestParam(name = "checkbox_done[]", required = false) Boolean[] checkbox_done, 
+			RedirectAttributes flash,
 			SessionStatus status) {
 
-		System.out.println("AQUI: " + checkbox_done.toString());
+		//System.out.println("AQUI: " + checkbox_done.toString());
 
-		int[] array = { 1, 3, 4, 5, 8 };
-		System.out.println("AQUI: " + array.toString());
 
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Crear tasca");
@@ -196,8 +195,7 @@ public class TaskController {
 				Boolean done = false;
 				TaskInformation taskInformation = new TaskInformation();
 				taskInformation.setInformation(information);
-				taskInformation.setTask(task);
-				task.addTaskInformation(taskInformation);
+					
 
 				System.out.println("INFORMACIONS: " + informationId[i]);
 				if (comment.length > 0) {
@@ -208,8 +206,10 @@ public class TaskController {
 				if (checkbox_done[i] != null) {
 					done = true;
 					System.out.println("RESULTATS CHECKBOX: " + checkbox_done[i]);
+					taskInformation.setDone(done);
 				}
-				taskInformation.setDone(done);
+				
+				taskInformation.setTask(task);
 				task.addTaskInformation(taskInformation);
 
 			}
@@ -283,33 +283,10 @@ public class TaskController {
 		return "information/view";
 	}
 
-	@GetMapping("/information/form/{id}")
-	public String editInformation(@PathVariable(value = "id", required = false) Long id, Map<String, Object> model,
-			RedirectAttributes flash) {
-
-		Information information = null;
-
-		if (id > 0) {
-			information = taskService.findInformationById(id);
-			
-			
-			if (information == null) {
-				flash.addFlashAttribute("error", "La informació no existeix a la BdD");
-				return "redirect:/information/list";
-			}
-		} else {
-			flash.addFlashAttribute("error", "L'identificador de la informació no pot ser zero");
-			return "redirect:/information/list";
-		}
-		System.out.println("hello " + information + information.getId());
-		model.put("information", information);
-		model.put("title", "Crear informació");
-
-		return "/information/form";
-	}
-
+	
 	@GetMapping(value = "/information/form")
 	public String createInformation(Map<String, Object> model) {
+		
 		
 		Information information = new Information();
 		
@@ -317,15 +294,48 @@ public class TaskController {
 		model.put("title", "Formulari d'Informació");
 		return "/information/form";
 	}
+	
+	
+	@GetMapping("/information/form/{id}")
+	public String editInformation(@PathVariable(value = "id", required = false) Long id, 
+			Map<String, Object> model,
+			RedirectAttributes flash) {
+
+		Information information = null;
+		System.out.println("form/id edit information");
+		if (id > 0) {
+			information = taskService.findInformationById(id);
+				
+			if (information == null) {
+				flash.addFlashAttribute("error", "La informació no existeix a la BdD");
+				return "redirect:/information/list";
+			}
+			System.out.println("information/id edit: "+ information + " " +  information.getId());
+			
+		} else {
+			flash.addFlashAttribute("error", "L'identificador de la informació no pot ser zero");
+			return "redirect:/information/list";
+		}
+		model.put("information", information);
+		model.put("title", "Modificar informació");
+
+		return "/information/form";
+	}
+
+
 
 	@RequestMapping(value = "/information/form", method = RequestMethod.POST)
-	public String saveInformation(@Valid Information information, BindingResult result, Model model,
-			RedirectAttributes flash, SessionStatus status) {
+	public String saveInformation(@Valid Information information, 
+			BindingResult result, 
+			Model model,
+			RedirectAttributes flash, 
+			SessionStatus status) {
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Formulari d'Informació");
 			return "/information/form";
 		}
-		System.out.println("AQui: " +  information.getId());
+		System.out.println("information/form saveInformation: " + information + " " + information.getId());
+	
 		
 		String flashMessage = (information.getId() != null) ? "Informació modificada correctament"
 				: "Informació creada correctament";

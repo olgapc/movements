@@ -19,7 +19,7 @@
 		<table th:if="${task.company != null}"
 			class="table table-responsive table-hover my-4">
 			<!--  h2 class="text-info" th:text="${companyName}"></h2>-->
-			<tbody id="myTable">
+			<tbody id="companyTable">
 				<tr>
 					<td><a
 						class="btn btn-outline-info btn-xs text-info font-weight-bold"
@@ -27,16 +27,15 @@
 						th:text="${task.company.name}"></a></td>
 					<td th:text="${task.company.email}"></td>
 					<td th:text="${task.company.phone}"></td>
-					<td> <a class="btn btn-outline-info btn-xs"
-						th:href="@{/company/form/} + ${task.company.id}">Modificar</a>
-						</td>
+					<td><a class="btn btn-outline-info btn-xs"
+						th:href="@{/company/form/} + ${task.company.id}">Modificar</a></td>
 				</tr>
 			</tbody>
 		</table>
 		<table th:if="${task.employee != null}"
 			class="table table-responsive table-hover my-4">
 
-			<tbody id="myTable">
+			<tbody id="employeeTable">
 				<tr>
 					<td><a
 						class="btn btn-outline-info btn-xs text-info font-weight-bold"
@@ -45,7 +44,7 @@
 					<td th:text="${task.employee.nif}"></td>
 					<td th:text="${task.employee.naf}"></td>
 					<td th:text="${task.employee.email}"></td>
-					<td> <a class="btn btn-outline-info btn-xs"
+					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/employee/form/} + ${task.company.id} + @{/}+ ${task.employee.id}">Modificar</a>
 						</a></td>
 
@@ -56,23 +55,32 @@
 
 		<br />
 
+
+
+		<div th:if="${not #lists.isEmpty(task.taskInformations)}"
+			class="col-sm-6">
+			
+			<h2 class="text-info">Informacions</h2> <input class="form-control pr-0" id="tableSearch" type="text"
+				placeholder="escriu el que vols buscar">
+		</div>
+		
 		<table th:if="${not #lists.isEmpty(task.taskInformations)}"
 			class="table table-responsive table-hover my-4">
-			<h2 class="text-info">Informacions</h2>
 
 			<thead>
 				<tr>
 					<th>Descripció</th>
 					<th>Comentari</th>
 					<th>Fet</th>
-					
+
 				</tr>
 			</thead>
 			<tbody id="myTable">
 				<tr th:each="row: ${task.taskInformations}">
 					<td th:text="${row.information.description}"></td>
 					<td th:text="${row.comment}"></td>
-					<td> <input type="checkbox" name="active" th:checked="${row.done}" /></td>
+					<td><input type="checkbox" name="active"
+						th:checked="${row.done}" /></td>
 				</tr>
 
 			</tbody>
@@ -93,5 +101,6 @@
 
 
 	<footer th:replace="layout/layout :: footer"></footer>
+	<script src="/js/search-in-table.js"></script>
 </body>
 </html>

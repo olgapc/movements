@@ -85,5 +85,10 @@ public class Information implements Serializable {
 		createAt = new Date();
 	}
 
+	@Override
+	public String toString() {
+		return description.toUpperCase();
+	}
+	
 	private static final long serialVersionUID = 1L;
 }
