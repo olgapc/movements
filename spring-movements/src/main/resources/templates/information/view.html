@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+
+	<div class="container-fluid my-5">
+
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+
+		<div th:object="${information}" th:remove="tag">
+
+			<ul class="list-group">
+				<li class="list-group-item" th:text="${information.description}"></li>
+				<li class="list-group-item" th:text="${information.createAt}"></li>
+				</ul>
+
+			<br /> <a class="btn btn-outline-info btn-xs mr-2"
+				th:href="@{/information/form/} + ${information.id}">Modificar</a> <a
+				class="btn btn-outline-danger btn-xs mr-2"
+				onclick="return confirm('Eliminar informació?');"
+				th:href="@{/information/delete/} + ${information.id}"
+				th:text="'Eliminar'"></a> <br /> <br />
+
+
+		</div>
+
+
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script src="/js/search-in-table.js"></script>
+</body>
+</html>

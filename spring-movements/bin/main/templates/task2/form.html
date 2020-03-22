@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container-fluid my-5">
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+
+		<form th:action="@{/task/form/}" th:object="${task}" method="post">
+
+			<div class="form-group row">
+				<label for="company" class="col-sm-2 col-form-label" th:text="'Empresa'"></label>
+				<div class="col-sm-6">
+					<input name="company" th:value="${task.company.name}" class="form-control"
+						disabled='disabled' />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="employee" class="col-sm-2 col-form-label" th:text="'Treballador'"></label>
+				<div class="col-sm-6">
+					<input name="employee" th:value="${task.employee.name}" class="form-control"
+						disabled='disabled' />
+				</div>
+			</div>
+
+
+
+			<div class="form-group row">
+				<label for="description" class="col-sm-2 col-form-label" th:text="'Descripció'"></label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{description}" class="form-control" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="deadline" class="col-sm-2 col-form-label" th:text="'Data'"></label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{deadline}" class="form-control" />
+
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="nameTemplate" class="col-sm-2 col-form-label" th:text="'Nom Plantilla'"></label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{nameTemplate}" class="form-control" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for= "daysToFixError" class="col-sm-2 col-form-label"
+					th:text="'Dies per arreglar error'"></label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{daysToFixError}"
+						class="form-control" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="search_information" class="col-sm-2 col-form-label" th:text="'Buscar informació'"></label>
+				<div class="col-sm-6">
+					<input type="text" name="search_information" id="search_information" class="form-control" />
+				</div>
+			</div>
+
+			<table th:replace="task2/informations-template :: taskInformations"></table>
+
+			<table id="uploadInformations" class="table table-responsive table-hover">
+				<thead>
+				<tr>
+				<th>Descripció</th>
+				<th>Comentari</th>
+				<th>Done</th>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			
+			</table>
+
+			<div class="form-group row">
+				<div class="col-sm-6">
+					<input type="submit" th:value="${title}" class="btn btn-secondary" />
+				</div>
+			</div>
+		</form>
+
+
+	</div>
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script th:replace="task2/js/autocomplete-information :: javascript"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+
+	<div class="container-fluid my-5">
+
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+
+
+		<div class="row">
+			<div class="col-sm-6">
+				<input class="form-control pr-0" id="tableSearch" type="text"
+					placeholder="escriu el que vols buscar">
+			</div>
+
+			<a th:href="@{/information/form}"
+				class="btn btn-outline-info btn-xs mr-2">Nova Informació</a>
+
+		</div>
+
+		<br/>
+
+
+		<table class="table table-responsive table-hover">
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>descripció</th>
+					<th>data</th>
+				</tr>
+			</thead>
+			<tbody id="myTable">
+				<tr th:each="information: ${informations}">
+					<td><a class="btn btn-outline-info btn-xs"
+						th:href="@{/information/view/} + ${information.id}"
+						th:text="${information.id}"></a></td>
+					<td th:text="${information.description}"></td>
+					<td th:text="${information.createAt}"></td>
+					<td><a class="btn btn-outline-info btn-xs"
+						th:href="@{/information/form/} + ${information.id}">Modificar</a> <a
+						class="btn btn-outline-danger btn-xs"
+						th:href="@{/information/delete/} + ${information.id}" th:text="'Eliminar'"
+						onclick="return confirm('Segur que vols eliminar?');"></a></td>
+				</tr>
+
+			</tbody>
+
+		</table>
+	</div>
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script src="/js/search-in-table.js"></script>
+
+</body>
+
+</html>
