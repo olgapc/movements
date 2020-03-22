@@ -62,7 +62,7 @@
 				return find;
 			},
 			
-			//entra a la funció pero sempre és fals
+			
 			check : function(id){
 				
 				  $("#done_"+ id).val($(this).is(':checked'));
@@ -75,9 +75,12 @@
 				    if (!$(this).is(':checked')) {
 				      
 				    }
-				  });
-				
+				  });	
 
+			},
+			
+			deleteTaskRow: function(id){
+				$("#row_" + id).remove();
 			}
 		}
 
