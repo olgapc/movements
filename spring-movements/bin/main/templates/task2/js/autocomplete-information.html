@@ -3,8 +3,11 @@
 
 <body>
 	<script type="text/javascript" th:fragment="javascript">
+	
+	
 		$(document).ready(function() {
 			
+
 			$("#search_information").autocomplete({
 
 				source : function(request, response) {
@@ -40,16 +43,17 @@
 
 					$("#uploadInformations tbody").append(row);
 
+					itemsHelper.informationsDone();
+
 					return false;
 				}
 
 			});
-			
-
 
 		});
 
 		var itemsHelper = {
+
 			hasInformation : function(id) {
 				var find = false;
 				$('input[name="information_id[]"]').each(function() {
@@ -61,55 +65,52 @@
 				});
 				return find;
 			},
-			
-			
-			check : function(id){
-				
-				  $("#done_"+ id).val($(this).is(':checked'));
 
-				  $("#checkbox_done_" + id).change(function() {
-				    $("#done_"+ id).val($(this).is(':checked'));
-				  });
+			check : function(id) {
 
-				  $("#checkbox_done_" + id).click(function() {
-				    if (!$(this).is(':checked')) {
-				      
-				    }
-				  });	
 
+				$("#checkbox_done_" + id).change(function() {
+					
+					$("#information_done_" + id).val($(this).is(':checked'));
+					
+				});
+
+				$("#checkbox_done_" + id).click(function() {
+					if (!$(this).is(':checked')) {
+
+					}
+					
+				});
+
+				this.informationsDone();
 			},
-			
-			deleteTaskRow: function(id){
+
+			deleteTaskRow : function(id) {
 				$("#row_" + id).remove();
+
+				this.informationsDone();
+			},
+
+			informationsDone : function() {
+					 
+					
+					var countTotal = -1;
+					var countCheck=0;
+			 
+					$("input[type=checkbox]").each(function(){
+						countTotal++;
+						if($(this).is(":checked"))
+							countCheck++;
+					});
+			 	
+					$('#total_dones').html(countCheck + "/" + countTotal);
+			 
 			}
+			
+
 		}
+	
 
-		
-	    //set initial state.
-	    //$("#done_{ID}").val(this.checked);
-
-	    //$("#checkbox_done_{ID}").change(function() {
-	      //  if(this.checked) {
-	        //    var returnVal = confirm("Are you sure?");
-	          //  $(this).prop("checked", returnVal);
-	        //}
-	        //$("#done_{ID}").val(this.checked);        
-	    //});
-
-		
-		//when checkbox is checked --> true or false to a hidden input
-		//$(""#checkbox_done_{ID}"").bind("change", function(){
-		//  if($(this).is(':checked')){
-		// box was checked
-		//}
-		//});
-		//$("#checkbox_done[]").change(function() {
-		//	if ($(this).is(":checked")) {
-		//		$("#done_" + id).val("true");
-		//		return;
-		//}
-			//'unchecked' event code
-		//});
 
 	</script>
 </body>
