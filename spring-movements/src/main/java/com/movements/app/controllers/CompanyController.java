@@ -97,7 +97,6 @@ public class CompanyController {
 				flash.addFlashAttribute("info", "Has pujat correctament: '" + logo.getOriginalFilename() + "'");
 				company.setLogo(logo.getOriginalFilename());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

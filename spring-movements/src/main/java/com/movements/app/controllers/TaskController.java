@@ -153,7 +153,7 @@ public class TaskController {
 
 	@GetMapping(value = "/task/upload-informations/{term}", produces = { "application/json" })
 	public @ResponseBody List<Information> uploadInformations(@PathVariable String term) {
-		return taskService.findByDescription(term);
+		return taskService.findInformationByDescription(term);
 	}
 
 	@PostMapping("/task/form")

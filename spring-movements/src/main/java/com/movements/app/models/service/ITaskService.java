@@ -15,24 +15,29 @@ public interface ITaskService {
 		public List<Task> findAll();
 
 		public void save(Task task);
+		
+		public Task findTaskById(Long id);
 
 		public void delete(Long id);
 		
+		
 		public Employee findEmployeeById(Long id);
+		
 		
 		public Company findCompanyById(Long id);
 		
-		public List<Information> findByDescription(String term);
+		
+		public List<Information> findInformationByDescription(String term);
 		
 		public Information findInformationById(Long id);
-		
-		public Task findTaskById(Long id);
 		
 		public void deleteInformation(Long id);
 		
 		public List<Information> findAllInformations();
 		
 		public void saveInformation(Information information);
+		
+		public Task fetchTaskByIdfetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformation(Long id);
 		
 	
 }

@@ -1989,7 +1989,12 @@ pre code {
 	width:auto;
 }
 
-.big-checkbox {width: 30px; height: 30px;}
+.big-checkbox {
+	width: 30px; 
+	height: 30px;
+	margin-left:0px; 
+	padding-left: 0px;
+}
 
 @media ( prefers-reduced-motion :reduce) {
 	.form-control {

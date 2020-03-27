@@ -40,7 +40,7 @@ public class Task implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotEmpty
+	
 	private String description;
 
 	
@@ -58,7 +58,7 @@ public class Task implements Serializable{
 	@Column(name = "name_template")
 	private String nameTemplate;
 
-	@NotEmpty
+	
 	@Column(name = "number_to_calculate_deadline_to_send")
 	private String numberToCalculateDeadlineToSend;
 
@@ -69,7 +69,7 @@ public class Task implements Serializable{
 	@Column(name = "type_calculation_deadline")
 	private TypeCalculationDeadline typeCalculationDeadline;
 
-	@NotNull
+	
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date deadline;
@@ -113,6 +113,7 @@ public class Task implements Serializable{
 	public Task() {
 		taskInformations = new ArrayList<TaskInformation>();
 	}
+
 
 	
 	public Long getId() {

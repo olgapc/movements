@@ -28,10 +28,12 @@
 					}
 						
 					var row = $("#templateTaskInformations").html();
+					
 					row = row.replace(/{ID}/g, ui.item.value);
 					row = row.replace(/{DESCRIPTION}/g, ui.item.label);
 					
 					$("#uploadInformationsTask tbody").append(row);
+					
 					return false;
 				}
 

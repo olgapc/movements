@@ -66,8 +66,8 @@ public class TaskInformation implements Serializable {
 		return comment;
 	}
 
-	public void setComment(String description) {
-		this.comment = description;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public Information getInformation() {

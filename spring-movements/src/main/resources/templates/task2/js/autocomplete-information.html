@@ -32,6 +32,7 @@
 				select : function(event, ui) {
 
 					$("search_information").val(ui.item.label);
+					
 					if (itemsHelper.hasInformation(ui.item.value)) {
 						return false;
 					}
@@ -49,6 +50,39 @@
 				}
 
 			});
+			
+			$("form[name='taskForm']").submit(function(){
+				$("#templateTaskInformations").remove();
+				return;		
+			});
+			
+/* 			$("#search_company").autocomplete({
+				source : function(request, response) {
+					$.ajax({
+						url : "/upload-companies/" + request.term,
+						dataType : "json",
+						data : {
+							term : request.term
+						},
+						success : function(data) {
+							response($.map(data, function(item) {
+								return {
+									value : item.id,
+									label : item.name,
+								};
+							}));
+						},
+					});
+				},
+				select : function(event, ui) {
+					$("#search_company").val(ui.item.label);
+					$("#search_company_id").val(ui.item.value);
+					return false;
+				},
+				change : function(event, ui) {
+					$("#search_company_id").val(ui.item? ui.item.value : null);
+				}
+			}); */
 
 		});
 
@@ -67,7 +101,6 @@
 			},
 
 			check : function(id) {
-
 
 				$("#checkbox_done_" + id).change(function() {
 					
@@ -93,11 +126,11 @@
 
 			informationsDone : function() {
 					 
-					
 					var countTotal = -1;
 					var countCheck=0;
 			 
-					$("input[type=checkbox]").each(function(){
+					$('input[id^="checkbox_done_"]').each(function(){
+						//$("input[type=checkbox]").each(function(){
 						countTotal++;
 						if($(this).is(":checked"))
 							countCheck++;

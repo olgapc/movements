@@ -19,6 +19,7 @@
 		</div>
 
 		<form th:action="@{/task/form}" th:object="${task}" method="post">
+			
 			<div th:if="${task.company != null}" class="form-group row">
 				<label class="col-sm-2 col-form-label" th:text="'Empresa'"></label>
 				<div class="col-sm-6">
@@ -28,6 +29,7 @@
 						id="company_id" />
 				</div>
 			</div>
+			
 			<div th:if="${task.employee != null}" class="form-group row">
 				<label class="col-sm-2 col-form-label"
 					th:text="'Treballador implicat'"></label>

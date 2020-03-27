@@ -121,14 +121,9 @@ public class EmployeeController {
 
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public String save(@Valid Employee employee,
-			// @RequestParam(name = "company_id", required = false) Long companyId,
 			@RequestParam(name = "search_company_id", required = false) Long searchCompanyId, 
 			BindingResult result,
 			Model model, RedirectAttributes flash, SessionStatus status) {
-
-		// if (companyId != null) {
-		// company = employeeService.findCompanyById(companyId);
-		// } else
 		
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Formulari de Treballador");
@@ -143,9 +138,6 @@ public class EmployeeController {
 				company.addEmployee(employee);
 			}
 		}
-
-
-		
 
 		String flashMessage = (employee.getId() != null) ? "Treballador modificat correctament"
 				: "Treballador creat correctament";
@@ -174,13 +166,5 @@ public class EmployeeController {
 		return "redirect:/company/view/" + companyId;
 	}
 
-//	@RequestMapping(value = "/delete/{id}/{company}")
-//	public String delete(@PathVariable(value = "company") Long idCompany, @PathVariable(value = "id") Long id, RedirectAttributes flash) {
-//		if (id > 0) {
-//			employeeService.delete(id);
-//			flash.addFlashAttribute("success", "Treballador eliminat correctament");
-//		}
-//		return "redirect:/company/view/" + idCompany;
-//	}
 
 }
