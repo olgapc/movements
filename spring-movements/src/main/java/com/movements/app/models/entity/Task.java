@@ -24,43 +24,35 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.movements.app.models.enums.TypeCalculationDeadline;
 
-
-
 @Entity
 @Table(name = "tasks")
-public class Task implements Serializable{
+public class Task implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	
 	private String description;
 
-	
 	@Column(name = "optional_subtask")
 	private boolean optionalSubtask;
 
-	
 	@Column(name = "to_send")
 	private boolean toSend;
 
-	
 	@Column(name = "template")
 	private boolean template;
 
 	@Column(name = "name_template")
 	private String nameTemplate;
 
-	
-	@Column(name = "number_to_calculate_deadline_to_send")
-	private String numberToCalculateDeadlineToSend;
+	@Column(name = "number_to_calculate_deadline_to_alarm")
+	private String numberToCalculateDeadlineToAlarm;
 
 	@Column(name = "days_to_fix_error")
 	private Integer daysToFixError;
@@ -69,53 +61,48 @@ public class Task implements Serializable{
 	@Column(name = "type_calculation_deadline")
 	private TypeCalculationDeadline typeCalculationDeadline;
 
-	
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date deadline;
 
-	
 	@Column(name = "create_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createAt;
 
-	@JsonIgnoreProperties({"tasks","hibernateLazyInitializer"})
+	@JsonIgnoreProperties({ "tasks", "hibernateLazyInitializer" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "company_fk")
 	private Company company;
 
-	@JsonIgnoreProperties({"tasks","hibernateLazyInitializer"})
+	@JsonIgnoreProperties({ "tasks", "hibernateLazyInitializer" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "employee_fk")
 	private Employee employee;
 
-	@JsonIgnoreProperties({"task","hibernateLazyInitializer"})
-	@OneToMany(mappedBy="task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnoreProperties({ "task", "hibernateLazyInitializer" })
+	@OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<TaskInformation> taskInformations;
 
 	@Column(name = "done")
-	private boolean done ;
-	
-	
+	private boolean done;
+
 	@Column(name = "done_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date doneAt;
-	
-	@JsonIgnoreProperties(value = {"subtasks"})
+
+	@JsonIgnoreProperties(value = { "subtasks" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "maintask_fk")
 	private Task mainTask;
-	
-	@JsonIgnoreProperties(value = {"mainTask"})
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="mainTask", cascade = CascadeType.ALL)
+
+	@JsonIgnoreProperties(value = { "mainTask" })
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mainTask", cascade = CascadeType.ALL)
 	private List<Task> subtasks;
 
 	public Task() {
 		taskInformations = new ArrayList<TaskInformation>();
 	}
 
-
-	
 	public Long getId() {
 		return id;
 	}
@@ -132,22 +119,17 @@ public class Task implements Serializable{
 		this.description = description;
 	}
 
-
-
 	public boolean isOptionalSubtask() {
 		return optionalSubtask;
 	}
-
 
 	public boolean isToSend() {
 		return toSend;
 	}
 
-
 	public boolean isTemplate() {
 		return template;
 	}
-
 
 	public String getNameTemplate() {
 		return nameTemplate;
@@ -157,12 +139,12 @@ public class Task implements Serializable{
 		this.nameTemplate = nameTemplate;
 	}
 
-	public String getNumberToCalculateDeadlineToSend() {
-		return numberToCalculateDeadlineToSend;
+	public String getNumberToCalculateDeadlineToAlarm() {
+		return numberToCalculateDeadlineToAlarm;
 	}
 
-	public void setNumberToCalculateDeadlineToSend(String numberToCalculteDeadlineToSend) {
-		this.numberToCalculateDeadlineToSend = numberToCalculteDeadlineToSend;
+	public void setNumberToCalculateDeadlineToAlarm(String numberToCalculteDeadlineToAlarm) {
+		this.numberToCalculateDeadlineToAlarm = numberToCalculteDeadlineToAlarm ;
 	}
 
 	public Integer getDaysToFixError() {
@@ -230,14 +212,6 @@ public class Task implements Serializable{
 		createAt = new Date();
 	}
 
-	public Boolean isDone() {
-		return done;
-	}
-
-	public void setDone(boolean done) {
-		this.done = done;
-	}
-
 	public Date getDoneAt() {
 		return doneAt;
 	}
@@ -254,21 +228,17 @@ public class Task implements Serializable{
 		this.mainTask = mainTask;
 	}
 
-
 	public void setOptionalSubtask(boolean optionalSubtask) {
 		this.optionalSubtask = optionalSubtask;
 	}
-
 
 	public void setToSend(boolean toSend) {
 		this.toSend = toSend;
 	}
 
-
 	public void setTemplate(boolean template) {
 		this.template = template;
 	}
-
 
 	public List<Task> getSubtasks() {
 		return subtasks;
@@ -277,9 +247,17 @@ public class Task implements Serializable{
 	public void setSubtasks(List<Task> subtasks) {
 		this.subtasks = subtasks;
 	}
-	
+
 	public void addSubtask(Task subtask) {
 		subtasks.add(subtask);
+	}
+
+	public boolean isDone() {
+		return done;
+	}
+
+	public void setDone(boolean done) {
+		this.done = done;
 	}
 
 	private static final long serialVersionUID = 1L;

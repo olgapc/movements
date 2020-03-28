@@ -38,7 +38,7 @@ public class Task2Controller {
 	private ITaskService taskService;
 
 	
-	@GetMapping("/task2/form/")
+	@GetMapping("/task2/form")
 	public String create(
 			Map<String,Object> model, RedirectAttributes flash ) {
 		
