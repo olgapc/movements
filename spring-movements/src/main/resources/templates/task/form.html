@@ -8,175 +8,180 @@
 
 		<h1 class="text-warning" th:text="${title}"></h1>
 
-		<br />
+		<form name="taskForm" th:action="@{/task/form/}" th:object="${task}"
+			method="post">
 
+			<div class="form-group row">
 
-		<div th:object="${task}" th:remove="tag">
-			<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-				<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
-			</ul>
-
-		</div>
-
-		<form th:action="@{/task/form}" th:object="${task}" method="post">
-			
-			<div th:if="${task.company != null}" class="form-group row">
-				<label class="col-sm-2 col-form-label" th:text="'Empresa'"></label>
-				<div class="col-sm-6">
-					<input th:value="${task.company.name}" class="form-control"
-						disabled="disabled" /> <input th:value="${task.company.id}"
-						type="hidden" class="form-control" name="company_id"
-						id="company_id" />
-				</div>
-			</div>
-			
-			<div th:if="${task.employee != null}" class="form-group row">
-				<label class="col-sm-2 col-form-label"
-					th:text="'Treballador implicat'"></label>
-				<div class="col-sm-6">
-					<input th:value="${task.employee.name}" class="form-control"
-						disabled="disabled" /> <input th:value="${task.employee.id}"
-						type="hidden" class="form-control" name="employee_id"
-						id="employee_id" />
+				<div class="col-sm-8">
+					<input type="text" th:field="*{description}" class="form-control" />
 				</div>
 			</div>
 
-
-			<div th:if="${!(task.company != null or task.employee != null)}"
-				id="result_company" class="form-group row">
-				<label for="search_company" class="col-sm-2 col-form-label"
-					th:text="'Buscar empresa'"></label>
+			<div class="form-group row">
+				<label for="company_name" class="col-sm-2 col-form-label"
+					th:text="'Empresa'"></label>
 				<div class="col-sm-6">
-					<input type="search" name="search_company" id="search_company"
-						class="form-control" /> <input type="hidden" class="form-control"
-						name="search_company_id" id="search_company_id" /> <a
+					<input type="search" name="company_name" id="company_name"
+						class="form-control" th:value="${task?.company?.name}"/> <input type="text" class="form-control"
+						name="company_id" id="company_id" th:value="${task?.company?.id}"/> <a
 						th:href="@{/company/form}" target="_blank"
 						class="btn btn-outline-info btn-xs mr-2">Nova Empresa</a>
-
 				</div>
-				<input type="hidden" class="form-control" name="search_company_id"
-					id="search_company_id" />
 			</div>
 
-			<div th:if="${!(task.company != null or task.employee != null)}"
-				id="result_employee" class="form-group row">
-				<label for="search_employee" class="col-sm-2 col-form-label"
-					th:text="'Buscar treballador'"></label>
+			<div class="form-group row">
+				<label for="employee_name" class="col-sm-2 col-form-label"
+					th:text="'Treballador'"></label>
 				<div class="col-sm-6">
-					<input type="search" name="search_employee" id="search_employee"
-						class="form-control" /> <input type="hidden" class="form-control"
-						name="search_employee_id" id="search_employee_id" /> <a
+					<input type="search" name="employee_name" id="employee_name" th:value="${task?.employee?.name}" 
+						class="form-control" /> 
+						<input type="text" th:value="${task?.employee?.id}" class="form-control"
+						name="employee_id" id="employee_id" /> 
+						<a
 						th:href="@{/employee/form}" class="btn btn-outline-info btn-xs">Nou
 						Treballador</a>
 
 				</div>
 			</div>
 
-
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Descripció</label>
+				<label class="col-sm-2 col-form-label" th:text="'Empresa'"></label>
 				<div class="col-sm-6">
-					<input type="text" th:field="*{description}" class="form-control"
-						th:errorclass="'form-control is-invalid'" /> <small
-						class="invalid-feedback"
-						th:if="${#fields.hasErrors('description')}"
-						th:errors="*{description}"></small>
+					<input th:value="${task?.company?.name}" class="form-control" /> <input
+						type="hidden" th:value="${task?.company?.id}" class="form-control"
+						name="company_id" id="company_id" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label" th:text="'Treballador'"></label>
+				<div class="col-sm-6">
+					<input th:value="${task?.employee?.name}" class="form-control" />
+					<input type="hidden" th:value="${task?.employee?.id}"
+						class="form-control" name="employee_id" id="employee_id" />
 				</div>
 			</div>
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Càlcul termini</label>
-				<div class="col-sm-6">
-					<input type="text" th:field="*{numberToCalculateDeadlineToAlarm}"
-						class="form-control" th:errorclass="'form-control is-invalid'" />
-					<small class="invalid-feedback"
-						th:if="${#fields.hasErrors('numberToCalculateDeadlineToAlarm')}"
-						th:errors="*{numberToCalculateDeadlineToAlarm}"></small>
+				<label for="deadline" class="col-sm-2 col-form-label"
+					th:text="'Data'"></label>
+				<div class="col-sm-2">
+					<input type="text" th:field="*{deadline}" class="form-control" />
+
+				</div>
+				<label for="done" class="col-sm-1 col-form-label" th:text="'Fet'"></label>
+				<div class="col-sm-1">
+					<input type="checkbox" name="checkbox_task_done" th:field="*{done}"
+						id="checkbox_task_done" class="form-check-input big-checkbox" />
 				</div>
 			</div>
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Tipus càlcul</label>
+				<label class="col-sm-2 col-form-label" th:text="''"></label> <label
+					for="optionalSubclass" class="col-sm-1 col-form-label"
+					th:text="'Opcional'"></label>
+				<div class="col-sm-1">
+					<input type="checkbox" name="checkbox_optional_subtask"
+						th:field="*{optionalSubtask}" id="checkbox_optional_subtask"
+						class="form-check-input big-checkbox" />
+				</div>
+				<label for="toSend" class="col-sm-1 col-form-label"
+					th:text="'Enviar'"></label>
+				<div class="col-sm-1">
+					<input type="checkbox" name="checkbox_to_send" th:field="*{toSend}"
+						id="checkbox_to_send" class="form-check-input big-checkbox" />
+				</div>
+				<label for="template" class="col-sm-1 col-form-label"
+					th:text="'Plantilla'"></label>
+				<div class="col-sm-2">
+					<input type="checkbox" name="checkbox_template"
+						th:field="*{template}" id="checkbox_template"
+						class="form-check-input big-checkbox" />
+				</div>
+			</div>
+
+
+			<div class="form-group row">
+				<label for="nameTemplate" class="col-sm-2 col-form-label"
+					th:text="'Nom Plantilla'"></label>
 				<div class="col-sm-6">
-					<input type="text" th:field="*{typeCalculationDeadline}"
-						class="form-control" th:errorclass="'form-control is-invalid'" />
-					<small class="invalid-feedback"
-						th:if="${#fields.hasErrors('typeCalculationDeadline')}"
-						th:errors="*{typeCalculationDeadline}"></small>
+					<input type="text" th:field="*{nameTemplate}" class="form-control" />
 				</div>
 			</div>
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Dies per correcció
-					d'errors</label>
+				<label for="numberToCalculateDeadlineToAlarm"
+					class="col-sm-2 col-form-label"
+					th:text="'Xifra per calcular termini per recordar'"></label>
+				<div class="col-sm-2">
+					<input type="number" th:field="*{numberToCalculateDeadlineToAlarm}"
+						class="form-control" />
+				</div>
+
+				<label for="typeCalculationDeadline" class="col-sm-2 col-form-label"
+					th:text="'Selecciona tipus de càlcul'"></label>
+				<div class="col-sm-2">
+					<select class="typeCalculation form-control" id="typeCalculation"
+						name="typeCalculation" th:field="*{typeCalculationDeadline}">
+						<option
+							th:each="typeCalculationOpt : ${T(com.movements.app.models.enums.TypeCalculationDeadline).values()}"
+							th:value="${typeCalculationOpt}"
+							th:text="${typeCalculationOpt.displayValue}"></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="daysToFixError" class="col-sm-2 col-form-label"
+					th:text="'Dies per correcció error'"></label>
 				<div class="col-sm-6">
 					<input type="text" th:field="*{daysToFixError}"
-						class="form-control" th:errorclass="'form-control is-invalid'" />
-					<small class="invalid-feedback"
-						th:if="${#fields.hasErrors('daysToFixError')}"
-						th:errors="*{daysToFixError}"></small>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Data</label>
-				<div class="col-sm-6">
-					<input type="text" th:field="*{deadline}" class="form-control"
-						th:errorclass="'form-control is-invalid'" /> <small
-						class="invalid-feedback" th:if="${#fields.hasErrors('deadline')}"
-						th:errors="*{deadline}"></small>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Opcional</label>
-				<div class="col-sm-1">
-	
-				
-					<input type="checkbox" name="active" th:checked="${optionalSubtask}"
-						class="form-control move-left big-checkbox" /> <small
-						class="invalid-feedback"
-						th:if="${#fields.hasErrors('optionalSubtask')}"
-						th:errors="*{optionalSubtask}"></small>
+						class="form-control" />
 				</div>
 			</div>
 
 			<div class="form-group row">
 				<label for="search_information" class="col-sm-2 col-form-label"
-					th:text="'Afegir informació necessària'"></label>
+					th:text="'Buscar informació'"></label>
 				<div class="col-sm-6">
-					<input type="search" name="search_information"
-						id="search_information" class="form-control" /> <input
-						type="hidden" class="form-control" name="search_information_id"
-						id="search_information_id" />
+					<input type="text" name="search_information"
+						id="search_information" class="form-control" />
 				</div>
 			</div>
 
+			<h5 class="text-info">
+				Resum Informacions <span class="badge badge-pill badge-info"
+					id="total_dones">0/0</span>
+			</h5>
+
 			<table th:replace="task/informations-template :: taskInformations"></table>
 
-			<table id="uploadInformationsTask"
+			<table id="uploadInformations"
 				class="table table-responsive table-hover">
-				<h2 class="text-info">Informació necessària</h2>
 				<thead>
 					<tr>
 						<th>Descripció</th>
 						<th>Comentari</th>
-						<th>fet</th>
-						<th>Opcions</th>
+						<th>Fet</th>
+						<th>Eliminar</th>
 					</tr>
 				</thead>
-				<tbody></tbody>
+
+				<tbody>
+				</tbody>
+
 			</table>
+
 
 
 			<div class="form-group row">
 				<div class="col-sm-6">
-					 <input type="submit"
-						value="Guardar" class="btn btn-outline-info" />
+					<input type="submit" th:value="${title}"
+						class="btn btn-outline-info" />
 				</div>
 			</div>
-
 		</form>
+
 
 	</div>
 
@@ -184,6 +189,6 @@
 	<footer th:replace="layout/layout :: footer"></footer>
 	<script th:replace="task/js/autocomplete-companies :: javascript"></script>
 	<script th:replace="task/js/autocomplete-employees :: javascript"></script>
-	<script th:replace="task/js/autocomplete-informations :: javascript"></script>
+	<script th:replace="task/js/autocomplete-information :: javascript"></script>
 </body>
 </html>
