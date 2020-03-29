@@ -7,12 +7,12 @@
 	
 		$(document).ready(function() {
 
-			$("#search_employee").autocomplete({
+			$("#employee_name").autocomplete({
 			
 				source : function(request, response) {
 					$.ajax({
 				
-						url : "/upload-employees/" + $("#search_company_id").val() + "/" + request.term ,				
+						url : "/upload-employees/" + $("#company_id").val() + "/" + request.term ,				
 						dataType : "json",
 						data: { //datos a enviar al servidor
 							term: request.term//,
@@ -22,6 +22,9 @@
 								return {
 									value : item.id,
 									label : item.name,
+									company_id : item.company.id,
+									company_name : item.company.name,
+									
 								};
 							}));
 						}
@@ -29,13 +32,15 @@
 				},
 				select : function(event, ui) {
 					
-					$("#search_employee").val(ui.item.label);
-					$("#search_employee_id").val(ui.item.value);
+					$("#employee_name").val(ui.item.label);
+					$("#employee_id").val(ui.item.value);
+					$("#company_id").val(ui.item.company_id);
+					$("#company_name").val(ui.item.company_name);
 					
 					return false;
 				},
 				change : function(event, ui) {
-					$("#search_employee_id").val(ui.item? ui.item.value : null);
+					$("#employee_id").val(ui.item? ui.item.value : null);
 				}
 			});
 		});

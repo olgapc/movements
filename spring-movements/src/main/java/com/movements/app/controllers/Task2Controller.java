@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,22 @@ public class Task2Controller {
 	@Autowired
 	private ITaskService taskService;
 
+	@GetMapping("/task2/view/{id}")
+	public String view(@PathVariable(value="id")Long id,
+			Model model,
+			RedirectAttributes flash) {
+		
+		Task task = taskService.findTaskById(id);
+		
+		if(task==null) {
+			flash.addFlashAttribute("error", "La tasca no existeix a la BdD");
+			return "redirect:/task/list";
+		}
+		
+		model.addAttribute("task", task);
+		model.addAttribute("title", "Tasca: ".concat(task.getDescription()));
+		return "";
+	}
 	
 	@GetMapping("/task2/form")
 	public String create(
@@ -112,31 +129,26 @@ public class Task2Controller {
 
 	@PostMapping("/task2/form")
 	public String save(Task task, 
-			@RequestParam(name = "company_id", required = false) Long idCompany,
-			@RequestParam(name = "employee_id", required = false) Long idEmployee,
+			//@RequestParam(name = "company_id", required = false) Long idCompany,
+			//@RequestParam(name = "employee_id", required = false) Long idEmployee,
 			@RequestParam(name = "information_id[]", required = false) Long[] informationId,
 			@RequestParam(name = "comment[]", required = false) String[] comment,
 			@RequestParam(name = "information_done[]", required = false) String[] informationDone,
 			RedirectAttributes flash, SessionStatus status) {
 
-		System.out.println("idcompany: " +idCompany);
-		if(idCompany != null) {
-			
-			Company company = new Company();
-			company = taskService.findCompanyById(idCompany);
-			System.out.println(company);
-			task.setCompany(company);
-			company.addTask(task);
-		}
-	
-		if(idEmployee != null) {
-			
-			Employee employee = new Employee();
-			employee = taskService.findEmployeeById(idEmployee);
-			task.setEmployee(employee);
-			employee.addTask(task);
-		}
-		
+		/*
+		 * System.out.println("idcompany: " +idCompany); if(idCompany != null) {
+		 * 
+		 * Company company = new Company(); company =
+		 * taskService.findCompanyById(idCompany); System.out.println(company);
+		 * task.setCompany(company); company.addTask(task); }
+		 * 
+		 * if(idEmployee != null) {
+		 * 
+		 * Employee employee = new Employee(); employee =
+		 * taskService.findEmployeeById(idEmployee); task.setEmployee(employee);
+		 * employee.addTask(task); }
+		 */	
 		if (informationId != null) {
 			for (int i = 0; i < informationId.length; i++) {
 
@@ -161,7 +173,8 @@ public class Task2Controller {
 						}
 					}
 				}
-
+				
+				//taskInformation.setTask(task);
 				task.addTaskInformation(taskInformation);
 			}
 		}
@@ -173,4 +186,8 @@ public class Task2Controller {
 		flash.addFlashAttribute("success", "Tasca creada correctament");
 		return "redirect:/company/view/1";
 	}
+	
+	
+	
+	
 }

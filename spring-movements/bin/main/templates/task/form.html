@@ -87,11 +87,11 @@
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Càlcul termini</label>
 				<div class="col-sm-6">
-					<input type="text" th:field="*{numberToCalculateDeadlineToSend}"
+					<input type="text" th:field="*{numberToCalculateDeadlineToAlarm}"
 						class="form-control" th:errorclass="'form-control is-invalid'" />
 					<small class="invalid-feedback"
-						th:if="${#fields.hasErrors('numberToCalculateDeadlineToSend')}"
-						th:errors="*{numberToCalculateDeadlineToSend}"></small>
+						th:if="${#fields.hasErrors('numberToCalculateDeadlineToAlarm')}"
+						th:errors="*{numberToCalculateDeadlineToAlarm}"></small>
 				</div>
 			</div>
 

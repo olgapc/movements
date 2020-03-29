@@ -53,8 +53,10 @@ public class TaskController {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@GetMapping("/task/form/{companyId}/{employeeId}")
-	public String create(@PathVariable(value = "companyId", required = false) Long companyId,
-			@PathVariable(value = "employeeId", required = false) Long employeeId, Map<String, Object> model,
+	public String create(
+			@PathVariable(value = "companyId", required = false) Long companyId,
+			@PathVariable(value = "employeeId", required = false) Long employeeId, 
+			Map<String, Object> model,
 			RedirectAttributes flash) {
 
 		if (employeeId == null) {
@@ -66,6 +68,7 @@ public class TaskController {
 			flash.addFlashAttribute("error", "El treballador no existeix a la BdD");
 			return "redirect:/company/list";
 		}
+		
 		Task task = new Task();
 		task.setCompany(employee.getCompany());
 		task.setEmployee(employee);
@@ -209,7 +212,7 @@ public class TaskController {
 					taskInformation.setDone(done);
 				}
 				
-				taskInformation.setTask(task);
+				//taskInformation.setTask(task);
 				task.addTaskInformation(taskInformation);
 
 			}

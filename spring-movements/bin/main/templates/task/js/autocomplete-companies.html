@@ -3,7 +3,7 @@
 <body>
 	<script type="text/javascript" th:fragment="javascript">
 		$(document).ready(function() {
-			$("#search_company").autocomplete({
+			$("#company_name").autocomplete({
 				source : function(request, response) {
 					$.ajax({
 						url : "/upload-companies/" + request.term,
@@ -22,12 +22,12 @@
 					});
 				},
 				select : function(event, ui) {
-					$("#search_company").val(ui.item.label);
-					$("#search_company_id").val(ui.item.value);
+					$("#company_name").val(ui.item.label);
+					$("#company_id").val(ui.item.value);
 					return false;
 				},
 				change : function(event, ui) {
-					$("#search_company_id").val(ui.item? ui.item.value : null);
+					$("#company_id").val(ui.item? ui.item.value : null);
 				}
 			});
 		});
