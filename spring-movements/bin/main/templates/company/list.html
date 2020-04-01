@@ -32,7 +32,7 @@
 		<table class="table table-responsive table-hover">
 			<thead>
 				<tr>
-					<th>id</th>
+
 					<th>nom</th>
 					<th>mail</th>
 					<th>telèfon</th>
@@ -45,8 +45,7 @@
 				<tr th:each="company: ${companies}">
 					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/company/view/} + ${company.id}"
-						th:text="${company.id}"></a></td>
-					<td th:text="${company.name}"></td>
+						th:text="${company.name}"></a></td>
 					<td th:text="${company.email}"></td>
 					<td th:text="${company.phone}"></td>
 					<td th:text="${company.createAt}"></td>

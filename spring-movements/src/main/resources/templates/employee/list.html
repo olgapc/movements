@@ -27,8 +27,7 @@
 		<br />
 		<table class="table table-responsive table-hover">
 			<thead>
-				<tr>
-					<th>id</th>
+				<tr>	
 					<th>nom</th>
 					<th>mail</th>
 					<th>telèfon</th>
@@ -40,10 +39,10 @@
 			</thead>
 			<tbody id="myTable">
 				<tr th:each="employee: ${employees}">
-					<td><a class="btn btn-outline-info btn-xs"
+					<td><a class="stretched-link text-info"
 						th:href="@{/employee/view/} + ${employee.id}"
-						th:text="${employee.id}"></a></td>
-					<td th:text="${employee.name}"></td>
+						th:text="${employee.name}"></a></td>
+					
 					<td th:text="${employee.email}"></td>
 					<td th:text="${employee.phone}"></td>
 					<td th:text="${employee.createAt}"></td>
@@ -53,7 +52,7 @@
 					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/employee/form/} +${employee.company.id}+ @{/} + ${employee.id}">Modificar</a>
 						<a class="btn btn-outline-info btn-xs"
-						th:href="@{/task2/form/} +${employee.company.id}+ @{/} + ${employee.id}">Nova Tasca</a>
+						th:href="@{/task/form/} +${employee.company.id}+ @{/} + ${employee.id}">Nova Tasca</a>
 						<a class="btn btn-outline-danger btn-xs"
 						th:href="@{/employee/delete/} +${employee.company.id}+ @{/} + ${employee.id}"
 						th:text="'Eliminar'"

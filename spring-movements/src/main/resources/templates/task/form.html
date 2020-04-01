@@ -14,7 +14,8 @@
 			<div class="form-group row">
 
 				<div class="col-sm-8">
-					<input type="text" th:field="*{description}" class="form-control" />
+					<input type="text" th:field="*{description}" class="form-control" th:errorclass="'form-control is-invalid'"/>
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
 				</div>
 			</div>
 
@@ -24,7 +25,7 @@
 				<div class="col-sm-6">
 					<input type="search" name="company_name" id="company_name"
 						class="form-control" th:value="${task?.company?.name}"/> <input type="text" class="form-control"
-						name="company_id" id="company_id" th:value="${task?.company?.id}"/> <a
+						name="company_id" id="company_id" hidden= "hidden" th:value="${task?.company?.id}"/> <a
 						th:href="@{/company/form}" target="_blank"
 						class="btn btn-outline-info btn-xs mr-2">Nova Empresa</a>
 				</div>
@@ -37,7 +38,7 @@
 					<input type="search" name="employee_name" id="employee_name" th:value="${task?.employee?.name}" 
 						class="form-control" /> 
 						<input type="text" th:value="${task?.employee?.id}" class="form-control"
-						name="employee_id" id="employee_id" /> 
+						name="employee_id" hidden= "hidden" id="employee_id" /> 
 						<a
 						th:href="@{/employee/form}" class="btn btn-outline-info btn-xs">Nou
 						Treballador</a>
@@ -46,28 +47,11 @@
 			</div>
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label" th:text="'Empresa'"></label>
-				<div class="col-sm-6">
-					<input th:value="${task?.company?.name}" class="form-control" /> <input
-						type="hidden" th:value="${task?.company?.id}" class="form-control"
-						name="company_id" id="company_id" />
-				</div>
-			</div>
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label" th:text="'Treballador'"></label>
-				<div class="col-sm-6">
-					<input th:value="${task?.employee?.name}" class="form-control" />
-					<input type="hidden" th:value="${task?.employee?.id}"
-						class="form-control" name="employee_id" id="employee_id" />
-				</div>
-			</div>
-
-			<div class="form-group row">
 				<label for="deadline" class="col-sm-2 col-form-label"
 					th:text="'Data'"></label>
 				<div class="col-sm-2">
-					<input type="text" th:field="*{deadline}" class="form-control" />
-
+					<input type="text" th:field="*{deadline}" class="form-control" th:errorclass="'form-control is-invalid'"/>
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}"></div>
 				</div>
 				<label for="done" class="col-sm-1 col-form-label" th:text="'Fet'"></label>
 				<div class="col-sm-1">
@@ -134,8 +118,8 @@
 			<div class="form-group row">
 				<label for="daysToFixError" class="col-sm-2 col-form-label"
 					th:text="'Dies per correcció error'"></label>
-				<div class="col-sm-6">
-					<input type="text" th:field="*{daysToFixError}"
+				<div class="col-sm-2">
+					<input type="number" th:field="*{daysToFixError}"
 						class="form-control" />
 				</div>
 			</div>

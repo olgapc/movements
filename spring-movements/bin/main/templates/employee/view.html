@@ -36,7 +36,34 @@
 					Tasca</a>
 			</h4>
 
+			<table class="table table-responsive table-hover">
+			<h2 class="text-info">Tasques</h2>
+				<thead>
+					<tr>
+						<th>Descripció</th>
+						<th>Data</th>
+						<th>Fet</th>
+						<th>Opcions</th>
+					</tr>
+				</thead>
 
+				<tbody>
+					<tr th:each="task: ${employee.tasks}">
+						<td><a class="stretched-link text-info"
+							th:href="@{/task/view/} + ${task.id}"
+							th:text="${task.description}"></a></td>
+						<td th:text="${task.deadline}"></td>
+						<td><input type="checkbox" disabled="disabled"
+							th:checked="${task.done}" /></td>
+						<td><a class="btn btn-outline-info btn-xs"
+							th:href="@{/task/form/task/} + ${task.id}">Modificar</a> <a
+							class="btn btn-outline-info btn-xs"
+							th:href="@{/task/view/} + ${task.id}">Veure</a> <a
+							class="btn btn-outline-danger btn-xs"
+							th:href="@{/task/delete/} + ${task.id}" th:text="'Eliminar'"
+							onclick="return confirm('Segur que vols eliminar?');"></a></td>
+				</tbody>
+			</table>
 
 		</div>
 	</div>

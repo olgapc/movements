@@ -33,36 +33,42 @@
 				class="btn btn-outline-danger btn-xs mr-2"
 				onclick="return confirm('Eliminar empresa i treballadors?');"
 				th:href="@{/company/delete/} + ${company.id}" th:text="'Eliminar'"></a>
-			<a class="btn btn-outline-info btn-xs mr-2"
-				th:href="@{/task/form/} +${company.id}">Nova Tasca</a> <br /> <br />
+			<br /> <br />
 
 			<div th:if="${#lists.isEmpty(company.employees)}">
 				<div class="alert alert-info my-4"
 					th:text="'L\'empresa ' + ${company.name} + ' no té treballadors assignats.'"></div>
 
-				<a th:href="@{/employee/form/}+${company.id}"
+				<a
+					th:if="${not #lists.isEmpty(company.employees) && not #lists.isEmpty(company.tasks)}"
+					th:href="@{/employee/form/}+${company.id}"
 					class="btn btn-outline-info btn-xs mr-2 float-left">Nou
 					Treballador</a>
 			</div>
 
-			<div th:if="${not #lists.isEmpty(company.employees)}" class="row">
+			<div
+				th:if="${not #lists.isEmpty(company.employees) || not #lists.isEmpty(company.tasks)}"
+				class="row">
 				<div class="col-sm-6">
 					<input class="form-control pr-0" id="tableSearch" type="text"
 						placeholder="escriu el que vols buscar">
 				</div>
 				<a th:href="@{/employee/form/}+${company.id}"
 					class="btn btn-outline-info btn-xs mr-2 float-left">Nou
-					Treballador</a>
+					Treballador</a> <a
+					th:if="${not #lists.isEmpty(company.employees) || not #lists.isEmpty(company.tasks)}"
+					class="btn btn-outline-info btn-xs mr-2"
+					th:href="@{/task/form/} +${company.id}">Nova Tasca</a>
 			</div>
 			</br>
 
 
 			<table th:if="${not #lists.isEmpty(company.employees)}"
 				class="table table-responsive table-hover my-4">
-				<h2 class="text-info">Llistat de treballadors</h2>
+				<h2 class="text-info">Treballadors</h2>
 				<thead>
 					<tr>
-						<th>id</th>
+
 						<th>nom</th>
 						<th>nif</th>
 						<th>naf</th>
@@ -73,11 +79,9 @@
 				</thead>
 				<tbody id="myTable">
 					<tr th:each="employee: ${company.employees}">
-						<td><a class="btn btn-outline-info btn-xs"
+						<td><a class="stretched-link text-info"
 							th:href="@{/employee/view/} + ${company.id} + @{/} + ${employee.id}"
-							th:text="${employee.id}"></a></td>
-
-						<td th:text="${employee.name}"></td>
+							th:text="${employee.name}"></a></td>
 						<td th:text="${employee.nif}"></td>
 						<td th:text="${employee.naf}"></td>
 						<td th:text="${employee.email}"></td>
@@ -96,8 +100,47 @@
 
 			</table>
 
-		</div>
+			<div th:if="${#lists.isEmpty(company.tasks)}">
+				<div class="alert alert-info my-4"
+					th:text="'L\'empresa ' + ${company.name} + ' no té tasques assignades.'"></div>
 
+				<a th:href="@{/task/form/}+${company.id}"
+					class="btn btn-outline-info btn-xs mr-2 float-left">Nova tasca</a>
+			</div>
+
+
+			<table th:if="${not #lists.isEmpty(company.tasks)}"
+				class="table table-responsive table-hover">
+				<h2 class="text-info">Tasques</h2>
+				<thead>
+					<tr>
+						<th>Descripció</th>
+						<th>Treballador</th>
+						<th>Data</th>
+						<th>Fet</th>
+						<th>Opcions</th>
+					</tr>
+				</thead>
+
+				<tbody id="myTable">
+					<tr th:each="task: ${company.tasks}">
+						<td><a class="stretched-link text-info"
+							th:href="@{/task/view/} + ${task.id}"
+							th:text="${task.description}"></a></td>
+						<td th:text="${task?.employee?.name}"></td>
+						<td th:text="${task.deadline}"></td>
+						<td><input type="checkbox" disabled="disabled"
+							th:checked="${task.done}" /></td>
+						<td><a class="btn btn-outline-info btn-xs"
+							th:href="@{/task/form/task/} + ${task.id}">Modificar</a> <a
+							class="btn btn-outline-info btn-xs"
+							th:href="@{/task/view/} + ${task.id}">Veure</a> <a
+							class="btn btn-outline-danger btn-xs"
+							th:href="@{/task/delete/} + ${task.id}" th:text="'Eliminar'"
+							onclick="return confirm('Segur que vols eliminar?');"></a></td>
+				</tbody>
+			</table>
+		</div>
 
 	</div>
 	<footer th:replace="layout/layout :: footer"></footer>

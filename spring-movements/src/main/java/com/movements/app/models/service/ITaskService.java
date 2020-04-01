@@ -12,6 +12,7 @@ import com.movements.app.models.entity.Task;
 
 public interface ITaskService {	
 		
+		//tasks methods
 		public List<Task> findAll();
 
 		public void save(Task task);
@@ -20,13 +21,13 @@ public interface ITaskService {
 
 		public void delete(Long id);
 		
-		
+		//employees methods
 		public Employee findEmployeeById(Long id);
 		
-		
+		//companies methods
 		public Company findCompanyById(Long id);
 		
-		
+		//informations methods
 		public List<Information> findInformationByDescription(String term);
 		
 		public Information findInformationById(Long id);

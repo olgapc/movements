@@ -25,6 +25,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -60,6 +61,7 @@ public class Company implements Serializable {
 
 	
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Task> tasks;
 
 	@PrePersist
@@ -140,7 +142,6 @@ public class Company implements Serializable {
 		employees.add(employee);
 	}
 
-	
 	public void addTask(Task task) {
 		tasks.add(task);
 	}

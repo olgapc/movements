@@ -50,9 +50,9 @@ public class TaskInformation implements Serializable {
 	@Column(name = "done")
 	private boolean done ;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="task_fk")
-	private Task task;
+	//@ManyToOne(fetch = FetchType.LAZY)
+	//@JoinColumn(name="task_fk")
+	//private Task task;
 
 	public Date getCreateAt() {
 		return createAt;
@@ -87,13 +87,11 @@ public class TaskInformation implements Serializable {
 	}
 
 
-	public Task getTask() {
-		return task;
-	}
-
-	public void setTask(Task task) {
-		this.task = task;
-	}
+	/*
+	 * public Task getTask() { return task; }
+	 * 
+	 * public void setTask(Task task) { this.task = task; }
+	 */
 
 	@PrePersist
 	public void prePersist() {

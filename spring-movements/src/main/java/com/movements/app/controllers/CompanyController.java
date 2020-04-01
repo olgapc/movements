@@ -63,10 +63,8 @@ public class CompanyController {
 	@RequestMapping(value = "/company/form/{id}")
 	public String edit(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 		Company company = null;
-		System.out.println("form/id edit company");
 		if (id > 0) {
 			company = companyService.findOne(id);
-			System.out.println("company/id edit: "+ company + " " +  company.getId());
 			if (company == null) {
 				flash.addFlashAttribute("error", "L'identificador de l'empresa no existeix a la BdD");
 				return "redirect:/company/list";
@@ -100,7 +98,6 @@ public class CompanyController {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("company/form save: " + company + " " + company.getId());
 		String flashMessage = (company.getId() != null) ? "Empresa modificada correctament"
 				: "Empresa creada correctament";
 

@@ -12,8 +12,15 @@
 		<ul class="list-group ml-5 col-md-2 font-weight-bold ">
 			<li class="list-group-item list-group-item-warning"
 				th:text="${task.deadline}"></li>
+			<li class="list-group-item list-group-item-info" th:text="Fet"></li>
+			<li><input type="checkbox" name="active"
+						th:checked="${task.done}" /></li>
 		</ul>
 
+<table class="table table-responsive table-hover my-4">
+<tbody id="infoTask"></tbody>
+
+</table>
 
 
 		<table th:if="${task.company != null}"

@@ -37,6 +37,7 @@ public class Task implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotEmpty
 	private String description;
 
 	@Column(name = "optional_subtask")
@@ -63,24 +64,26 @@ public class Task implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@NotNull
 	private Date deadline;
 
 	@Column(name = "create_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createAt;
 
-	@JsonIgnoreProperties({ "tasks", "hibernateLazyInitializer" })
-	@ManyToOne(fetch = FetchType.LAZY)
+	//@JsonIgnoreProperties({ "tasks", "hibernateLazyInitializer" })
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "company_fk")
 	private Company company;
 
-	@JsonIgnoreProperties({ "tasks", "hibernateLazyInitializer" })
-	@ManyToOne(fetch = FetchType.LAZY)
+	//@JsonIgnoreProperties({ "tasks", "hibernateLazyInitializer" })
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "employee_fk")
 	private Employee employee;
 
 	@JsonIgnoreProperties({ "task", "hibernateLazyInitializer" })
-	@OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="task_fk")
 	private List<TaskInformation> taskInformations;
 
 	@Column(name = "done")
@@ -205,6 +208,7 @@ public class Task implements Serializable {
 
 	public void addTaskInformation(TaskInformation taskInformation) {
 		taskInformations.add(taskInformation);
+		//taskInformation.setTask(this);
 	}
 
 	@PrePersist
