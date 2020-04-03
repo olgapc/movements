@@ -52,13 +52,17 @@
 					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/task/form/task/} + ${task.id}">Modificar</a> 
 						<a class="btn btn-outline-info btn-xs"
+						th:href="@{/task/form/subtask/} + ${task.id}">Afegir subtasca</a>
+						<a class="btn btn-outline-info btn-xs"
 						th:href="@{/task/view/} + ${task.id}">Veure</a> 
 						<a
 						class="btn btn-outline-danger btn-xs"
 						th:href="@{/task/delete/} + ${task.id}"
 						th:text="'Eliminar'"
 						onclick="return confirm('Segur que vols eliminar?');"></a></td>
+						
 				</tr>
+				
 
 			</tbody>
 

@@ -89,6 +89,20 @@
 
 		<br />
 
+			<div
+				th:if="${not #lists.isEmpty(task.taskInformations) || not #lists.isEmpty(task.subtasks)}"
+				class="row">
+				<div class="col-sm-6">
+					<input class="form-control pr-0" id="tableSearch" type="text"
+						placeholder="escriu el que vols buscar">
+				</div>
+				<a th:href="@{/task/form/subtask/}+${task.id}"
+					class="btn btn-outline-info btn-xs mr-2 float-left">Nova
+					Subtasca</a> 
+			</div>
+			</br>
+
+
 
 
 		<div th:if="${not #lists.isEmpty(task.taskInformations)}"
@@ -120,6 +134,45 @@
 
 			</tbody>
 		</table>
+
+
+
+
+
+
+
+
+		<div th:if="${not #lists.isEmpty(task.subtasks)}"
+			class="col-sm-6">
+
+			<h2 class="text-info">Subtasques</h2>
+			<input class="form-control pr-0" id="tableSearch" type="text"
+				placeholder="escriu el que vols buscar">
+		</div>
+
+		<table th:if="${not #lists.isEmpty(task.subtasks)}"
+			class="table table-responsive table-hover my-4">
+
+			<thead>
+				<tr>
+					<th>Descripció</th>
+					<th>Comentari</th>
+					<th>Fet</th>
+
+				</tr>
+			</thead>
+			<tbody id="myTable">
+				<tr th:each="row: ${task.subtasks}">
+					<td th:text="${row.description}"></td>
+					<td th:text="${row.deadline}"></td>
+					<td><input type="checkbox" disabled="disabled" 
+						th:checked="${row.done}" /></td>
+				</tr>
+
+			</tbody>
+		</table>
+
+
 
 
 		<ul class="list-group">

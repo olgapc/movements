@@ -39,7 +39,7 @@
 			</thead>
 			<tbody id="myTable">
 				<tr th:each="employee: ${employees}">
-					<td><a class="stretched-link text-info"
+					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/employee/view/} + ${employee.id}"
 						th:text="${employee.name}"></a></td>
 					

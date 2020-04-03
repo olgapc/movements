@@ -93,7 +93,7 @@ public class Task implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date doneAt;
 
-	@JsonIgnoreProperties(value = { "subtasks" })
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "maintask_fk")
 	private Task mainTask;
@@ -101,6 +101,11 @@ public class Task implements Serializable {
 	@JsonIgnoreProperties(value = { "mainTask" })
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mainTask", cascade = CascadeType.ALL)
 	private List<Task> subtasks;
+	
+	@Column(name = "maintask")
+	private boolean taskMain;
+
+
 
 	public Task() {
 		taskInformations = new ArrayList<TaskInformation>();
@@ -262,6 +267,14 @@ public class Task implements Serializable {
 
 	public void setDone(boolean done) {
 		this.done = done;
+	}
+	
+	public boolean isTaskMain() {
+		return taskMain;
+	}
+
+	public void setTaskMain(boolean taskMain) {
+		this.taskMain = taskMain;
 	}
 
 	private static final long serialVersionUID = 1L;

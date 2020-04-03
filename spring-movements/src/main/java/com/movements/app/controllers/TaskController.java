@@ -71,6 +71,7 @@ public class TaskController {
 		Task task = new Task();
 		task.setCompany(null);
 		task.setEmployee(null);
+		task.setTaskMain(true);
 		model.put("company", task.getCompany());
 		model.put("employee", task.getEmployee());
 
@@ -118,6 +119,7 @@ public class TaskController {
 
 		Task task = new Task();
 		task.setCompany(company);
+		task.setTaskMain(true);
 
 		model.put("task", task);
 		model.put("title", "Crear tasca");
@@ -126,6 +128,30 @@ public class TaskController {
 
 	}
 
+	@GetMapping("/task/form/subtask/{mainTaskId}")
+	public String createSubtask(@PathVariable(value = "mainTaskId") Long mainTaskId, Map<String, Object> model,
+			RedirectAttributes flash) {
+
+		Task mainTask = taskService.findTaskById(mainTaskId);
+
+		if (mainTask == null) {
+			flash.addFlashAttribute("error", "La tasca principal no existeix a la BdD");
+			return "redirect:/task/list";
+		}
+
+		Task task = new Task();
+		task.setMainTask(mainTask);
+		task.setTaskMain(false);
+		task.setDeadline(mainTask.getDeadline());
+
+		model.put("task", task);
+		model.put("title", "Crear subtasca de: " + mainTask.getDescription());
+
+		return "/task/form";
+
+	}
+	
+	
 	@GetMapping("/task/form/{companyId}/{employeeId}")
 	public String create(@PathVariable(value = "companyId") Long companyId,
 			@PathVariable(value = "employeeId") Long employeeId, Map<String, Object> model, RedirectAttributes flash) {
@@ -145,6 +171,7 @@ public class TaskController {
 		Task task = new Task();
 		task.setCompany(company);
 		task.setEmployee(employee);
+		task.setTaskMain(true);
 
 		model.put("task", task);
 		model.put("title", "Crear tasca");

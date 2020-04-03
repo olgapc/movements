@@ -79,7 +79,7 @@
 				</thead>
 				<tbody id="myTable">
 					<tr th:each="employee: ${company.employees}">
-						<td><a class="stretched-link text-info"
+						<td><a class="btn btn-outline-info"
 							th:href="@{/employee/view/} + ${company.id} + @{/} + ${employee.id}"
 							th:text="${employee.name}"></a></td>
 						<td th:text="${employee.nif}"></td>
@@ -124,7 +124,7 @@
 
 				<tbody id="myTable">
 					<tr th:each="task: ${company.tasks}">
-						<td><a class="stretched-link text-info"
+						<td><a class="btn btn-outline-info"
 							th:href="@{/task/view/} + ${task.id}"
 							th:text="${task.description}"></a></td>
 						<td th:text="${task?.employee?.name}"></td>

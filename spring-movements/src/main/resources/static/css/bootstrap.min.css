@@ -2544,6 +2544,10 @@ a.btn.disabled, fieldset:disabled a.btn {
 	pointer-events: none
 }
 
+.btn-margin-top {
+	margin-top: 5px
+}
+
 .btn-primary {
 	color: #fff;
 	background-color: #007bff;
