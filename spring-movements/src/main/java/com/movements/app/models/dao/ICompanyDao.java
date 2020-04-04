@@ -10,6 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.movements.app.models.entity.Company;
 import com.movements.app.models.entity.Employee;
+import com.movements.app.models.entity.Task;
 
 
 public interface ICompanyDao extends CrudRepository<Company, Long>{
@@ -19,10 +20,13 @@ public interface ICompanyDao extends CrudRepository<Company, Long>{
 	
 	public List<Company> findByNameLikeIgnoreCase(String term);
 
-	public Optional <Company> findByName(String name);
+	public Optional <Company> findByName(String name);	
 	
-	//@Query("from Company c inner join fetch c.employees where c.id = ?1")
-	//public List<Employee> findByCompanyIdAndNameLikeIgnoreCase(Long id, String term);
+	@Query(nativeQuery = true, value="select * from companies c "
+			+ "left join tasks t on c.id = t.id "
+			+ "left join employees e on c.id = e.id "
+			+ "where c.id = ?#{[0]}")
+	public Company fetchByIdWithTasksWithEmployees(Long id);
 	
 	
 }

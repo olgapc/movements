@@ -36,31 +36,16 @@ public class EmployeeController {
 	@Autowired
 	private IEmployeeService employeeService;
 
-	@GetMapping(value = "/view/{companyId}/{employeeId}")
-	public String view(@PathVariable(value = "companyId", required = false) Long companyId,
-			@PathVariable(value = "employeeId", required = false) Long employeeId, Map<String, Object> model,
-			RedirectAttributes flash) {
-		Employee employee = employeeService.findOne(employeeId);
-
-		if (employee == null) {
-			flash.addFlashAttribute("error", "El treballador no existeix a la BdD");
-			return "redirect:/company/list";
-		}
-		model.put("employee", employee);
-		model.put("title", employee.getName());
-		model.put("companyName", employee.getCompany().getName());
-		return "/employee/view";
-	}
-
 	@GetMapping(value = "/view/{employeeId}")
 	public String view(@PathVariable(value = "employeeId", required = false) Long employeeId, Map<String, Object> model,
 			RedirectAttributes flash) {
-		Employee employee = employeeService.findOne(employeeId);
-
+		Employee employee = employeeService.fetchByIdWithTasksWithCompany(employeeId);
+		
 		if (employee == null) {
 			flash.addFlashAttribute("error", "El treballador no existeix a la BdD");
 			return "redirect:/company/list";
 		}
+		
 		model.put("employee", employee);
 		model.put("title", employee.getName());
 		model.put("companyName", employee.getCompany().getName());

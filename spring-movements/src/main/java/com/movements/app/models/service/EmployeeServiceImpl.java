@@ -36,6 +36,13 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	public Employee findOne(Long id) {
 		return employeeDao.findById(id).orElse(null);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Employee fetchByIdWithTasksWithCompany(Long id) {
+		return employeeDao.fetchByIdWithTasksWithCompany(id);
+	}
+
 
 	@Override
 	@Transactional
@@ -61,6 +68,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	public Company findCompanyById(Long id) {
 		return companyDao.findById(id).orElse(null);
 	}
+
+
+
+
+
+
 	
 	
 }

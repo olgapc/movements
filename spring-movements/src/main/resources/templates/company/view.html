@@ -80,7 +80,7 @@
 				<tbody id="myTable">
 					<tr th:each="employee: ${company.employees}">
 						<td><a class="btn btn-outline-info"
-							th:href="@{/employee/view/} + ${company.id} + @{/} + ${employee.id}"
+							th:href="@{/employee/view/} + ${employee.id}"
 							th:text="${employee.name}"></a></td>
 						<td th:text="${employee.nif}"></td>
 						<td th:text="${employee.naf}"></td>

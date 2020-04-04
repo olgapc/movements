@@ -15,6 +15,8 @@ public interface IEmployeeService {
 	public void save(Employee employee);
 
 	public Employee findOne(Long id);
+	
+	public Employee fetchByIdWithTasksWithCompany(Long id);
 
 	public void delete(Long id);
 	

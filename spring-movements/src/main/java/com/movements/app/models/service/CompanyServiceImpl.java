@@ -32,6 +32,12 @@ public class CompanyServiceImpl implements ICompanyService {
 	public Company findOne(Long id) {
 		return companyDao.findById(id).orElse(null);
 	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public Company fetchByIdWithTasksWithEmployees(Long id) {
+		return companyDao.fetchByIdWithTasksWithEmployees(id);
+	}
 
 	@Override
 	@Transactional
@@ -44,5 +50,7 @@ public class CompanyServiceImpl implements ICompanyService {
 	public List<Company> findCompanyByName(String term) {
 		return companyDao.findByNameLikeIgnoreCase("%"+term+"%");
 	}
+
+
 
 }

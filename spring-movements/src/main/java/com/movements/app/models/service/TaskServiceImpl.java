@@ -103,9 +103,8 @@ public class TaskServiceImpl implements ITaskService{
 
 	@Override
 	@Transactional(readOnly=true)
-	public Task fetchTaskByIdfetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformation(Long id) {
-		
-		return taskDao.fetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformation(id);
+	public Task fetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformationWithSubtask(Long id) {
+		return taskDao.fetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformationWithSubtask(id);
 	}
 	
 	

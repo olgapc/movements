@@ -52,7 +52,7 @@
 
 		<table th:if="${task.company != null}"
 			class="table table-responsive table-hover my-4">
-			<!--  h2 class="text-info" th:text="${companyName}"></h2>-->
+			
 			<tbody id="companyTable">
 				<tr>
 					<td><a
@@ -73,7 +73,7 @@
 				<tr>
 					<td><a
 						class="btn btn-outline-info btn-xs text-info font-weight-bold"
-						th:href="@{/employee/view/} + ${task.company.id} + @{/} + ${task.employee.id}"
+						th:href="@{/employee/view/} + ${task.employee.id}"
 						th:text="${task.employee.name}"></a></td>
 					<td th:text="${task.employee.nif}"></td>
 					<td th:text="${task.employee.naf}"></td>
@@ -109,8 +109,7 @@
 			class="col-sm-6">
 
 			<h2 class="text-info">Informacions</h2>
-			<input class="form-control pr-0" id="tableSearch" type="text"
-				placeholder="escriu el que vols buscar">
+		
 		</div>
 
 		<table th:if="${not #lists.isEmpty(task.taskInformations)}"
@@ -140,14 +139,10 @@
 
 
 
-
-
 		<div th:if="${not #lists.isEmpty(task.subtasks)}"
 			class="col-sm-6">
 
 			<h2 class="text-info">Subtasques</h2>
-			<input class="form-control pr-0" id="tableSearch" type="text"
-				placeholder="escriu el que vols buscar">
 		</div>
 
 		<table th:if="${not #lists.isEmpty(task.subtasks)}"
@@ -162,11 +157,13 @@
 				</tr>
 			</thead>
 			<tbody id="myTable">
-				<tr th:each="row: ${task.subtasks}">
-					<td th:text="${row.description}"></td>
-					<td th:text="${row.deadline}"></td>
+				<tr th:each="subtask: ${task.subtasks}">
+					<td><a class="btn btn-outline-info"
+							th:href="@{/task/view/} + ${subtask.id}"
+							th:text="${subtask.description}"></a></td>
+					<td th:text="${subtask.deadline}"></td>
 					<td><input type="checkbox" disabled="disabled" 
-						th:checked="${row.done}" /></td>
+						th:checked="${subtask.done}" /></td>
 				</tr>
 
 			</tbody>

@@ -38,7 +38,7 @@ public interface ITaskService {
 		
 		public void saveInformation(Information information);
 		
-		public Task fetchTaskByIdfetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformation(Long id);
+		public Task fetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformationWithSubtask(Long id);
 		
 	
 }

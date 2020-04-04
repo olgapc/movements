@@ -14,6 +14,8 @@ public interface ICompanyService {
 
 	public Company findOne(Long id);
 
+	public Company fetchByIdWithTasksWithEmployees(Long id);
+	
 	public void delete(Long id);
 	
 	public List<Company> findCompanyByName(String term);

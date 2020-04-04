@@ -53,7 +53,10 @@ public class TaskController {
 	@GetMapping("/task/view/{id}")
 	public String view(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
 
-		Task task = taskService.findTaskById(id);
+		Task task = taskService.fetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformationWithSubtask(id);
+		
+		
+		
 
 		if (task == null) {
 			flash.addFlashAttribute("error", "La tasca no existeix a la BdD");
@@ -62,9 +65,11 @@ public class TaskController {
 
 		model.addAttribute("task", task);
 		model.addAttribute("title", "Tasca: ".concat(task.getDescription()));
+		
 		return "/task/view";
 	}
 
+	
 	@GetMapping("/task/form")
 	public String create(Map<String, Object> model, RedirectAttributes flash) {
 
