@@ -50,12 +50,10 @@ public class TaskController {
 		return "/task/list";
 	}
 
-	@GetMapping("/task/view/{id}")
-	public String view(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
+	@GetMapping("/task/view/{idTask}")
+	public String view(@PathVariable(value = "idTask") Long idTask, Model model, RedirectAttributes flash) {
 
-		Task task = taskService.fetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformationWithSubtask(id);
-		
-		
+		Task task = taskService.fetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformationWithSubtask(idTask);
 		
 
 		if (task == null) {

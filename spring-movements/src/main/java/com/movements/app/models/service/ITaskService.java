@@ -2,8 +2,6 @@ package com.movements.app.models.service;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 
 import com.movements.app.models.entity.Company;
 import com.movements.app.models.entity.Employee;

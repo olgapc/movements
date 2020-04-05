@@ -1,6 +1,6 @@
 package com.movements.app.controllers;
 
-import java.util.List;
+
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.movements.app.models.entity.Company;
@@ -134,7 +132,7 @@ public class EmployeeController {
 		return "redirect:/company/view/" + employee.getCompany().getId();
 	}
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = {"/list","/"}, method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("title", "Llistat de treballadors");
 		model.addAttribute("employees", employeeService.findAll());

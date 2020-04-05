@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.movements.app.models.entity.Company;
-import com.movements.app.models.entity.Employee;
-import com.movements.app.models.entity.Task;
+
 
 
 public interface ICompanyDao extends CrudRepository<Company, Long>{

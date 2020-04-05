@@ -2,7 +2,6 @@ package com.movements.app.models.service;
 
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
 
 import com.movements.app.models.entity.Company;
 
