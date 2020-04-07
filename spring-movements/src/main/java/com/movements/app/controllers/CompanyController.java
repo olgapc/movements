@@ -56,9 +56,12 @@ public class CompanyController {
 
 	@GetMapping(value = "/company/form")
 	public String create(Map<String, Object> model) {
+		
 		Company company = new Company();
+		
 		model.put("company", company);
 		model.put("title", "Formulari d'Empresa");
+		
 		return "/company/form";
 	}
 

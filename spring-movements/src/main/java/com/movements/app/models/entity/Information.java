@@ -36,10 +36,6 @@ public class Information implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createAt;
 
-	//@JsonIgnoreProperties(value = {"information"})
-	//@OneToMany(mappedBy="information", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	//private List<TaskInformation> taskInformations;
-
 	public Long getId() {
 		return id;
 	}
@@ -63,18 +59,6 @@ public class Information implements Serializable {
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
-
-	/*
-	 * public List<TaskInformation> getTaskInformations() { return taskInformations;
-	 * }
-	 * 
-	 * public void setTaskInformations(List<TaskInformation> taskInformations) {
-	 * this.taskInformations = taskInformations; }
-	 * 
-	 * public void addTaskInformation(TaskInformation taskInformation) {
-	 * taskInformations.add(taskInformation); }
-	 */
-
 
 	@PrePersist
 	public void prePersist() {

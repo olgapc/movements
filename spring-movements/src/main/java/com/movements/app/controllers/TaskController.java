@@ -1,5 +1,9 @@
 package com.movements.app.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.movements.app.models.entity.Company;
@@ -43,7 +48,7 @@ public class TaskController {
 	@Autowired
 	private ITaskService taskService;
 
-	@RequestMapping(value = "/task/list", method = RequestMethod.GET)
+	@RequestMapping(value = {"/task/list","/"}, method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("title", "Llistat de tasques");
 		model.addAttribute("tasks", taskService.findAll());
@@ -265,5 +270,94 @@ public class TaskController {
 		flash.addFlashAttribute("error", "La tasca no existeix a la BdD, no s'ha pogut eliminar");
 		return "redirect:/task/list";
 	}
+	
+	@RequestMapping(value = {"/information/list"}, method = RequestMethod.GET)
+	public String listInformation(Model model) {
+		model.addAttribute("title", "Llistat d'informacions");
+		model.addAttribute("informations", taskService.findAllInformations());
+		return "/information/list";
+	}
+	
+	@GetMapping("/information/view/{idInformation}")
+	public String viewInformation(@PathVariable(value = "idInformation") Long idInformation, Model model, RedirectAttributes flash) {
+
+		Information information = taskService.findInformationById(idInformation);
+		
+
+		if (information == null) {
+			flash.addFlashAttribute("error", "La informació no existeix a la BdD");
+			return "redirect:/information/list";
+		}
+
+		model.addAttribute("information", information);
+		model.addAttribute("title", "Informació: ".concat(information.getDescription()));
+		
+		return "/information/view";
+	}
+	
+	@GetMapping("/information/form")
+	public String createInformation(Map<String, Object> model, RedirectAttributes flash) {
+
+		Information information = new Information();
+	
+		model.put("information", information);
+		model.put("title", "Formulari d'informació");
+
+		return "/information/form";
+
+	}
+	
+	@RequestMapping(value = "/information/form/{id}")
+	public String editInformation(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+		
+		Information information = null;
+		
+		if (id > 0) {
+			information = taskService.findInformationById(id);
+			if (information == null) {
+				flash.addFlashAttribute("error", "L'identificador de la informació no existeix a la BdD");
+				return "redirect:/information/list";
+			}
+		} else {
+			flash.addFlashAttribute("error", "L'identificador de la informació no pot ser zero");
+			return "redirect:/information/list";
+		}
+		model.put("information", information);
+		model.put("title", "Formulari d'Informació");
+		return "/information/form";
+	}
+	
+	@RequestMapping(value = "/information/form", method = RequestMethod.POST)
+	public String saveInformation(@Valid Information information, BindingResult result, Model model, RedirectAttributes flash, SessionStatus status) {
+		
+		if (result.hasErrors()) {
+			model.addAttribute("title", "Formulari d'Informació");
+			return "/information/form";
+		}
+
+		String flashMessage = (information.getId() != null) ? "Informació modificada correctament"
+				: "Informació creada correctament";
+
+		taskService.saveInformation(information);
+		status.setComplete();
+		flash.addFlashAttribute("success", flashMessage);
+		return "redirect:/information/list";
+	}
+	
+	
+	@GetMapping("/information/delete/{id}")
+	public String deleteInformation(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+		Information information = taskService.findInformationById(id);
+
+		if (information != null) {
+			taskService.deleteInformation(id);;
+			flash.addFlashAttribute("success", "Informació eliminada correctament");
+			return "redirect:/information/list";
+		}
+		
+		flash.addFlashAttribute("error", "La informació no existeix a la BdD, no s'ha pogut eliminar");
+		return "redirect:/information/list";
+	}
+	
 	
 }

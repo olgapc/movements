@@ -41,6 +41,7 @@
 
 				</tr>
 			</thead>
+			
 			<tbody id="myTable">
 				<tr th:each="company: ${companies}">
 					<td><a class="btn btn-outline-info btn-xs"
@@ -64,8 +65,7 @@
 
 		</table>
 	</div>
-	</div>
-	</div>
+	
 
 	<footer th:replace="layout/layout :: footer"></footer>
 	<script src="/js/search-in-table.js"></script>

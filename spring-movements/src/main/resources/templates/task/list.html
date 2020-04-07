@@ -40,7 +40,7 @@
 
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="myTable">
 				<tr th:each="task: ${tasks}">
 					<td><a class="btn btn-outline-primary btn-xs"
 						th:href="@{/task/view/} + ${task.id}"

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container-fluid my-5">
+
+		<div class="card bg-danger text-white">
+
+			<div class="card-header">Error: Accés denegat</div>
+
+			<div class="card-body">
+				<h5 class="card-title">Ho sentim 
+					<span th:text="${#httpServletRequest.remoteUser}"></span>, no tens
+					permisos per accedir a aquesta pàgina
+				</h5>
+				<a th:href="@{/employee/list}" class="btn btn-outline-light"
+					role="button">Tornar a l'inici</a>
+			</div>
+
+
+		</div>
+
+
+
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+
+	</div>
+
+
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

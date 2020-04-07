@@ -132,7 +132,7 @@ public class EmployeeController {
 		return "redirect:/company/view/" + employee.getCompany().getId();
 	}
 
-	@RequestMapping(value = {"/list","/"}, method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("title", "Llistat de treballadors");
 		model.addAttribute("employees", employeeService.findAll());

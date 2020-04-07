@@ -30,20 +30,23 @@
 		<table class="table table-responsive table-hover">
 			<thead>
 				<tr>
-					<th>id</th>
+					
 					<th>descripció</th>
 					<th>data</th>
-				</tr>
+					<th>opcions</th>
+					
+				</tr>		
 			</thead>
+			
 			<tbody id="myTable">
 				<tr th:each="information: ${informations}">
 					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/information/view/} + ${information.id}"
-						th:text="${information.id}"></a></td>
-					<td th:text="${information.description}"></td>
+						th:text="${information.description}"></a></td>
 					<td th:text="${information.createAt}"></td>
 					<td><a class="btn btn-outline-info btn-xs"
-						th:href="@{/information/form/} + ${information.id}">Modificar</a> <a
+						th:href="@{/information/form/} + ${information.id}">Modificar</a>
+						<a
 						class="btn btn-outline-danger btn-xs"
 						th:href="@{/information/delete/} + ${information.id}" th:text="'Eliminar'"
 						onclick="return confirm('Segur que vols eliminar?');"></a></td>
