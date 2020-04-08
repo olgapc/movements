@@ -1,9 +1,6 @@
 package com.movements.app.controllers;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +8,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.movements.app.models.entity.Company;
@@ -48,6 +45,7 @@ public class TaskController {
 	@Autowired
 	private ITaskService taskService;
 
+	
 	@RequestMapping(value = {"/task/list","/"}, method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("title", "Llistat de tasques");
@@ -55,6 +53,7 @@ public class TaskController {
 		return "/task/list";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/task/view/{idTask}")
 	public String view(@PathVariable(value = "idTask") Long idTask, Model model, RedirectAttributes flash) {
 
@@ -72,7 +71,7 @@ public class TaskController {
 		return "/task/view";
 	}
 
-	
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/task/form")
 	public String create(Map<String, Object> model, RedirectAttributes flash) {
 
@@ -90,6 +89,7 @@ public class TaskController {
 
 	}
 	
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/task/form/task/{taskId}")
 	public String edit(@PathVariable(value = "taskId", required = false) Long id, Map<String, Object> model,
 			RedirectAttributes flash) {
@@ -114,6 +114,7 @@ public class TaskController {
 		return "/task/form";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/task/form/{companyId}")
 	public String create(@PathVariable(value = "companyId") Long companyId, Map<String, Object> model,
 			RedirectAttributes flash) {
@@ -136,6 +137,7 @@ public class TaskController {
 
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/task/form/subtask/{mainTaskId}")
 	public String createSubtask(@PathVariable(value = "mainTaskId") Long mainTaskId, Map<String, Object> model,
 			RedirectAttributes flash) {
@@ -159,7 +161,7 @@ public class TaskController {
 
 	}
 	
-	
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/task/form/{companyId}/{employeeId}")
 	public String create(@PathVariable(value = "companyId") Long companyId,
 			@PathVariable(value = "employeeId") Long employeeId, Map<String, Object> model, RedirectAttributes flash) {
@@ -187,11 +189,13 @@ public class TaskController {
 		return "/task/form";
 	}
 
+	
 	@GetMapping(value = "/task/upload-informations/{term}", produces = { "application/json" })
 	public @ResponseBody List<Information> uploadInformations(@PathVariable String term) {
 		return taskService.findInformationByDescription(term);
 	}
 
+	@Secured("ROLE_ADMIN")
 	@PostMapping("/task/form")
 	public String save(@Valid Task task, BindingResult result, Model model,
 			@RequestParam(name = "company_id", required = false) Long idCompany,
@@ -257,6 +261,7 @@ public class TaskController {
 		return "redirect:/task/list";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/task/delete/{id}")
 	public String delete(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 		Task task = taskService.findTaskById(id);
@@ -271,6 +276,7 @@ public class TaskController {
 		return "redirect:/task/list";
 	}
 	
+	@Secured("ROLE_USER")
 	@RequestMapping(value = {"/information/list"}, method = RequestMethod.GET)
 	public String listInformation(Model model) {
 		model.addAttribute("title", "Llistat d'informacions");
@@ -278,6 +284,7 @@ public class TaskController {
 		return "/information/list";
 	}
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/information/view/{idInformation}")
 	public String viewInformation(@PathVariable(value = "idInformation") Long idInformation, Model model, RedirectAttributes flash) {
 
@@ -295,6 +302,7 @@ public class TaskController {
 		return "/information/view";
 	}
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/information/form")
 	public String createInformation(Map<String, Object> model, RedirectAttributes flash) {
 
@@ -307,6 +315,7 @@ public class TaskController {
 
 	}
 	
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/information/form/{id}")
 	public String editInformation(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 		
@@ -327,6 +336,7 @@ public class TaskController {
 		return "/information/form";
 	}
 	
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/information/form", method = RequestMethod.POST)
 	public String saveInformation(@Valid Information information, BindingResult result, Model model, RedirectAttributes flash, SessionStatus status) {
 		
@@ -344,7 +354,7 @@ public class TaskController {
 		return "redirect:/information/list";
 	}
 	
-	
+	@Secured("ROLE_USER")
 	@GetMapping("/information/delete/{id}")
 	public String deleteInformation(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 		Information information = taskService.findInformationById(id);

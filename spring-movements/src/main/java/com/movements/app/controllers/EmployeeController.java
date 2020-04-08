@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ public class EmployeeController {
 	@Autowired
 	private IEmployeeService employeeService;
 
+	@Secured("ROLE_USER")
 	@GetMapping(value = "/view/{employeeId}")
 	public String view(@PathVariable(value = "employeeId", required = false) Long employeeId, Map<String, Object> model,
 			RedirectAttributes flash) {
@@ -50,6 +52,7 @@ public class EmployeeController {
 		return "/employee/view";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/form/{companyId}")
 	public String create(@PathVariable(value = "companyId", required = false) Long companyId, Map<String, Object> model,
 			RedirectAttributes flash) {
@@ -71,6 +74,7 @@ public class EmployeeController {
 		return "/employee/form";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/form/{companyId}/{employeeId}")
 	public String edit(@PathVariable(value = "companyId", required = false) Long companyId,
 			@PathVariable(value = "employeeId", required = false) Long employeeId, Map<String, Object> model,
@@ -92,6 +96,7 @@ public class EmployeeController {
 		return "/employee/form";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping(value = "/form")
 	public String create(Map<String, Object> model) {
 		Employee employee = new Employee();
@@ -102,6 +107,7 @@ public class EmployeeController {
 		return "/employee/form";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public String save(@Valid Employee employee,
 			@RequestParam(name = "search_company_id", required = false) Long searchCompanyId, 
@@ -132,6 +138,7 @@ public class EmployeeController {
 		return "redirect:/company/view/" + employee.getCompany().getId();
 	}
 
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("title", "Llistat de treballadors");
@@ -139,6 +146,7 @@ public class EmployeeController {
 		return "/employee/list";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/delete/{companyId}/{employeeId}")
 	public String delete(@PathVariable(value = "companyId", required = false) Long companyId,
 			@PathVariable(value = "employeeId", required = false) Long employeeId, RedirectAttributes flash) {

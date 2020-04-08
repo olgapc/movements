@@ -4,7 +4,9 @@ package com.movements.app;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
@@ -14,6 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.movements.app.auth.handler.LoginSuccessHandler;
 
+@EnableGlobalMethodSecurity(securedEnabled=true) //secure with Annotation @Secured("ROLE_USER") in Controllers
+//@EnableGlobalMethodSecurity(prePostEnabled=true) //secure with Annotation @PreAuthorize("hasRole('ROLE_USER')")
+//or both @EnableGlobalMethodSecurity(securedEnabled=true, prePostEnabled=true)
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -30,14 +35,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		
 		  http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/images/**",
-		  "/employee/list").permitAll()
-		  .antMatchers("/employee/view/**").hasAnyRole("USER")
-		  .antMatchers("/uploads/**").hasAnyRole("USER")
-		  .antMatchers("/company/**").hasAnyRole("USER")
-		  .antMatchers("/information/**").hasAnyRole("USER")
-		  .antMatchers("/employee/form/**").hasAnyRole("ADMIN")
-		  .antMatchers("/employee/delete/**").hasAnyRole("ADMIN")
-		  .antMatchers("/task/**").hasAnyRole("ADMIN") 
+		  "/task/list").permitAll()
+				/*
+				 * .antMatchers("/employee/view/**").hasAnyRole("USER")
+				 * .antMatchers("/uploads/**").hasAnyRole("USER")
+				 * .antMatchers("/company/**").hasAnyRole("USER")
+				 * .antMatchers("/information/**").hasAnyRole("USER")
+				 * .antMatchers("/employee/form/**").hasAnyRole("ADMIN")
+				 * .antMatchers("/employee/delete/**").hasAnyRole("ADMIN")
+				 * .antMatchers("/task/**").hasAnyRole("ADMIN")
+				 */
 		  .anyRequest().authenticated()
 		  .and()
 		  	.formLogin()

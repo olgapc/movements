@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.movements.app.models.entity.Company;
 import com.movements.app.models.service.ICompanyService;
 
+@Secured("ROLE_USER")
 @Controller
 @SessionAttributes("company")
 public class CompanyController {
@@ -32,6 +34,7 @@ public class CompanyController {
 	@Autowired
 	private ICompanyService companyService;
 
+	
 	@GetMapping(value = "/company/view/{id}")
 	public String view(@PathVariable(value = "id") Long id, Map<String, Object> model,
 			RedirectAttributes flash) {
