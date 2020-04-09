@@ -28,27 +28,24 @@
 					<label for="company_name" class="col-sm-2 col-form-label"
 						th:text="'Empresa'"></label> <input type="search"
 						name="company_name" id="company_name" class="form-control"
-						th:value="${task?.company?.name}" /> 
-						<input type="text"
+						th:value="${task?.company?.name}" /> <input type="text"
 						class="form-control" name="company_id" id="company_id"
-						hidden="hidden" th:value="${task?.company?.id}" /> 
-						<a
+						hidden="hidden" th:value="${task?.company?.id}" /> <a
 						th:href="@{/company/form}" target="_blank"
-						class="btn btn-outline-info btn-xs btn-margin-top mr-2">Nova Empresa</a>
+						class="btn btn-outline-info btn-xs btn-margin-top mr-2">Nova
+						Empresa</a>
 				</div>
 
 
 				<div class="form-group col-md-4">
 					<label for="employee_name" class="col-sm-2 col-form-label"
-						th:text="'Treballador'"></label> 
-						<input type="search"
+						th:text="'Treballador'"></label> <input type="search"
 						name="employee_name" id="employee_name"
-						th:value="${task?.employee?.name}" class="form-control" /> 
-						<input
+						th:value="${task?.employee?.name}" class="form-control" /> <input
 						type="text" th:value="${task?.employee?.id}" class="form-control"
-						name="employee_id" hidden="hidden" id="employee_id" /> 
-						<a
-						th:href="@{/employee/form}" class="btn btn-outline-info btn-xs btn-margin-top">Nou
+						name="employee_id" hidden="hidden" id="employee_id" /> <a
+						th:href="@{/employee/form}"
+						class="btn btn-outline-info btn-xs btn-margin-top">Nou
 						Treballador</a>
 
 				</div>
@@ -161,7 +158,18 @@
 					</tr>
 				</thead>
 
-				<tbody>
+				<tbody id="myTable">
+					<tr th:each="row: ${task.taskInformations}">
+						<td th:text="${row.information.description}"></td>
+						<td><input type="text" th:value="${row.comment}" /></td>
+						<td class="text-center"><input type="checkbox" th:value="${row.done}" class="form-check-input big-checkbox"/></td>
+				
+						<td><a class="btn btn-danger btn-xs"
+							th:href="@{/information/delete/} + ${row.information.id}"
+							onclick="return confirm('Segur que vols eliminar?');">x</a></td>
+						
+					</tr>
+
 				</tbody>
 
 			</table>

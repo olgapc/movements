@@ -89,10 +89,12 @@ public class CompanyController {
 	@RequestMapping(value = "/company/form", method = RequestMethod.POST)
 	public String save(@Valid Company company, BindingResult result, Model model,
 			@RequestParam("file") MultipartFile logo, RedirectAttributes flash, SessionStatus status) {
+		
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Formulari d'Empresa");
 			return "/company/form";
 		}
+		
 		if (!logo.isEmpty()) {
 			Path resourcesDirectory = Paths.get("src//main//resources//static/uploads");
 			String rootPath = resourcesDirectory.toFile().getAbsolutePath();
@@ -106,12 +108,14 @@ public class CompanyController {
 				e.printStackTrace();
 			}
 		}
+		
 		String flashMessage = (company.getId() != null) ? "Empresa modificada correctament"
 				: "Empresa creada correctament";
 
 		companyService.save(company);
 		status.setComplete();
 		flash.addFlashAttribute("success", flashMessage);
+		
 		return "redirect:/company/list";
 	}
 

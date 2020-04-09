@@ -13,7 +13,7 @@
 
 
 		<div th:object="${employee}" th:remove="tag">
-			<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+			<ul th:if="${#fields.hasErrors('*')}" class="alert alert-warning">
 				<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
 			</ul>
 
@@ -22,38 +22,28 @@
 		<form th:action="@{/employee/form}" th:object="${employee}"
 			method="post">
 
-			<div th:if="${employee.company != null}" class="form-group row">
-				<label class="col-sm-2 col-form-label" th:text="'Empresa'"></label>
-				<div class="col-sm-6">
-					<input th:value="${employee.company.name}" class="form-control"
-						disabled="disabled" /> <input th:value="${employee.company.id}"
-						type="hidden" class="form-control" name="company_id"
-						id="company_id" />
+
+				<div class="form-group col-md-4">
+					<label for="company_name" class="col-sm-2 col-form-label"
+						th:text="'Empresa'"></label> <input type="search"
+						name="company_name" id="company_name" class="form-control"
+						th:value="${employee?.company?.name}" required/> <input type="text"
+						class="form-control" name="company_id" id="company_id"
+						hidden="hidden" th:value="${employee?.company?.id}" /> <a
+						th:href="@{/company/form}" target="_blank"
+						class="btn btn-outline-info btn-xs btn-margin-top mr-2">Nova
+						Empresa</a>
 				</div>
-			</div>
 
 
-
-			<div th:if="${employee.company == null}" id="result_company"
-				class="form-group row">
-				<label for="search_company" class="col-sm-2 col-form-label"
-					th:text="'Buscar empresa'"></label>
-
-				<div class="col-sm-6">
-					<input type="search" name="search_company" id="search_company"
-						class="form-control" />
-				</div>
-				<a th:href="@{/company/form}" class="btn btn-outline-info btn-xs">Nova
-					Empresa</a> <input type="hidden" class="form-control"
-					name="search_company_id" id="search_company_id" />
-			</div>
 
 
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Nom treballador</label>
 				<div class="col-sm-6">
 					<input type="text" th:field="*{name}" class="form-control"
-						th:errorclass="'form-control alert-danger'" /> <small
+						th:errorclass="'form-control is-invalid'"/> 
+						<small
 						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
 						th:errors="*{name}"></small>
 				</div>
@@ -62,7 +52,7 @@
 				<label class="col-sm-2 col-form-label">Nif</label>
 				<div class="col-sm-6">
 					<input type="search" th:field="*{nif}" class="form-control"
-						th:errorclass="'form-control alert-danger'" /> <small
+						th:errorclass="'form-control is-invalid'" /> <small
 						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
 						th:errors="*{nif}"></small>
 				</div>
@@ -71,7 +61,7 @@
 				<label class="col-sm-2 col-form-label">Naf</label>
 				<div class="col-sm-6">
 					<input type="text" th:field="*{naf}" class="form-control"
-						th:errorclass="'form-control alert-danger'" /> <small
+						th:errorclass="'form-control is-invalid'" /> <small
 						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
 						th:errors="*{naf}"></small>
 				</div>
@@ -80,7 +70,7 @@
 				<label class="col-sm-2 col-form-label">Mail</label>
 				<div class="col-sm-6">
 					<input type="email" th:field="*{email}" class="form-control"
-						th:errorclass="'form-control alert-danger'" /> <small
+						th:errorclass="'form-control is-invalid'" /> <small
 						class="form-text text-danger"
 						th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
 				</div>
@@ -89,7 +79,7 @@
 				<label class="col-sm-2 col-form-label">Telèfon</label>
 				<div class="col-sm-6">
 					<input type="tel" th:field="*{phone}" class="form-control"
-						th:errorclass="'form-control alert-danger'" /> <small
+						th:errorclass="'form-control is-invalid'" /> <small
 						class="form-text text-danger"
 						th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
 

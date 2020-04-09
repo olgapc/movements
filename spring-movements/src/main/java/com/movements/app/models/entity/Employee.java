@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -48,7 +49,6 @@ public class Employee implements Serializable {
 	@Email
 	private String email;
 
-	@NotEmpty // notEmpty només per Strings, pels demés tipus notnull
 	private String phone;
 
 	
@@ -57,8 +57,9 @@ public class Employee implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
 	private Date createAt;
 
+	
 	@JsonIgnoreProperties({"employees", "hibernateLazyInitializer"})
-	@ManyToOne(fetch = FetchType.LAZY//, cascade = CascadeType.ALL
+	@ManyToOne(fetch = FetchType.LAZY, optional = false//, cascade = CascadeType.ALL
 	)
 	@JoinColumn(name = "company_fk")
 	private Company company;

@@ -1,6 +1,5 @@
 package com.movements.app.controllers;
 
-
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -40,12 +39,12 @@ public class EmployeeController {
 	public String view(@PathVariable(value = "employeeId", required = false) Long employeeId, Map<String, Object> model,
 			RedirectAttributes flash) {
 		Employee employee = employeeService.fetchByIdWithTasksWithCompany(employeeId);
-		
+
 		if (employee == null) {
 			flash.addFlashAttribute("error", "El treballador no existeix a la BdD");
 			return "redirect:/company/list";
 		}
-		
+
 		model.put("employee", employee);
 		model.put("title", employee.getName());
 		model.put("companyName", employee.getCompany().getName());
@@ -109,20 +108,19 @@ public class EmployeeController {
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
-	public String save(@Valid Employee employee,
-			@RequestParam(name = "search_company_id", required = false) Long searchCompanyId, 
-			BindingResult result,
+	public String save(@Valid Employee employee, BindingResult result,
+			@RequestParam(name = "company_id", required = false) Long companyId,
 			Model model, RedirectAttributes flash, SessionStatus status) {
-		
+
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Formulari de Treballador");
 			return "/employee/form";
 		}
-		
-		if (searchCompanyId != null) {
+
+		if (companyId != null) {
 			Company company = new Company();
-			company = employeeService.findCompanyById(searchCompanyId);
-			if (employee.getId() == null) { //creació del treballador
+			company = employeeService.findCompanyById(companyId);
+			if (employee.getId() == null) { // creació del treballador
 				employee.setCompany(company);
 				company.addEmployee(employee);
 			}
@@ -156,6 +154,5 @@ public class EmployeeController {
 		}
 		return "redirect:/company/view/" + companyId;
 	}
-
 
 }

@@ -11,9 +11,9 @@
 		<br />
 
 		<div th:object="${company}" th:remove="tag">
-			<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-				<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
-			</ul>
+			<div th:if="${#fields.hasErrors('*')}" class="alert alert-warning">
+				Revisa les dades
+			</div>
 
 		</div>
 
@@ -25,7 +25,7 @@
 				<label class="col-sm-2 col-form-label">Nom empresa</label>
 				<div class="col-sm-6">
 					<input type="text" th:field="*{name}" class="form-control"
-						th:errorclass="'form-control alert-danger'" /> <small
+						th:errorclass="'form-control is-invalid'" /> <small
 						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
 						th:errors="*{name}"></small>
 				</div>

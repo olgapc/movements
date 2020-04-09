@@ -210,19 +210,22 @@ public class TaskController {
 			return "/task/form";
 		}
 
+		
+		
 		if (idCompany != null) {
 			Company company = new Company();
 			company = taskService.findCompanyById(idCompany);
 			task.setCompany(company);
 			company.addTask(task);
-		}
+		} else { task.setCompany(null); }
 
+		
 		if (idEmployee != null) {
 			Employee employee = new Employee();
 			employee = taskService.findEmployeeById(idEmployee);
 			task.setEmployee(employee);
 			employee.addTask(task);
-		}
+		} else { task.setEmployee(null); }
 
 		if (informationId != null) {
 			for (int i = 0; i < informationId.length; i++) {
