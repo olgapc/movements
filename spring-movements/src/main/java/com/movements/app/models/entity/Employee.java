@@ -20,14 +20,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.movements.app.models.enums.TypeNif;
 
 @Entity
 @Table(name = "employees")
@@ -38,18 +38,25 @@ public class Employee implements Serializable {
 	private Long id;
 
 	@Column(name = "employee_name")
-	@NotEmpty
+	//@NotEmpty
 	@Size(min = 2, max = 50)
 	private String name;
 
+	//@Pattern(regexp = "[X-Y]?[0-9]{8}[A-Z]?")
 	private String nif;
+	
+	@Column(name="type_nif")
+	private TypeNif typeNif;
 
+	//@Pattern(regexp = "[\\d]{1,2}[-][\\d]{7,8}[-][\\d]{2}")
 	private String naf;
 
 	@Email
 	private String email;
 
 	private String phone;
+	
+	private String comment;
 
 	
 	@Column(name = "create_at")
@@ -113,6 +120,14 @@ public class Employee implements Serializable {
 		this.nif = nif;
 	}
 
+	public TypeNif getTypeNif() {
+		return typeNif;
+	}
+
+	public void setTypeNif(TypeNif typeNif) {
+		this.typeNif = typeNif;
+	}
+	
 	public String getNaf() {
 		return naf;
 	}

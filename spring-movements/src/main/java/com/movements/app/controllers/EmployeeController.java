@@ -9,7 +9,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +24,7 @@ import com.movements.app.models.entity.Company;
 import com.movements.app.models.entity.Employee;
 import com.movements.app.models.service.ICompanyService;
 import com.movements.app.models.service.IEmployeeService;
+import com.movements.app.validation.EmployeeValidator;
 
 @Controller
 @RequestMapping("/employee")
@@ -33,6 +36,15 @@ public class EmployeeController {
 
 	@Autowired
 	private IEmployeeService employeeService;
+
+	@Autowired
+	private EmployeeValidator validator;
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.addValidators(validator);
+
+	}
 
 	@Secured("ROLE_USER")
 	@GetMapping(value = "/view/{employeeId}")
@@ -109,13 +121,11 @@ public class EmployeeController {
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public String save(@Valid Employee employee, BindingResult result,
-			@RequestParam(name = "company_id", required = false) Long companyId,
-			Model model, RedirectAttributes flash, SessionStatus status) {
+			@RequestParam(name = "company_id", required = false) Long companyId, Model model, RedirectAttributes flash,
+			SessionStatus status) {
 
-		if (result.hasErrors()) {
-			model.addAttribute("title", "Formulari de Treballador");
-			return "/employee/form";
-		}
+		// validator.validate(employee, result);
+
 
 		if (companyId != null) {
 			Company company = new Company();
@@ -124,6 +134,18 @@ public class EmployeeController {
 				employee.setCompany(company);
 				company.addEmployee(employee);
 			}
+		} else {
+			employee.setCompany(null);
+			result.rejectValue("company.name", "error.user", "L'empresa informada no existeix");	
+		}
+		
+		
+		
+		if (result.hasErrors()) {
+			model.addAttribute("title", "Formulari de Treballador");
+			
+				return "/employee/form";
+			
 		}
 
 		String flashMessage = (employee.getId() != null) ? "Treballador modificat correctament"

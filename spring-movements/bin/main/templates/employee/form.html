@@ -49,17 +49,28 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Nif</label>
-				<div class="col-sm-6">
+				<label class="col-sm-1 col-form-label">Nif</label>
+				<div class="col-sm-2">
 					<input type="search" th:field="*{nif}" class="form-control"
 						th:errorclass="'form-control is-invalid'" /> <small
 						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
 						th:errors="*{nif}"></small>
 				</div>
+				<label for="typeNif" class="col-sm-1 col-form-label"
+					th:text="'Tipus'"></label>
+				<div class="col-sm-2">
+					<select class="typeCalculation form-control" id="typeNif"
+						name="typeNif" th:field="*{typeNif}">
+						<option
+							th:each="typeNifOpt : ${T(com.movements.app.models.enums.TypeNif).values()}"
+							th:value="${typeNifOpt}"
+							th:text="${typeNifOpt.displayValue}"></option>
+					</select>
+				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Naf</label>
-				<div class="col-sm-6">
+				<label class="col-sm-1 col-form-label">Naf</label>
+				<div class="col-sm-2">
 					<input type="text" th:field="*{naf}" class="form-control"
 						th:errorclass="'form-control is-invalid'" /> <small
 						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
