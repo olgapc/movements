@@ -12,7 +12,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.movements.app.editors.PascalCaseEditor;
 import com.movements.app.models.entity.Company;
 import com.movements.app.models.entity.Employee;
 import com.movements.app.models.entity.Information;
@@ -45,6 +48,14 @@ public class TaskController {
 	@Autowired
 	private ITaskService taskService;
 
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		//If binder.registerCustomEditor(String.class,new UpperCaseEditor()); all the String attributes to UpperCase
+		binder.registerCustomEditor(String.class, "description" ,new PascalCaseEditor());
+		binder.registerCustomEditor(String.class, "nameTemplate" ,new PascalCaseEditor());
+		
+	}
+	
 	
 	@RequestMapping(value = {"/task/list","/"}, method = RequestMethod.GET)
 	public String list(Model model) {
@@ -211,20 +222,20 @@ public class TaskController {
 		}
 
 		
-		
 		if (idCompany != null) {
 			Company company = new Company();
 			company = taskService.findCompanyById(idCompany);
 			task.setCompany(company);
-			company.addTask(task);
+			//company.addTask(task);
 		} else { task.setCompany(null); }
 
+		System.out.println("peta");
 		
 		if (idEmployee != null) {
 			Employee employee = new Employee();
 			employee = taskService.findEmployeeById(idEmployee);
 			task.setEmployee(employee);
-			employee.addTask(task);
+			//employee.addTask(task);
 		} else { task.setEmployee(null); }
 
 		if (informationId != null) {

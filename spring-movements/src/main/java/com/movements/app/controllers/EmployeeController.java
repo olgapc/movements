@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.movements.app.editors.PascalCaseEditor;
+import com.movements.app.editors.UpperCaseEditor;
 import com.movements.app.models.entity.Company;
 import com.movements.app.models.entity.Employee;
 import com.movements.app.models.service.ICompanyService;
@@ -44,6 +46,9 @@ public class EmployeeController {
 	public void initBinder(WebDataBinder binder) {
 		binder.addValidators(validator);
 
+		binder.registerCustomEditor(String.class, "name" ,new PascalCaseEditor());
+		binder.registerCustomEditor(String.class, "nif" ,new UpperCaseEditor());
+		
 	}
 
 	@Secured("ROLE_USER")
@@ -130,10 +135,10 @@ public class EmployeeController {
 		if (companyId != null) {
 			Company company = new Company();
 			company = employeeService.findCompanyById(companyId);
-			if (employee.getId() == null) { // creació del treballador
+			//if (employee.getId() == null) { // creació del treballador
 				employee.setCompany(company);
-				company.addEmployee(employee);
-			}
+				//company.addEmployee(employee);
+			//} 
 		} else {
 			employee.setCompany(null);
 			result.rejectValue("company.name", "error.user", "L'empresa informada no existeix");	
@@ -152,6 +157,7 @@ public class EmployeeController {
 				: "Treballador creat correctament";
 
 		employeeService.save(employee);
+		
 		status.setComplete();
 		flash.addFlashAttribute("success", flashMessage);
 

@@ -55,7 +55,7 @@
 				<label for="deadline" class="col-sm-1 col-form-label"
 					th:text="'Data'"></label>
 				<div class="col-sm-2">
-					<input type="text" th:field="*{deadline}" class="form-control"
+					<input type="date" th:field="*{deadline}" class="form-control"
 						th:errorclass="'form-control is-invalid'" />
 					<div class="invalid-feedback"
 						th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}"></div>
@@ -159,7 +159,7 @@
 				</thead>
 
 				<tbody id="myTable">
-					<tr th:each="row: ${task.taskInformations}">
+					<!-- tr th:each="row: ${task.taskInformations}">
 						<td th:text="${row.information.description}"></td>
 						<td><input type="text" th:value="${row.comment}" /></td>
 						<td class="text-center"><input type="checkbox" th:value="${row.done}" class="form-check-input big-checkbox"/></td>
@@ -168,7 +168,7 @@
 							th:href="@{/information/delete/} + ${row.information.id}"
 							onclick="return confirm('Segur que vols eliminar?');">x</a></td>
 						
-					</tr>
+					</tr> -->
 
 				</tbody>
 

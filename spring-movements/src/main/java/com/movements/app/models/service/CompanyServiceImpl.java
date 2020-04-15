@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.movements.app.models.dao.ICompanyDao;
+import com.movements.app.models.dao.ICompanyTypeDao;
 import com.movements.app.models.entity.Company;
+import com.movements.app.models.entity.CompanyType;
 
 @Service
 public class CompanyServiceImpl implements ICompanyService {
 
 	@Autowired
 	private ICompanyDao companyDao;
+	
+	@Autowired
+	private ICompanyTypeDao companyTypeDao;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -51,6 +56,17 @@ public class CompanyServiceImpl implements ICompanyService {
 		return companyDao.findByNameLikeIgnoreCase("%"+term+"%");
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<CompanyType> findAllCompanyType() {
+		return (List<CompanyType>) companyTypeDao.findAll();
+	}
 
+	@Override
+	public CompanyType findByIdCompanyType(Long id) {
+		return companyTypeDao.findById(id).orElse(null);
+	}
 
+	
+	
 }

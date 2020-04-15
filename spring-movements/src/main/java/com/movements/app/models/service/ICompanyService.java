@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import com.movements.app.models.entity.Company;
+import com.movements.app.models.entity.CompanyType;
 
 public interface ICompanyService {
 	
@@ -19,5 +20,8 @@ public interface ICompanyService {
 	
 	public List<Company> findCompanyByName(String term);
 
+	public List<CompanyType> findAllCompanyType();
+	
+	public CompanyType findByIdCompanyType(Long id);
 
 }

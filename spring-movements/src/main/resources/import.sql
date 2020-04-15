@@ -1,6 +1,10 @@
+/* POPULATE COMPANY_TYPES */
+INSERT INTO company_types (id, code, description) VALUES (1, 'S.L.', 'Societat Limitada');
+INSERT INTO company_types (id, code, description) VALUES (2, 'S.A.', 'Societat Anònima');
+INSERT INTO company_types (id, code, description) VALUES (3, 'S.C.P.', 'Societat Civil Privada');
 /* POPULATE COMPANY*/
-INSERT INTO companies (id, company_name, create_at, email, phone, logo) VALUES (1, 'Empresa1', '2020-02-05' , 'mail@empresa1.com', '931234567', '');
-INSERT INTO companies (id, company_name, create_at, email, phone, logo) VALUES (2, 'Empresa2', '2020-02-05' , 'info@empresa2.com', '939876543', '');
+INSERT INTO companies (id, company_name, company_type_fk, create_at, email, phone, logo) VALUES (1, 'Empresa1', 1, '2020-02-05' , 'mail@empresa1.com', '931234567', '');
+INSERT INTO companies (id, company_name, company_type_fk, create_at, email, phone, logo) VALUES (2, 'Empresa2', 2, '2020-02-05' , 'info@empresa2.com', '939876543', '');
 /* POPULATE INFORMATION */
 INSERT INTO informations (id, description, create_at) VALUES (1, 'Duració contracte', '2020-02-05');
 INSERT INTO informations (id, description, create_at) VALUES (2, 'Irpf anual', '2020-02-05');

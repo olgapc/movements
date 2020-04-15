@@ -10,18 +10,14 @@
 
 
 
-		<ul class="list-group ml-5 col-md-2 font-weight-bold ">
-			<li class="list-group-item list-group-item-warning"
-				th:text="${task.deadline}"></li>
 
-		</ul>
-
-		<table class="table table-responsive table-hover my-4">
+		<table class="table table-responsive my-4">
 
 			<tbody id="taskTable">
 			<thead class="thead-inverse">
 
 				<tr>
+					<th>Data</th>
 					<th>Fet</th>
 					<th>Opcional</th>
 					<th>Enviar</th>
@@ -33,30 +29,35 @@
 			</thead>
 			<tbody>
 				<tr>
-				<td><input type="checkbox" disabled="disabled"
-					th:checked="${task.done}" /></td>
-				<td><input type="checkbox" disabled="disabled"
-					th:checked="${task.optionalSubtask}"/></td>
-				<td><input type="checkbox" disabled="disabled"
-					th:checked="${task.toSend}"/></td>
-				<td><input type="checkbox" disabled="disabled"
-					th:checked="${task.template}"/></td>
-				<td th:text="${task.numberToCalculateDeadlineToAlarm}"></td>
-				<td th:text="${task.typeCalculationDeadline}"></td>
-				<td th:text="${task.daysToFixError}"></td>
+					<td
+						class="list-group-item list-group-item-warning font-weight-bold"
+						th:text="${task.deadline}"></td>
+					<td><input type="checkbox" disabled="disabled"
+						th:checked="${task.done}" /></td>
+					<td><input type="checkbox" disabled="disabled"
+						th:checked="${task.optionalSubtask}" /></td>
+					<td><input type="checkbox" disabled="disabled"
+						th:checked="${task.toSend}" /></td>
+					<td><input type="checkbox" disabled="disabled"
+						th:checked="${task.template}" /></td>
+					<td th:text="${task.numberToCalculateDeadlineToAlarm}"></td>
+					<td th:text="${task.typeCalculationDeadline}"></td>
+					<td th:text="${task.daysToFixError}"></td>
 				</tr>
 
 			</tbody>
 		</table>
 
+		<a class="btn btn-outline-info btn-xs"
+			th:href="@{/task/form/task/} + ${task.id}">Modificar</a>
 
 		<table th:if="${task.company != null}"
-			class="table table-responsive table-hover my-4">
-			
+			class="table table-responsive my-4">
+
 			<tbody id="companyTable">
 				<tr>
 					<td><a
-						class="btn btn-outline-info btn-xs text-info font-weight-bold"
+						class="btn btn-outline-info btn-xs text-info"
 						th:href="@{/company/view/} + ${task.company.id}"
 						th:text="${task.company.name}"></a></td>
 					<td th:text="${task.company.email}"></td>
@@ -66,13 +67,14 @@
 				</tr>
 			</tbody>
 		</table>
+
 		<table th:if="${task.employee != null}"
-			class="table table-responsive table-hover my-4">
+			class="table table-responsive my-4">
 
 			<tbody id="employeeTable">
 				<tr>
 					<td><a
-						class="btn btn-outline-info btn-xs text-info font-weight-bold"
+						class="btn btn-outline-info btn-xs text-info"
 						th:href="@{/employee/view/} + ${task.employee.id}"
 						th:text="${task.employee.name}"></a></td>
 					<td th:text="${task.employee.nif}"></td>
@@ -80,7 +82,7 @@
 					<td th:text="${task.employee.email}"></td>
 					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/employee/form/} + ${task.company.id} + @{/}+ ${task.employee.id}">Modificar</a>
-						</a></td>
+						</td>
 
 				</tr>
 			</tbody>
@@ -89,18 +91,18 @@
 
 		<br />
 
-			<div
-				th:if="${not #lists.isEmpty(task.taskInformations) || not #lists.isEmpty(task.subtasks)}"
-				class="row">
-				<div class="col-sm-6">
-					<input class="form-control pr-0" id="tableSearch" type="text"
-						placeholder="escriu el que vols buscar">
-				</div>
-				<a th:href="@{/task/form/subtask/}+${task.id}"
-					class="btn btn-outline-info btn-xs mr-2 float-left">Nova
-					Subtasca</a> 
+		<div
+			th:if="${not #lists.isEmpty(task.taskInformations) || not #lists.isEmpty(task.subtasks)}"
+			class="row">
+			<div class="col-sm-6">
+				<input class="form-control pr-0" id="tableSearch" type="text"
+					placeholder="escriu el que vols buscar">
 			</div>
-			</br>
+			<a th:href="@{/task/form/subtask/}+${task.id}"
+				class="btn btn-outline-info btn-xs mr-2 float-left">Nova
+				Subtasca</a>
+		</div>
+		</br>
 
 
 
@@ -109,7 +111,7 @@
 			class="col-sm-6">
 
 			<h2 class="text-info">Informacions</h2>
-		
+
 		</div>
 
 		<table th:if="${not #lists.isEmpty(task.taskInformations)}"
@@ -127,7 +129,7 @@
 				<tr th:each="row: ${task.taskInformations}">
 					<td th:text="${row.information.description}"></td>
 					<td th:text="${row.comment}"></td>
-					<td><input type="checkbox" disabled="disabled" 
+					<td><input type="checkbox" disabled="disabled"
 						th:checked="${row.done}" /></td>
 				</tr>
 
@@ -139,8 +141,7 @@
 
 
 
-		<div th:if="${not #lists.isEmpty(task.subtasks)}"
-			class="col-sm-6">
+		<div th:if="${not #lists.isEmpty(task.subtasks)}" class="col-sm-6">
 
 			<h2 class="text-info">Subtasques</h2>
 		</div>
@@ -159,10 +160,10 @@
 			<tbody id="myTable">
 				<tr th:each="subtask: ${task.subtasks}">
 					<td><a class="btn btn-outline-info"
-							th:href="@{/task/view/} + ${subtask.id}"
-							th:text="${subtask.description}"></a></td>
+						th:href="@{/task/view/} + ${subtask.id}"
+						th:text="${subtask.description}"></a></td>
 					<td th:text="${subtask.deadline}"></td>
-					<td><input type="checkbox" disabled="disabled" 
+					<td><input type="checkbox" disabled="disabled"
 						th:checked="${subtask.done}" /></td>
 				</tr>
 

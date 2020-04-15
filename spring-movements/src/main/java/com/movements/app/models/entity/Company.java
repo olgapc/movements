@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 //import javax.persistence.PrePersist;
@@ -20,6 +22,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -53,6 +56,11 @@ public class Company implements Serializable {
 	private Date createAt;
 
 	private String logo;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@NotNull
+	@JoinColumn(name="company_type_fk")
+	private CompanyType companyType;
 
 	@JsonIgnoreProperties({"company", "hibernateLazyInitializer"})
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -119,6 +127,14 @@ public class Company implements Serializable {
 
 	public void setLogo(String logo) {
 		this.logo = logo;
+	}
+	
+	public CompanyType getCompanyType() {
+		return companyType;
+	}
+
+	public void setCompanyType(CompanyType companyType) {
+		this.companyType = companyType;
 	}
 
 	public List<Task> getTasks() {
