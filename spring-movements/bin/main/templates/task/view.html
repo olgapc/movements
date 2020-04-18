@@ -31,7 +31,7 @@
 				<tr>
 					<td
 						class="list-group-item list-group-item-warning font-weight-bold"
-						th:text="${task.deadline}"></td>
+						th:text="${#dates.format(task.deadline, 'dd-MM-yyyy')}"></td>
 					<td><input type="checkbox" disabled="disabled"
 						th:checked="${task.done}" /></td>
 					<td><input type="checkbox" disabled="disabled"

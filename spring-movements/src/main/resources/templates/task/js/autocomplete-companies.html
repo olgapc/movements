@@ -3,7 +3,7 @@
 <body>
 	<script type="text/javascript" th:fragment="javascript">
 		$(document).ready(function() {
-			$("#company_name").autocomplete({
+			$("#company\\.name").autocomplete({
 				source : function(request, response) {
 					$.ajax({
 						url : "/upload-companies/" + request.term,
@@ -23,7 +23,7 @@
 					});
 				},
 				select : function(event, ui) {
-					$("#company_name").val(ui.item.label);
+					$("#company\\.name").val(ui.item.label);
 					$("#company_id").val(ui.item.value);
 					return false;
 				},

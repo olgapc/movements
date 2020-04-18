@@ -47,8 +47,8 @@
 						th:text="${task.description}"></a></td>
 					<td th:checkbox="${task.optionalSubtask}"></td>
 					<td th:checkbox="${task.toSend}"></td>
-					<td th:text="${task.deadline}"></td>
-					<td th:text="${task.createAt}"></td>
+					<td th:text="${#dates.format(task.deadline, 'dd-MM-yyyy')}"></td>
+					<td th:text="${#dates.format(task.createAt, 'dd-MM-yyyy HH:mm')}"></td>
 					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/task/form/task/} + ${task.id}">Modificar</a> 
 						<a class="btn btn-outline-info btn-xs"

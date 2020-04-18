@@ -57,6 +57,7 @@ public class Company implements Serializable {
 
 	private String logo;
 	
+	@JsonIgnoreProperties({"company", "hibernateLazyInitializer"})
 	@ManyToOne(fetch=FetchType.LAZY)
 	@NotNull
 	@JoinColumn(name="company_type_fk")

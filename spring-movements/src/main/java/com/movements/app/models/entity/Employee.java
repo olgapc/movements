@@ -20,8 +20,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotEmpty;
+//import javax.validation.constraints.Pattern;
+//import javax.validation.constraints.Size;
+import javax.validation.constraints.Past;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -39,7 +41,7 @@ public class Employee implements Serializable {
 
 	@Column(name = "employee_name")
 	//@NotEmpty
-	@Size(min = 2, max = 50)
+	//@Size(min = 2, max = 50)
 	private String name;
 
 	//@Pattern(regexp = "[X-Y]?[0-9]{8}[A-Z]?")
@@ -56,7 +58,18 @@ public class Employee implements Serializable {
 
 	private String phone;
 	
+	@Past
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date birthDate;	
+	
+	@NotEmpty
+	private String gender;
+	
+	private Boolean enable;
+	
 	private String comment;
+	
+
 
 	
 	@Column(name = "create_at")
@@ -152,6 +165,39 @@ public class Employee implements Serializable {
 		this.phone = phone;
 	}
 
+	
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
+	public Boolean getEnable() {
+		return enable;
+	}
+
+	public void setEnable(Boolean enable) {
+		this.enable = enable;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	public Date getCreateAt() {
 		return createAt;
 	}
@@ -174,6 +220,7 @@ public class Employee implements Serializable {
 		return name.toUpperCase()+ ". \n NIF: " + nif + ", NAF:" + naf + ", " + email;
 	}
 
+	
 
 
 	private static final long serialVersionUID = 1L;

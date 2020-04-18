@@ -63,7 +63,7 @@ public class Task implements Serializable {
 	@Column(name = "type_calculation_deadline")
 	private TypeCalculationDeadline typeCalculationDeadline;
 
-	//@Temporal(TemporalType.DATE)
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull
 	private Date deadline;
@@ -71,13 +71,11 @@ public class Task implements Serializable {
 	@Column(name = "create_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createAt;
-
-	//@JsonIgnoreProperties({ "tasks", "hibernateLazyInitializer" })
+	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "company_fk")
 	private Company company;
 
-	//@JsonIgnoreProperties({ "tasks", "hibernateLazyInitializer" })
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "employee_fk")
 	private Employee employee;

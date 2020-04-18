@@ -27,7 +27,7 @@
 				<li class="list-group-item" th:text="${company.companyType.description}"></li>
 				<li class="list-group-item" th:text="${company.phone}"></li>
 				<li class="list-group-item" th:text="${company.email}"></li>
-				<li class="list-group-item" th:text="${company.createAt}"></li>
+				<li class="list-group-item" th:text="${#dates.format(company.createAt, 'dd-MM-yyyy HH:mm')}"></li>
 			</ul>
 
 			<br /> <a class="btn btn-outline-info btn-xs mr-2"
@@ -87,7 +87,7 @@
 						<td th:text="${employee.nif}"></td>
 						<td th:text="${employee.naf}"></td>
 						<td th:text="${employee.email}"></td>
-						<td th:text="${employee.createAt}"></td>
+						<td tth:text="${#dates.format(employee.createAt, 'dd-MM-yyyy HH:mm')}"></td>
 						<td><a class="btn btn-outline-info btn-xs"
 							th:href="@{/task/form/} + ${company.id} + @{/}+ ${employee.id}">Nova
 								Tasca</a> <a class="btn btn-outline-info btn-xs"
@@ -130,7 +130,7 @@
 							th:href="@{/task/view/} + ${task.id}"
 							th:text="${task.description}"></a></td>
 						<td th:text="${task?.employee?.name}"></td>
-						<td th:text="${task.deadline}"></td>
+						<td th:text="${#dates.format(task.deadline, 'dd-MM-yyyy')}"></td>
 						<td><input type="checkbox" disabled="disabled"
 							th:checked="${task.done}" /></td>
 						<td><a class="btn btn-outline-info btn-xs"

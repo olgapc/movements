@@ -23,37 +23,47 @@
 			method="post">
 
 
-				<div class="form-group col-md-4">
-					<label for="company_name" class="col-sm-2 col-form-label"
-						th:text="'Empresa'"></label> <input type="search"
-						name="company_name" id="company_name" class="form-control"
-						th:value="${employee?.company?.name}" required/> <input type="text"
+			<div class="form-group row">
+
+				<label for="company.name" class="col-sm-1 col-form-label"
+					th:text="'Empresa'"></label>
+				<div class="col-sm-6">
+					<input type="search" name="company.name" id="company.name"
+						class="form-control" th:errorclass="'form-control is-invalid'"
+						th:value="${employee?.company?.name}" required /><small
+						class="form-text text-danger"
+						th:if="${#fields.hasErrors('company.name')}"
+						th:errors="*{company.name}"></small><input type="text"
 						class="form-control" name="company_id" id="company_id"
-						hidden="hidden" th:value="${employee?.company?.id}" /> <a
-						th:href="@{/company/form}" target="_blank"
+						hidden="hidden" th:value="${employee?.company?.id}" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-6">
+					<a th:href="@{/company/form}" target="_blank"
 						class="btn btn-outline-info btn-xs btn-margin-top mr-2">Nova
 						Empresa</a>
 				</div>
-
-
+			</div>
 
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Nom treballador</label>
+				<label for="name" class="col-sm-1 col-form-label">Nom</label>
 				<div class="col-sm-6">
 					<input type="text" th:field="*{name}" class="form-control"
-						th:errorclass="'form-control is-invalid'"/> 
-						<small
+						th:errorclass="'form-control is-invalid'" /> <small
 						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
 						th:errors="*{name}"></small>
 				</div>
 			</div>
+
 			<div class="form-group row">
-				<label class="col-sm-1 col-form-label">Nif</label>
+				<label for="nif" class="col-sm-1 col-form-label">Nif</label>
 				<div class="col-sm-2">
 					<input type="search" th:field="*{nif}" class="form-control"
 						th:errorclass="'form-control is-invalid'" /> <small
-						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
+						class="form-text text-danger" th:if="${#fields.hasErrors('nif')}"
 						th:errors="*{nif}"></small>
 				</div>
 				<label for="typeNif" class="col-sm-1 col-form-label"
@@ -63,32 +73,45 @@
 						name="typeNif" th:field="*{typeNif}">
 						<option
 							th:each="typeNifOpt : ${T(com.movements.app.models.enums.TypeNif).values()}"
-							th:value="${typeNifOpt}"
-							th:text="${typeNifOpt.displayValue}"></option>
+							th:value="${typeNifOpt}" th:text="${typeNifOpt.displayValue}"></option>
 					</select>
 				</div>
 			</div>
+
 			<div class="form-group row">
-				<label class="col-sm-1 col-form-label">Naf</label>
+				<label for="naf" class="col-sm-1 col-form-label">Naf</label>
 				<div class="col-sm-2">
 					<input type="text" th:field="*{naf}" class="form-control"
 						th:errorclass="'form-control is-invalid'" /> <small
-						class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
+						class="form-text text-danger" th:if="${#fields.hasErrors('naf')}"
 						th:errors="*{naf}"></small>
 				</div>
 			</div>
+
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Mail</label>
-				<div class="col-sm-6">
+				<label for="birthDate" class="col-sm-1 col-form-label">Data
+					naixement</label>
+				<div class="col-sm-3">
+					<input type="date" th:field="*{birthDate}" class="form-control"
+						th:errorclass="'form-control is-invalid'" /> <small
+						class="form-text text-danger"
+						th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></small>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="email" class="col-sm-1 col-form-label">Mail</label>
+				<div class="col-sm-3">
 					<input type="email" th:field="*{email}" class="form-control"
 						th:errorclass="'form-control is-invalid'" /> <small
 						class="form-text text-danger"
 						th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
 				</div>
 			</div>
+
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Telèfon</label>
-				<div class="col-sm-6">
+				<label for="phone" class="col-sm-1 col-form-label">Telèfon</label>
+				<div class="col-sm-2">
 					<input type="tel" th:field="*{phone}" class="form-control"
 						th:errorclass="'form-control is-invalid'" /> <small
 						class="form-text text-danger"
@@ -97,6 +120,34 @@
 				</div>
 			</div>
 
+			<div class="form-group row">
+				<label for="enable" class="col-sm-1 col-form-label">En actiu</label>
+				<div class="col-sm-1">
+					<input type="checkbox" th:field="*{enable}" class="form-control" />
+
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="gender" class="col-sm-1 col-form-label">Gènere</label>
+				<div class="row col-sm-1" th:each="gender: ${gender}">
+					<input class="form-control col-sm-2" type="radio" th:field="*{gender}" th:value="${gender}"/>
+					<label class="col-form-label col-sm-1" th:for="${#ids.prev('gender')}" th:text="${gender}"></label>
+				</div>
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></small>
+			</div>
+
+
+			<div class="form-group row">
+				<label for="comment" class="col-sm-1 col-form-label">Comentari</label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{comment}" class="form-control"
+						th:errorclass="'form-control is-invalid'" /> <small
+						class="form-text text-danger"
+						th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></small>
+
+				</div>
+			</div>
 
 			<div class="form-group row">
 				<div class="col-sm-6">

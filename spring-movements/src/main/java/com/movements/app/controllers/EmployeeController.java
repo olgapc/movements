@@ -1,5 +1,7 @@
 package com.movements.app.controllers;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -12,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.movements.app.editors.LowerCaseEditor;
 import com.movements.app.editors.PascalCaseEditor;
 import com.movements.app.editors.UpperCaseEditor;
 import com.movements.app.models.entity.Company;
@@ -44,13 +48,20 @@ public class EmployeeController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
+		
 		binder.addValidators(validator);
 
-		binder.registerCustomEditor(String.class, "name" ,new PascalCaseEditor());
-		binder.registerCustomEditor(String.class, "nif" ,new UpperCaseEditor());
-		
+		binder.registerCustomEditor(String.class, "name", new PascalCaseEditor());
+		binder.registerCustomEditor(String.class, "nif", new UpperCaseEditor());
+		binder.registerCustomEditor(String.class, "email", new LowerCaseEditor());
+
 	}
 
+	@ModelAttribute("gender")
+	public List<String> gender(){
+		return Arrays.asList("Home","Dona");
+	}
+	
 	@Secured("ROLE_USER")
 	@GetMapping(value = "/view/{employeeId}")
 	public String view(@PathVariable(value = "employeeId", required = false) Long employeeId, Map<String, Object> model,
@@ -84,6 +95,7 @@ public class EmployeeController {
 		}
 		Employee employee = new Employee();
 		employee.setCompany(company);
+		employee.setEnable(true);
 		model.put("employee", employee);
 		model.put("title", "Crear treballador");
 
@@ -95,7 +107,9 @@ public class EmployeeController {
 	public String edit(@PathVariable(value = "companyId", required = false) Long companyId,
 			@PathVariable(value = "employeeId", required = false) Long employeeId, Map<String, Object> model,
 			RedirectAttributes flash) {
+
 		Employee employee = null;
+
 		if (employeeId > 0) {
 			employee = employeeService.findOne(employeeId);
 
@@ -118,6 +132,7 @@ public class EmployeeController {
 		Employee employee = new Employee();
 		employee.setCompany(null);
 		model.put("company", employee.getCompany());
+		employee.setEnable(true);
 		model.put("employee", employee);
 		model.put("title", "Crear treballador");
 		return "/employee/form";
@@ -131,33 +146,28 @@ public class EmployeeController {
 
 		// validator.validate(employee, result);
 
-
 		if (companyId != null) {
 			Company company = new Company();
 			company = employeeService.findCompanyById(companyId);
-			//if (employee.getId() == null) { // creació del treballador
-				employee.setCompany(company);
-				//company.addEmployee(employee);
-			//} 
+
+			employee.setCompany(company);
+
 		} else {
 			employee.setCompany(null);
-			result.rejectValue("company.name", "error.user", "L'empresa informada no existeix");	
+			result.rejectValue("company.name", "error.user", "L'empresa informada no existeix");
 		}
-		
-		
-		
+
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Formulari de Treballador");
-			
-				return "/employee/form";
-			
+			return "/employee/form";
+
 		}
 
 		String flashMessage = (employee.getId() != null) ? "Treballador modificat correctament"
 				: "Treballador creat correctament";
 
 		employeeService.save(employee);
-		
+
 		status.setComplete();
 		flash.addFlashAttribute("success", flashMessage);
 

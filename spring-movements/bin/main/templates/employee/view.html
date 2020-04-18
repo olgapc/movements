@@ -17,7 +17,15 @@
 			<ul class="list-group">
 				<li class="list-group-item" th:text="${employee.phone}"></li>
 				<li class="list-group-item" th:text="${employee.email}"></li>
-				<li class="list-group-item" th:text="${employee.createAt}"></li>
+				<li class="list-group-item" th:text="${employee.nif}"></li>
+				<li class="list-group-item" th:text="${employee.typeNif}"></li>
+				<li class="list-group-item" th:text="${employee.naf}"></li>
+				<li class="list-group-item" th:text="${#dates.format(employee.birthDate, 'dd-MM-yyyy')}"></li>
+				<li class="list-group-item" th:text="${employee.comment}"></li>
+				<li class="list-group-item">En Actiu: <input class="list-group-item" type="checkbox" disabled="disabled"
+						th:checked="${employee.enable}" /></li>
+				<li class="list-group-item" th:text="'Gènere: ' + ${employee.gender}"></li>
+				<li class="list-group-item" th:text="${#dates.format(employee.createAt, 'dd-MM-yyyy HH:mm')}"></li> 
 			</ul>
 
 			<br />
@@ -52,7 +60,7 @@
 						<td><a class="stretched-link text-info"
 							th:href="@{/task/view/} + ${task.id}"
 							th:text="${task.description}"></a></td>
-						<td th:text="${task.deadline}"></td>
+						<td tth:text="${#dates.format(task.deadline, 'dd-MM-yyyy')}"></td>
 						<td><input type="checkbox" disabled="disabled"
 							th:checked="${task.done}" /></td>
 						<td><a class="btn btn-outline-info btn-xs"

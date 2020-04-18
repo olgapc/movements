@@ -63,7 +63,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		PasswordEncoder encoder = passwordEncoder();
 
-		// encrypt the password, It's the same than:
+		// encrypt the password.
 		User.builder().passwordEncoder(password -> encoder.encode(password));
 		UserBuilder users = User.builder().passwordEncoder(encoder::encode);
 

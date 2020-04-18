@@ -16,7 +16,7 @@
 
 			<ul class="list-group">
 				<li class="list-group-item" th:text="${information.description}"></li>
-				<li class="list-group-item" th:text="${information.createAt}"></li>
+				<li class="list-group-item" th:text="${#dates.format(information.createAt, 'dd-MM-yyyy HH:mm')}"></li>
 				</ul>
 
 			<br /> <a class="btn btn-outline-info btn-xs mr-2"

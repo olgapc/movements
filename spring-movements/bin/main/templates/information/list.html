@@ -43,7 +43,7 @@
 					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/information/view/} + ${information.id}"
 						th:text="${information.description}"></a></td>
-					<td th:text="${information.createAt}"></td>
+					<td th:text="${#dates.format(information.createAt, 'dd-MM-yyyy HH:mm')}"></td>
 					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/information/form/} + ${information.id}">Modificar</a>
 						<a

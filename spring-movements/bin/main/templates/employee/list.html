@@ -45,7 +45,7 @@
 					
 					<td th:text="${employee.email}"></td>
 					<td th:text="${employee.phone}"></td>
-					<td th:text="${employee.createAt}"></td>
+					<td th:text="${#dates.format(employee.createAt, 'dd-MM-yyyy HH:mm')}"></td>
 					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/company/view/} +${employee.company.id}"
 						th:text="${employee.company.name}"></a></td>

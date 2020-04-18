@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.movements.app.editors.CompanyTypeEditor;
+import com.movements.app.editors.LowerCaseEditor;
 import com.movements.app.editors.PascalCaseEditor;
 import com.movements.app.models.entity.Company;
 import com.movements.app.models.entity.CompanyType;
@@ -47,9 +48,10 @@ public class CompanyController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(String.class, "name", new PascalCaseEditor());
 		
+		binder.registerCustomEditor(String.class, "name", new PascalCaseEditor());
 		binder.registerCustomEditor(CompanyType.class, "companyType", companyTypeEditor);
+		binder.registerCustomEditor(String.class, "email", new LowerCaseEditor());
 	}
 
 	@ModelAttribute("companyTypesList")
