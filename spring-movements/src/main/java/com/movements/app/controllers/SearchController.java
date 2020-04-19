@@ -34,13 +34,13 @@ public class SearchController {
 	
 	@GetMapping(value = "/upload-employees/{idcompany}/{term}", produces= {"application/json"})
 	public @ResponseBody List<Employee> uploadEmployeesWithCompany(@PathVariable(value="idcompany") Long companyId, @PathVariable String term){
-		return employeeService.findEmployeeByCompanyIdAndName(companyId, term);
+		if (companyId == -1) {
+			return employeeService.findEmployeeByName(term);
+		} else {
+			return employeeService.findEmployeeByCompanyIdAndName(companyId, term);}
 	}
 	
-	@GetMapping(value = "/upload-employees//{term}", produces= {"application/json"})
-	public @ResponseBody List<Employee> uploadEmployees(String term){
-		return employeeService.findEmployeeByName(term);
-	}
+
 	
 	
 }

@@ -19,20 +19,21 @@
 								};
 							}));
 						},
-						
+
 					});
 				},
+				autoSelect : true,
+				autoFocus : true,
 				select : function(event, ui) {
 					$("#company\\.name").val(ui.item.label);
-					$("#company_id").val(ui.item.value);
+					$("#company\\.id").val(ui.item.value);
 					return false;
 				},
 				change : function(event, ui) {
-					$("#company_id").val(ui.item? ui.item.value : null);
+					$("#company\\.id").val(ui.item ? ui.item.value : null);
 				}
 			});
 		});
-
 	</script>
 </body>
 </html>

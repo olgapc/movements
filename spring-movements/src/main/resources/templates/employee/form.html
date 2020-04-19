@@ -34,8 +34,8 @@
 						class="form-text text-danger"
 						th:if="${#fields.hasErrors('company.name')}"
 						th:errors="*{company.name}"></small><input type="text"
-						class="form-control" name="company_id" id="company_id"
-						hidden="hidden" th:value="${employee?.company?.id}" />
+						class="form-control" name="company.id" id="company.id"
+						 th:value="${employee?.company?.id}" hidden="hidden"/>
 				</div>
 			</div>
 

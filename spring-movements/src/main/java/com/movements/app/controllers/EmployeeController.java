@@ -141,7 +141,7 @@ public class EmployeeController {
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public String save(@Valid Employee employee, BindingResult result,
-			@RequestParam(name = "company_id", required = false) Long companyId, Model model, RedirectAttributes flash,
+			@RequestParam(name = "company.id", required = false) Long companyId, Model model, RedirectAttributes flash,
 			SessionStatus status) {
 
 		// validator.validate(employee, result);
@@ -160,7 +160,6 @@ public class EmployeeController {
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Formulari de Treballador");
 			return "/employee/form";
-
 		}
 
 		String flashMessage = (employee.getId() != null) ? "Treballador modificat correctament"

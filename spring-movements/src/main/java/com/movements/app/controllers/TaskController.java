@@ -1,6 +1,5 @@
 package com.movements.app.controllers;
 
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,14 +49,14 @@ public class TaskController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		//If binder.registerCustomEditor(String.class,new UpperCaseEditor()); all the String attributes to UpperCase
-		binder.registerCustomEditor(String.class, "description" ,new PascalCaseEditor());
-		binder.registerCustomEditor(String.class, "nameTemplate" ,new PascalCaseEditor());
-		
+		// If binder.registerCustomEditor(String.class,new UpperCaseEditor()); all the
+		// String attributes to UpperCase
+		binder.registerCustomEditor(String.class, "description", new PascalCaseEditor());
+		binder.registerCustomEditor(String.class, "nameTemplate", new PascalCaseEditor());
+
 	}
-	
-	
-	@RequestMapping(value = {"/task/list","/"}, method = RequestMethod.GET)
+
+	@RequestMapping(value = { "/task/list", "/" }, method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("title", "Llistat de tasques");
 		model.addAttribute("tasks", taskService.findAll());
@@ -69,7 +68,6 @@ public class TaskController {
 	public String view(@PathVariable(value = "idTask") Long idTask, Model model, RedirectAttributes flash) {
 
 		Task task = taskService.fetchByIdWithEmployeeWithCompanyWithTaskInformationWithInformationWithSubtask(idTask);
-		
 
 		if (task == null) {
 			flash.addFlashAttribute("error", "La tasca no existeix a la BdD");
@@ -78,7 +76,7 @@ public class TaskController {
 
 		model.addAttribute("task", task);
 		model.addAttribute("title", "Tasca: ".concat(task.getDescription()));
-		
+
 		return "/task/view";
 	}
 
@@ -99,7 +97,7 @@ public class TaskController {
 		return "/task/form";
 
 	}
-	
+
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/task/form/task/{taskId}")
 	public String edit(@PathVariable(value = "taskId", required = false) Long id, Map<String, Object> model,
@@ -171,7 +169,7 @@ public class TaskController {
 		return "/task/form";
 
 	}
-	
+
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/task/form/{companyId}/{employeeId}")
 	public String create(@PathVariable(value = "companyId") Long companyId,
@@ -200,7 +198,6 @@ public class TaskController {
 		return "/task/form";
 	}
 
-	
 	@GetMapping(value = "/task/upload-informations/{term}", produces = { "application/json" })
 	public @ResponseBody List<Information> uploadInformations(@PathVariable String term) {
 		return taskService.findInformationByDescription(term);
@@ -209,8 +206,10 @@ public class TaskController {
 	@Secured("ROLE_ADMIN")
 	@PostMapping("/task/form")
 	public String save(@Valid Task task, BindingResult result, Model model,
-			@RequestParam(name = "company_id", required = false) Long idCompany,
-			@RequestParam(name = "employee_id", required = false) Long idEmployee,
+			@RequestParam(name = "company.id", required = false) Long idCompany,
+			@RequestParam(name = "company.name", required = false) String nameCompany,
+			@RequestParam(name = "employee.id", required = false) Long idEmployee,
+			@RequestParam(name = "employee.name", required = false) String nameEmployee,
 			@RequestParam(name = "information_id[]", required = false) Long[] informationId,
 			@RequestParam(name = "comment[]", required = false) String[] comment,
 			@RequestParam(name = "information_done[]", required = false) String[] informationDone,
@@ -221,22 +220,36 @@ public class TaskController {
 			return "/task/form";
 		}
 
-		
 		if (idCompany != null) {
 			Company company = new Company();
 			company = taskService.findCompanyById(idCompany);
 			task.setCompany(company);
-			//company.addTask(task);
-		} else { task.setCompany(null); }
 
-		System.out.println("peta");
-		
+			// company.addTask(task);
+		} else {
+			if (!nameCompany.isEmpty()) {
+				result.rejectValue("company.name", "error.user", "L'empresa informada no existeix");
+			} else {
+				task.setCompany(null);
+			}
+		}
+
 		if (idEmployee != null) {
 			Employee employee = new Employee();
 			employee = taskService.findEmployeeById(idEmployee);
+			if(employee.getCompany().getId() == idCompany) {
 			task.setEmployee(employee);
-			//employee.addTask(task);
-		} else { task.setEmployee(null); }
+			}else {
+				result.rejectValue("employee.name", "error.user", "Treballador no pertany a l'empresa informada");
+			}
+			// employee.addTask(task);
+		} else {
+			if(!nameEmployee.isEmpty()) {
+				result.rejectValue("employee.name", "error.user", "El treballador informat no existeix");
+			} else {
+			task.setEmployee(null);
+			}
+		}
 
 		if (informationId != null) {
 			for (int i = 0; i < informationId.length; i++) {
@@ -267,6 +280,11 @@ public class TaskController {
 			}
 		}
 
+		if (result.hasErrors()) {
+			model.addAttribute("title", "Crear tasca");
+			return "/task/form";
+		}
+
 		taskService.save(task);
 
 		status.setComplete();
@@ -285,25 +303,25 @@ public class TaskController {
 			flash.addFlashAttribute("success", "Tasca eliminada correctament");
 			return "redirect:/task/list";
 		}
-		
+
 		flash.addFlashAttribute("error", "La tasca no existeix a la BdD, no s'ha pogut eliminar");
 		return "redirect:/task/list";
 	}
-	
+
 	@Secured("ROLE_USER")
-	@RequestMapping(value = {"/information/list"}, method = RequestMethod.GET)
+	@RequestMapping(value = { "/information/list" }, method = RequestMethod.GET)
 	public String listInformation(Model model) {
 		model.addAttribute("title", "Llistat d'informacions");
 		model.addAttribute("informations", taskService.findAllInformations());
 		return "/information/list";
 	}
-	
+
 	@Secured("ROLE_USER")
 	@GetMapping("/information/view/{idInformation}")
-	public String viewInformation(@PathVariable(value = "idInformation") Long idInformation, Model model, RedirectAttributes flash) {
+	public String viewInformation(@PathVariable(value = "idInformation") Long idInformation, Model model,
+			RedirectAttributes flash) {
 
 		Information information = taskService.findInformationById(idInformation);
-		
 
 		if (information == null) {
 			flash.addFlashAttribute("error", "La informació no existeix a la BdD");
@@ -312,29 +330,30 @@ public class TaskController {
 
 		model.addAttribute("information", information);
 		model.addAttribute("title", "Informació: ".concat(information.getDescription()));
-		
+
 		return "/information/view";
 	}
-	
+
 	@Secured("ROLE_USER")
 	@GetMapping("/information/form")
 	public String createInformation(Map<String, Object> model, RedirectAttributes flash) {
 
 		Information information = new Information();
-	
+
 		model.put("information", information);
 		model.put("title", "Formulari d'informació");
 
 		return "/information/form";
 
 	}
-	
+
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/information/form/{id}")
-	public String editInformation(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
-		
+	public String editInformation(@PathVariable(value = "id") Long id, Map<String, Object> model,
+			RedirectAttributes flash) {
+
 		Information information = null;
-		
+
 		if (id > 0) {
 			information = taskService.findInformationById(id);
 			if (information == null) {
@@ -349,11 +368,12 @@ public class TaskController {
 		model.put("title", "Formulari d'Informació");
 		return "/information/form";
 	}
-	
+
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/information/form", method = RequestMethod.POST)
-	public String saveInformation(@Valid Information information, BindingResult result, Model model, RedirectAttributes flash, SessionStatus status) {
-		
+	public String saveInformation(@Valid Information information, BindingResult result, Model model,
+			RedirectAttributes flash, SessionStatus status) {
+
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Formulari d'Informació");
 			return "/information/form";
@@ -367,21 +387,21 @@ public class TaskController {
 		flash.addFlashAttribute("success", flashMessage);
 		return "redirect:/information/list";
 	}
-	
+
 	@Secured("ROLE_USER")
 	@GetMapping("/information/delete/{id}")
 	public String deleteInformation(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 		Information information = taskService.findInformationById(id);
 
 		if (information != null) {
-			taskService.deleteInformation(id);;
+			taskService.deleteInformation(id);
+			;
 			flash.addFlashAttribute("success", "Informació eliminada correctament");
 			return "redirect:/information/list";
 		}
-		
+
 		flash.addFlashAttribute("error", "La informació no existeix a la BdD, no s'ha pogut eliminar");
 		return "redirect:/information/list";
 	}
-	
-	
+
 }

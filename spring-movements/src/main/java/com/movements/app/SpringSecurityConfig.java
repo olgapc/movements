@@ -2,7 +2,6 @@
 package com.movements.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,10 +21,9 @@ import com.movements.app.auth.handler.LoginSuccessHandler;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
 	private LoginSuccessHandler successHandler;
@@ -61,7 +59,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
 
-		PasswordEncoder encoder = passwordEncoder();
+		PasswordEncoder encoder = this.passwordEncoder;
 
 		// encrypt the password.
 		User.builder().passwordEncoder(password -> encoder.encode(password));
