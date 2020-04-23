@@ -20,5 +20,5 @@ INSERT INTO `roles` (description, role, create_at) VALUES ('Usuari','ROLE_USER',
 INSERT INTO `roles` (description, role, create_at) VALUES ('Administrador','ROLE_ADMIN', NOW());
 /* POPULATE USERS ROLES */
 INSERT INTO `users_roles` (user_fk, role_fk) VALUES (1,1);
-INSERT INTO `users_roles` (user_fk, role_fk) VALUES (1,2);
+INSERT INTO `users_roles` (user_fk, role_fk) VALUES (2,1);
 INSERT INTO `users_roles` (user_fk, role_fk) VALUES (2,2);
