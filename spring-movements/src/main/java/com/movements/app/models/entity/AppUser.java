@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -47,23 +47,26 @@ public class AppUser implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
 	private Date createAt;
 
-
+	@OneToMany(mappedBy="userRolePK.user", fetch=FetchType.EAGER)
+	private Set<UserRole> userRoles;
+	
 	//@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//@JoinColumn(name = "user_fk")
 	//private List<UserAuthority> userAuthorities;
 	
-    @ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable( 
-        name = "users_roles", 
-        joinColumns = @JoinColumn(
-          name = "user_fk", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(
-          name = "role_fk", referencedColumnName = "id")) 
-    private List<Role> roles;
+	/*
+	 * @ManyToMany(fetch=FetchType.LAZY)
+	 * 
+	 * @JoinTable( name = "users_roles", joinColumns = @JoinColumn( name =
+	 * "user_fk", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(
+	 * name = "role_fk", referencedColumnName = "id")) private List<Role> roles;
+	 */
     
 	public AppUser() {
-		this.roles = new ArrayList<Role>();
+		//this.roles = new ArrayList<Role>();
 	}
+	
+	
 
 	public Long getId() {
 		return id;
@@ -117,6 +120,22 @@ public class AppUser implements Serializable {
 	 * this.userAuthorities.add(userAuthority); }
 	 */
 	
+	public Boolean getTokenExpired() {
+		return tokenExpired;
+	}
+
+	public void setTokenExpired(Boolean tokenExpired) {
+		this.tokenExpired = tokenExpired;
+	}
+
+	public Set<UserRole> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(Set<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
+
 	public boolean isTokenExpired() {
 		return tokenExpired;
 	}
@@ -125,17 +144,13 @@ public class AppUser implements Serializable {
 		this.tokenExpired = tokenExpired;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
-	}
+	/*
+	 * public List<Role> getRoles() { return roles; }
+	 * 
+	 * public void setRoles(List<Role> roles) { this.roles = roles; }
+	 */
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
 	@PrePersist
 	public void prePersist() {

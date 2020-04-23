@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.movements.app.models.dao.IUserDao;
 import com.movements.app.models.entity.Role;
+import com.movements.app.models.entity.UserRole;
 import com.movements.app.models.entity.AppUser;
 
 @Service("jpaUserDetailsService")
@@ -39,11 +40,16 @@ public class JpaUserDetailsService implements UserDetailsService{
 		
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		
-		
-		for(Role authority: user.getRoles()) {
-			logger.info("Role: ".concat(authority.getRole()));
-			authorities.add(new SimpleGrantedAuthority(authority.getRole()));
+		for(UserRole roles: user.getUserRoles()) {
+			logger.info("Role: ".concat(roles.getRole().getRole()));
+			authorities.add(new SimpleGrantedAuthority(roles.getRole().getRole()));
 		}
+		
+		/*
+		 * for(Role authority: user.getRoles()) {
+		 * logger.info("Role: ".concat(authority.getRole())); authorities.add(new
+		 * SimpleGrantedAuthority(authority.getRole())); }
+		 */
 		
 		if(authorities.isEmpty()) {
 			logger.error("'Error login: no existeix l'usuari '" + username + "'no té rol/s assignat/s'");
