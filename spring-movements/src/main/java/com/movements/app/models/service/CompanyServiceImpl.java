@@ -34,7 +34,7 @@ public class CompanyServiceImpl implements ICompanyService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Company findOne(Long id) {
+	public Company findById(Long id) {
 		return companyDao.findById(id).orElse(null);
 	}
 	
@@ -63,7 +63,7 @@ public class CompanyServiceImpl implements ICompanyService {
 	}
 
 	@Override
-	public CompanyType findByIdCompanyType(Long id) {
+	public CompanyType findCompanyTypeById(Long id) {
 		return companyTypeDao.findById(id).orElse(null);
 	}
 

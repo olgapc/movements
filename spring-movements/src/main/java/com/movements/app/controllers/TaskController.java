@@ -128,7 +128,7 @@ public class TaskController {
 	public String create(@PathVariable(value = "companyId") Long companyId, Map<String, Object> model,
 			RedirectAttributes flash) {
 
-		Company company = companyService.findOne(companyId);
+		Company company = companyService.findById(companyId);
 
 		if (company == null) {
 			flash.addFlashAttribute("error", "L'empresa no existeix a la BdD");
@@ -175,7 +175,7 @@ public class TaskController {
 	public String create(@PathVariable(value = "companyId") Long companyId,
 			@PathVariable(value = "employeeId") Long employeeId, Map<String, Object> model, RedirectAttributes flash) {
 
-		Company company = companyService.findOne(companyId);
+		Company company = companyService.findById(companyId);
 		if (company == null) {
 			flash.addFlashAttribute("error", "L'empresa no existeix a la BdD");
 			return "redirect:/task/list";

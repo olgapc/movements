@@ -54,6 +54,7 @@ public class CompanyController {
 		binder.registerCustomEditor(String.class, "email", new LowerCaseEditor());
 	}
 
+	//CompanyTypes List for Select
 	@ModelAttribute("companyTypesList")
 	public List<CompanyType> companyTypesList() {
 		return companyService.findAllCompanyType();
@@ -61,22 +62,26 @@ public class CompanyController {
 
 	@GetMapping(value = "/company/view/{id}")
 	public String view(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+		
 		Company company = companyService.fetchByIdWithTasksWithEmployees(id);
 
-		// findOne(id);
 		if (company == null) {
 			flash.addFlashAttribute("error", "L'empresa no existeix a la BdD");
 			return "redirect:/company/list";
 		}
+		
 		model.put("company", company);
 		model.put("title", "Empresa: " + company.getName());
+		
 		return "/company/view";
 	}
 
 	@RequestMapping(value = "/company/list", method = RequestMethod.GET)
 	public String list(Model model) {
+		
 		model.addAttribute("title", "Llistat d'empreses");
 		model.addAttribute("companies", companyService.findAll());
+		
 		return "/company/list";
 	}
 
@@ -93,9 +98,11 @@ public class CompanyController {
 
 	@RequestMapping(value = "/company/form/{id}")
 	public String edit(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+		
 		Company company = null;
+		
 		if (id > 0) {
-			company = companyService.findOne(id);
+			company = companyService.findById(id);
 			if (company == null) {
 				flash.addFlashAttribute("error", "L'identificador de l'empresa no existeix a la BdD");
 				return "redirect:/company/list";
@@ -104,8 +111,10 @@ public class CompanyController {
 			flash.addFlashAttribute("error", "L'identificador de l'empresa no pot ser zero");
 			return "redirect:/company/list";
 		}
+		
 		model.put("company", company);
 		model.put("title", "Formulari d'Empresa");
+		
 		return "/company/form";
 	}
 

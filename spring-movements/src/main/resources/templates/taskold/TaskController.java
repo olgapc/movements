@@ -93,7 +93,7 @@ public class TaskController {
 			return "redirect:/company/list";
 		}
 
-		Company company = companyService.findOne(companyId);
+		Company company = companyService.findById(companyId);
 
 		if (company == null) {
 			flash.addFlashAttribute("error", "L'empresa no existeix a la BdD");

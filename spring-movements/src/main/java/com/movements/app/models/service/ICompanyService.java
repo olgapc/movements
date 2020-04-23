@@ -12,7 +12,7 @@ public interface ICompanyService {
 
 	public void save(Company company);
 
-	public Company findOne(Long id);
+	public Company findById(Long id);
 
 	public Company fetchByIdWithTasksWithEmployees(Long id);
 	
@@ -22,6 +22,6 @@ public interface ICompanyService {
 
 	public List<CompanyType> findAllCompanyType();
 	
-	public CompanyType findByIdCompanyType(Long id);
+	public CompanyType findCompanyTypeById(Long id);
 
 }

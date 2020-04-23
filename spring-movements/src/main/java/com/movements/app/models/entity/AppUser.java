@@ -1,9 +1,11 @@
 package com.movements.app.models.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,13 +13,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "users")
 public class AppUser implements Serializable {
 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -29,10 +39,31 @@ public class AppUser implements Serializable {
 	private String password;
 
 	private Boolean enabled;
+	
+	private Boolean tokenExpired;
+	
+	@Column(name = "create_at")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
+	private Date createAt;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_fk")
-	private List<Authority> authorities;
+
+	//@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JoinColumn(name = "user_fk")
+	//private List<UserAuthority> userAuthorities;
+	
+    @ManyToMany(fetch=FetchType.LAZY)
+    @JoinTable( 
+        name = "users_roles", 
+        joinColumns = @JoinColumn(
+          name = "user_fk", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(
+          name = "role_fk", referencedColumnName = "id")) 
+    private List<Role> roles;
+    
+	public AppUser() {
+		this.roles = new ArrayList<Role>();
+	}
 
 	public Long getId() {
 		return id;
@@ -66,14 +97,58 @@ public class AppUser implements Serializable {
 		this.enabled = enabled;
 	}
 
-	public List<Authority> getAuthorities() {
-		return authorities;
+	public Date getCreateAt() {
+		return createAt;
 	}
 
-	public void setRoles(List<Authority> authorities) {
-		this.authorities = authorities;
+	public void setCreateAt(Date createAt) {
+		this.createAt = createAt;
 	}
 
-	private static final long serialVersionUID = 7631853776936559149L;
+	
+	
+	/*
+	 * public void setUserAuthorities(List<UserAuthority> userAuthorities) {
+	 * this.userAuthorities = userAuthorities; }
+	 * 
+	 * public List<UserAuthority> getUserAuthorities() { return userAuthorities; }
+	 * 
+	 * public void addUserAuthority(UserAuthority userAuthority) {
+	 * this.userAuthorities.add(userAuthority); }
+	 */
+	
+	public boolean isTokenExpired() {
+		return tokenExpired;
+	}
+
+	public void setTokenExpired(boolean tokenExpired) {
+		this.tokenExpired = tokenExpired;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	@PrePersist
+	public void prePersist() {
+		createAt = new Date();
+	}
+	
+
+	
+	private static final long serialVersionUID = 1L;
+
+
+
+	
+	
 
 }

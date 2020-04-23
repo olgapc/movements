@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.movements.app.models.dao.IUserDao;
-import com.movements.app.models.entity.Authority;
+import com.movements.app.models.entity.Role;
 import com.movements.app.models.entity.AppUser;
 
 @Service("jpaUserDetailsService")
@@ -39,9 +39,10 @@ public class JpaUserDetailsService implements UserDetailsService{
 		
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		
-		for(Authority authority: user.getAuthorities()) {
-			logger.info("Role: ".concat(authority.getAuthority()));
-			authorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
+		
+		for(Role authority: user.getRoles()) {
+			logger.info("Role: ".concat(authority.getRole()));
+			authorities.add(new SimpleGrantedAuthority(authority.getRole()));
 		}
 		
 		if(authorities.isEmpty()) {

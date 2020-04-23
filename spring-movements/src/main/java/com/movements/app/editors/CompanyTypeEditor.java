@@ -18,7 +18,7 @@ public class CompanyTypeEditor extends PropertyEditorSupport {
 		if (idString != null && idString.length() > 0) {
 			try {
 				Long id = Long.parseLong(idString);
-				this.setValue(companyService.findByIdCompanyType(id));
+				this.setValue(companyService.findCompanyTypeById(id));
 			} catch (NumberFormatException e) {
 				setValue(null);
 			}

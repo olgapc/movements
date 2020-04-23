@@ -24,7 +24,6 @@ public class CompanyType implements Serializable {
 	}
 
 	
-	
 	public CompanyType(Long id, String code, String description) {
 		this.id = id;
 		this.code = code;

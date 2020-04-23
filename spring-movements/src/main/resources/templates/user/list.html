@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+
+	<div class="container-fluid my-5">
+
+
+		<h1 class="text-warning" th:text="${title}"></h1>
+
+		<br />
+
+
+		<div class="row">
+			<div class="col-sm-6">
+				<input class="form-control pr-0" id="tableSearch" type="text"
+					placeholder="escriu el que vols buscar">
+			</div>
+
+			<a th:href="@{/user/form}"
+				class="btn btn-outline-info btn-xs mr-2">Nou Usuari</a>
+
+		</div>
+
+		</br>
+
+
+		<table class="table table-responsive table-hover">
+			<thead>
+				<tr>
+
+					<th>Nom</th>
+					<th>Habilitat</th>
+					<th>Rols</th>
+					<th>Data</th>
+					
+
+				</tr>
+			</thead>
+			
+			<tbody id="myTable">
+				<tr th:each="user: ${users}">
+					<td><a class="btn btn-outline-info btn-xs"
+						th:href="@{/user/view/} + ${user.id}"
+						th:text="${user.username}"></a></td>
+					<td><input class="form-check-input big-checkbox" type="checkbox" disabled="disabled"
+						th:checked="${user.enabled}"/></td>
+					<td>
+					<td th:text="${#dates.format(user.createAt, 'dd-MM-yyyy HH:mm')}"></td>
+					<td><a class="btn btn-outline-info btn-xs"
+						th:href="@{/user/form/} + ${user.id}">Modificar</a> <a
+						th:href="@{/user/form}"
+						class="btn btn-outline-info btn-xs">Nou Usuari</a> <a
+						class="btn btn-outline-danger btn-xs"
+						th:href="@{/user/delete/} + ${user.id}" th:text="'Eliminar'"
+						onclick="return confirm('Segur que vols eliminar?');"></a></td>
+				</tr>
+
+			</tbody>
+
+		</table>
+	</div>
+	
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script src="/js/search-in-table.js"></script>
+
+</body>
+
+</html>
