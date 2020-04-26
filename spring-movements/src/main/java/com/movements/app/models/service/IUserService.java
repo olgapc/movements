@@ -15,8 +15,8 @@ public interface IUserService {
 	
 	public void delete(Long id);
 
-	public List<Role> listAuthorities();
+	public List<Role> listRoles();
 	
-	public Role findAuthorityById(Long id);
+	public Role findRoleById(Long id);
 	
 }

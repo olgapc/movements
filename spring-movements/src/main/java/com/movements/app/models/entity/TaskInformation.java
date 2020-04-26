@@ -6,13 +6,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -35,22 +28,7 @@ public class TaskInformation implements Serializable {
 	private Date createAt;
 
 	private String comment;
-
-	/*
-	 * @ManyToOne(fetch = FetchType.LAZY)
-	 * 
-	 * @MapsId("information_id")
-	 * 
-	 * @JoinColumn(name = "information_fk") private Information information;
-	 * 
-	 * @ManyToOne(fetch = FetchType.LAZY)
-	 * 
-	 * @MapsId("task_id")
-	 * 
-	 * @JoinColumn(name = "task_fk") private Task task;
-	 */
-	
-	
+		
 	@Column(name = "done_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date doneAt;
@@ -64,7 +42,6 @@ public class TaskInformation implements Serializable {
 
 	public TaskInformation(TaskInformationPK taskInformationPK) {
 		this.taskInformationPK = taskInformationPK;
-		// taskInformationPK.getTask().addTaskInformation(this);
 	}
 
 	public TaskInformation(TaskInformationPK taskInformationPK, String comment, Date doneAt, boolean done) {

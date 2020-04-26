@@ -3,9 +3,7 @@ package com.movements.app.models.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -81,14 +79,9 @@ public class Task implements Serializable {
 	@JoinColumn(name = "employee_fk")
 	private Employee employee;
 
-	/*
-	 * @OneToMany(mappedBy="taskInformationPK.task", fetch=FetchType.LAZY, cascade =
-	 * CascadeType.ALL) 
-	 * private List<TaskInformation> taskInformations;
-	 */
 
 	@JsonIgnoreProperties({ "task", "hibernateLazyInitializer" })
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="taskInformationPK.task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<TaskInformation> taskInformations;
 
 	@Column(name = "done")
@@ -215,8 +208,6 @@ public class Task implements Serializable {
 
 	public void addTaskInformation(TaskInformation taskInformation) {
 		taskInformations.add(taskInformation);
-
-		//taskInformation.setTask(this);
 	}
 
 	@PrePersist

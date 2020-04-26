@@ -225,8 +225,7 @@ public class TaskController {
 			Company company = new Company();
 			company = taskService.findCompanyById(idCompany);
 			task.setCompany(company);
-
-			// company.addTask(task);
+			company.addTask(task);
 		} else {
 			if (!nameCompany.isEmpty()) {
 				result.rejectValue("company.name", "error.user", "L'empresa informada no existeix");
@@ -239,16 +238,17 @@ public class TaskController {
 			Employee employee = new Employee();
 			employee = taskService.findEmployeeById(idEmployee);
 			if(employee.getCompany().getId() == idCompany) {
-			task.setEmployee(employee);
+				task.setEmployee(employee);
+				employee.addTask(task);
 			}else {
 				result.rejectValue("employee.name", "error.user", "Treballador no pertany a l'empresa informada");
 			}
-			// employee.addTask(task);
+			
 		} else {
 			if(!nameEmployee.isEmpty()) {
 				result.rejectValue("employee.name", "error.user", "El treballador informat no existeix");
 			} else {
-			task.setEmployee(null);
+				task.setEmployee(null);
 			}
 		}
 

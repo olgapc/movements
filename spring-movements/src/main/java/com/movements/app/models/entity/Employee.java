@@ -83,7 +83,6 @@ public class Employee implements Serializable {
 	)
 	@JoinColumn(name = "company_fk")
 	private Company company;
-
 	
 	@OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore

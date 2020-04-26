@@ -8,6 +8,12 @@
 
 		<h1 class="text-warning" th:text="${title}"></h1>
 
+		<div th:object="${task}" th:remove="tag">
+			<div th:if="${#fields.hasErrors('*')}" class="alert alert-warning">
+				Revisa les dades</div>
+
+		</div>
+		
 		<form name="taskForm" th:action="@{/task/form/}" th:object="${task}"
 			method="post">
 

@@ -26,7 +26,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.movements.app.editors.AuthoritiesEditor;
+import com.movements.app.editors.LowerCaseEditor;
+import com.movements.app.editors.PascalCaseEditor;
+import com.movements.app.editors.RolesEditor;
+import com.movements.app.editors.UpperCaseEditor;
 import com.movements.app.models.entity.AppUser;
 import com.movements.app.models.entity.Role;
 import com.movements.app.models.service.IUserService;
@@ -38,24 +41,27 @@ public class UserController {
 
 	@Autowired
 	private IUserService userService;
-	
+
 	@Autowired
-	private AuthoritiesEditor authoritiesEditor;
-	
-	@ModelAttribute("authoritiesList")
-	public List<Role> authoritiesList(){
-		return this.userService.listAuthorities();
+	private RolesEditor rolesEditor;
+
+	@ModelAttribute("rolesList")
+	public List<Role> rolesList() {
+		return this.userService.listRoles();
 	}
-	
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Role.class, "authorities", authoritiesEditor);
+		binder.registerCustomEditor(Role.class, "roles", rolesEditor);
+
+		binder.registerCustomEditor(String.class, "username", new LowerCaseEditor());
+
 	}
-	
-	
+
+
 	@GetMapping(value = "/user/view/{id}")
 	public String view(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
-		
+
 		AppUser user = userService.findById(id);
 
 		if (user == null) {
@@ -73,7 +79,6 @@ public class UserController {
 		model.addAttribute("users", userService.findAll());
 		return "/user/list";
 	}
-	
 
 	@GetMapping(value = "/user/form")
 	public String create(Map<String, Object> model) {
@@ -88,9 +93,9 @@ public class UserController {
 
 	@RequestMapping(value = "/user/form/{id}")
 	public String edit(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
-		
+
 		AppUser user = null;
-		
+
 		if (id > 0) {
 			user = userService.findById(id);
 			if (user == null) {
@@ -101,25 +106,23 @@ public class UserController {
 			flash.addFlashAttribute("error", "L'identificador de l'usuari no pot ser zero");
 			return "redirect:/user/list";
 		}
-		
+
 		model.put("user", user);
 		model.put("title", "Formulari d'Usuari");
-		
+
 		return "/user/form";
 	}
 
 	@RequestMapping(value = "/user/form", method = RequestMethod.POST)
-	public String save(@Valid AppUser user, BindingResult result, Model model,
-			RedirectAttributes flash, SessionStatus status) {
+	public String save(@Valid AppUser user, BindingResult result, Model model, RedirectAttributes flash,
+			SessionStatus status) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("title", "Formulari d'Usuari");
 			return "/user/form";
 		}
 
-
-		String flashMessage = (user.getId() != null) ? "Usuari modificat correctament"
-				: "Usuari creat correctament";
+		String flashMessage = (user.getId() != null) ? "Usuari modificat correctament" : "Usuari creat correctament";
 
 		userService.save(user);
 		status.setComplete();
@@ -137,5 +140,5 @@ public class UserController {
 		return "redirect:/user/list";
 
 	}
-	
+
 }

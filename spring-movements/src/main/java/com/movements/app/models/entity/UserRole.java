@@ -32,10 +32,10 @@ public class UserRole implements Serializable {
 
 	public UserRole() {}
 	
-	public UserRole(AppUser user, Role role, Date createAt) {
-		userRolePK = new UserRolePK(role, user);
-		this.createAt = createAt;
+	public UserRole(UserRolePK userRolePK) {
+		this.userRolePK = userRolePK;
 	}
+	
 
 	public AppUser getUser() {
 		return userRolePK.getUser();
@@ -52,6 +52,11 @@ public class UserRole implements Serializable {
 	public void setRole(Role role) {
 		userRolePK.setRole(role);
 	}
+	
+	public String getDescription() {
+		return userRolePK.getRole().getDescription();
+	}
+	
 	
 	public Date getCreateAt() {
 		return createAt;

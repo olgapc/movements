@@ -6,20 +6,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -32,9 +32,11 @@ public class AppUser implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotEmpty
 	@Column(length = 30, unique = true)
 	private String username;
 
+	@NotEmpty
 	@Column(length = 60)
 	private String password;
 
@@ -47,15 +49,15 @@ public class AppUser implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
 	private Date createAt;
 
-	@OneToMany(mappedBy="userRolePK.user", fetch=FetchType.LAZY)
-	private Set<UserRole> userRoles;
+	@NotEmpty
+	@OneToMany(mappedBy="userRolePK.user", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<UserRole> roles;
 	
     
 	public AppUser() {
-		//this.roles = new ArrayList<Role>();
+		this.roles = new ArrayList<UserRole>();
 	}
-	
-	
+
 
 	public Long getId() {
 		return id;
@@ -117,12 +119,16 @@ public class AppUser implements Serializable {
 		this.tokenExpired = tokenExpired;
 	}
 
-	public Set<UserRole> getUserRoles() {
-		return userRoles;
+	public List<UserRole> getRoles() {
+		return roles;
 	}
 
-	public void setUserRoles(Set<UserRole> userRoles) {
-		this.userRoles = userRoles;
+	public void setRoles(List<UserRole> roles) {
+		this.roles = roles;
+	}
+	
+	public void addRoles(UserRole role) {
+		roles.add(role);
 	}
 
 	public boolean isTokenExpired() {
@@ -133,20 +139,10 @@ public class AppUser implements Serializable {
 		this.tokenExpired = tokenExpired;
 	}
 
-	/*
-	 * public List<Role> getRoles() { return roles; }
-	 * 
-	 * public void setRoles(List<Role> roles) { this.roles = roles; }
-	 */
-
-
-
 	@PrePersist
 	public void prePersist() {
 		createAt = new Date();
 	}
-	
-
 	
 	private static final long serialVersionUID = 1L;
 

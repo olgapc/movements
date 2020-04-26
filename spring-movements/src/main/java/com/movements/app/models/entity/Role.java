@@ -2,15 +2,13 @@ package com.movements.app.models.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,7 +28,6 @@ public class Role implements Serializable {
 
 	@Column(unique = true, length = 20)
 	private String role;
-
 
 	/*
 	 * @ManyToMany
@@ -79,7 +76,6 @@ public class Role implements Serializable {
 	public void setRole(String role) {
 		this.role = role;
 	}
-
 
 	public Date getCreateAt() {
 		return createAt;

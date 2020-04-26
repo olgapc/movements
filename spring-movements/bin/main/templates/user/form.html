@@ -51,18 +51,23 @@
 			</div>
 			
 			<div class="form-group row">
-				<label for="authorities" class="col-sm-2 col-form-label">Rols</label>
-				<div class="col-sm-4" th:each="authority: ${authoritiesList}">
-					<input type="checkbox" th:field="*{authorities}" th:value="${authority.id}"
+				<label for="roles" class="col-sm-2 col-form-label">Rols</label>
+				<div class="col-sm-4" th:each="role: ${rolesList}">
+					<input type="checkbox" th:field="*{roles}" th:value="${role.id}"
 						th:errorclass="'form-control is-invalid'" class="form-check-input big-checkbox"/> 
-					<label th:for="${#ids.prev('authorities')}" th:text="${authority.description}"></label>	
+					<label th:for="${#ids.prev('roles')}" th:text="${role.description}"></label>	
 						<small
-						class="form-text text-danger" th:if="${#fields.hasErrors('authorities')}"
-						th:errors="*{authorities}"></small>
+						class="form-text text-danger" th:if="${#fields.hasErrors('roles')}"
+						th:errors="*{roles}"></small>
 				</div>	
 			</div>
 			
-
+			<div class="form-group row">
+				<div class="col-sm-6">
+					<input type="submit" th:value="${title}"
+						class="btn btn-outline-info" />
+				</div>
+			</div>
 
 
 		</form>

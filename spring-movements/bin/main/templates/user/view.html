@@ -16,28 +16,31 @@
 
 		<div th:object="${user}" th:remove="tag">
 
-			
+
 
 			<ul class="list-group">
 				<li class="list-group-item" th:text="${user.username}"></li>
-				<li class="list-group-item">En Actiu: <input class="list-group-item" type="checkbox" disabled="disabled"
-						th:checked="${user.enabled}" /></li>
-				<li th:each="authority: ${user.authorities}" th:text="${authority.description}" class="list-group-item" th:text="${user.authorities}"></li>
-				<li class="list-group-item" th:text="${#dates.format(user.createAt, 'dd-MM-yyyy HH:mm')}"></li>
-			</ul>
+				<li class="list-group-item">En Actiu: <input
+					class="list-group-item" type="checkbox" disabled="disabled"
+					th:checked="${user.enabled}" /></li>
 
+				<li class="list-group-item"
+					th:text="${#dates.format(user.createAt, 'dd-MM-yyyy HH:mm')}"></li>
+			</ul>
+			<div><h2 class="text-warning">Roles</h2></div>
+			<ul class="list-group">
+				<li th:each="role: ${user.roles}" th:text="${role.description}"
+					class="list-group-item"></li>
+			</ul>
 			<br /> <a class="btn btn-outline-info btn-xs mr-2"
 				th:href="@{/user/form/} + ${user.id}">Modificar</a> <a
 				class="btn btn-outline-danger btn-xs mr-2"
 				onclick="return confirm('Segur que vols eliminar?');"
-				th:href="@{/user/delete/} + ${user.id}" th:text="'Eliminar'"></a>
-			<br /> <br />
+				th:href="@{/user/delete/} + ${user.id}" th:text="'Eliminar'"></a> <br />
+			<br /> </br>
 
 
-			</br>
 
-
-		
 		</div>
 
 	</div>

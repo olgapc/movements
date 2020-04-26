@@ -47,13 +47,13 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Role> listAuthorities() {
+	public List<Role> listRoles() {
 		return (List<Role>) roleDao.findAll();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Role findAuthorityById(Long id) {
+	public Role findRoleById(Long id) {
 		return roleDao.findById(id).orElse(null);
 	}
 

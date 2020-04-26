@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.movements.app.models.service.IUserService;
 
 @Component
-public class AuthoritiesEditor extends PropertyEditorSupport{
+public class RolesEditor extends PropertyEditorSupport{
 
 	@Autowired
 	private IUserService service;
@@ -17,7 +17,7 @@ public class AuthoritiesEditor extends PropertyEditorSupport{
 	public void setAsText(String text) throws IllegalArgumentException {
 		try {
 			Long id = Long.parseLong(text);
-			setValue(service.findAuthorityById(id));
+			setValue(service.findRoleById(id));
 		} catch (NumberFormatException e){
 			setValue(null);
 		}
