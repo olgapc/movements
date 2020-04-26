@@ -47,20 +47,9 @@ public class AppUser implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
 	private Date createAt;
 
-	@OneToMany(mappedBy="userRolePK.user", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="userRolePK.user", fetch=FetchType.LAZY)
 	private Set<UserRole> userRoles;
 	
-	//@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	//@JoinColumn(name = "user_fk")
-	//private List<UserAuthority> userAuthorities;
-	
-	/*
-	 * @ManyToMany(fetch=FetchType.LAZY)
-	 * 
-	 * @JoinTable( name = "users_roles", joinColumns = @JoinColumn( name =
-	 * "user_fk", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(
-	 * name = "role_fk", referencedColumnName = "id")) private List<Role> roles;
-	 */
     
 	public AppUser() {
 		//this.roles = new ArrayList<Role>();

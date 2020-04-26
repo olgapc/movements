@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.movements.app.models.dao.IUserDao;
-import com.movements.app.models.entity.Role;
 import com.movements.app.models.entity.UserRole;
 import com.movements.app.models.entity.AppUser;
 
@@ -31,6 +30,7 @@ public class JpaUserDetailsService implements UserDetailsService{
 	@Override
 	@Transactional(readOnly=true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
 		AppUser user = userDao.findByUsername(username);
 		
 		if(user == null) {
@@ -45,17 +45,13 @@ public class JpaUserDetailsService implements UserDetailsService{
 			authorities.add(new SimpleGrantedAuthority(roles.getRole().getRole()));
 		}
 		
-		/*
-		 * for(Role authority: user.getRoles()) {
-		 * logger.info("Role: ".concat(authority.getRole())); authorities.add(new
-		 * SimpleGrantedAuthority(authority.getRole())); }
-		 */
 		
 		if(authorities.isEmpty()) {
 			logger.error("'Error login: no existeix l'usuari '" + username + "'no té rol/s assignat/s'");
 			throw new UsernameNotFoundException("Error login: usuari '" + username + "' no existeix en el sistema!");	
 		}
 		
+		//TODO User(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities)
 		return new User(username, user.getPassword(), user.getEnabled(), true, true, true, authorities);
 	}
 

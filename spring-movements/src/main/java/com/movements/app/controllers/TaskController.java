@@ -30,6 +30,7 @@ import com.movements.app.models.entity.Employee;
 import com.movements.app.models.entity.Information;
 import com.movements.app.models.entity.Task;
 import com.movements.app.models.entity.TaskInformation;
+import com.movements.app.models.pks.TaskInformationPK;
 import com.movements.app.models.service.ICompanyService;
 import com.movements.app.models.service.IEmployeeService;
 import com.movements.app.models.service.ITaskService;
@@ -256,14 +257,15 @@ public class TaskController {
 
 				Information information = taskService.findInformationById(informationId[i]);
 
-				TaskInformation taskInformation = new TaskInformation();
+				TaskInformationPK taskInformationPK = new TaskInformationPK(task, information);
+				TaskInformation taskInformation = new TaskInformation (taskInformationPK);
+				
+				
 				if (comment.length > 0) {
 					if (!comment[i].isEmpty()) {
 						taskInformation.setComment(comment[i]);
 					}
 				}
-
-				taskInformation.setInformation(information);
 
 				if (informationDone.length > 0) {
 					if (!informationDone[i].isEmpty()) {
