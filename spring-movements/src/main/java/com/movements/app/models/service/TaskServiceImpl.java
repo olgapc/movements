@@ -96,7 +96,6 @@ public class TaskServiceImpl implements ITaskService{
 	@Transactional
 	public void saveInformation(Information information) {
 		informationDao.save(information);
-		
 	}
 
 	@Override

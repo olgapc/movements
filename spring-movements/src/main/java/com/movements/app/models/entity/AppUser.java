@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,51 +22,64 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.movements.app.UserRoleConverter;
+import com.movements.app.models.pks.UserRolePK;
+import com.movements.app.models.service.IUserService;
 
 @Entity
 @Table(name = "users")
 public class AppUser implements Serializable {
-
+//https://vladmihalcea.com/the-best-way-to-map-a-many-to-many-association-with-extra-columns-when-using-jpa-and-hibernate/
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	//@Id
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//private Long id;
 
+	@Id
 	@NotEmpty
-	@Column(length = 30, unique = true)
+	@Size(min = 4, max = 60)
+	@Column(/* length = 30, */ unique = true)
 	private String username;
 
 	@NotEmpty
-	@Column(length = 60)
+	@Size(min = 4, max = 60)
+	@Column(/* length = 60 */)
 	private String password;
 
 	private Boolean enabled;
-	
+
 	private Boolean tokenExpired;
-	
+
 	@Column(name = "create_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
 	private Date createAt;
 
-	@NotEmpty
-	@OneToMany(mappedBy="userRolePK.user", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@Convert(converter = UserRoleConverter.class)
+	@JsonIgnoreProperties({ "user", "hibernateLazyInitializer" })
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserRole> roles;
-	
-    
+
 	public AppUser() {
-		this.roles = new ArrayList<UserRole>();
+		
 	}
 
-
-	public Long getId() {
-		return id;
+	public AppUser(String username) {
+		this.username = username;
+	}
+	
+	public String getId() {
+		return username;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(String id) {
+		this.username = id;
 	}
 
 	public String getUsername() {
@@ -99,18 +114,6 @@ public class AppUser implements Serializable {
 		this.createAt = createAt;
 	}
 
-	
-	
-	/*
-	 * public void setUserAuthorities(List<UserAuthority> userAuthorities) {
-	 * this.userAuthorities = userAuthorities; }
-	 * 
-	 * public List<UserAuthority> getUserAuthorities() { return userAuthorities; }
-	 * 
-	 * public void addUserAuthority(UserAuthority userAuthority) {
-	 * this.userAuthorities.add(userAuthority); }
-	 */
-	
 	public Boolean getTokenExpired() {
 		return tokenExpired;
 	}
@@ -120,15 +123,22 @@ public class AppUser implements Serializable {
 	}
 
 	public List<UserRole> getRoles() {
+		System.out.println("getroles");
 		return roles;
 	}
 
 	public void setRoles(List<UserRole> roles) {
+		System.out.println("setroles");
 		this.roles = roles;
 	}
-	
-	public void addRoles(UserRole role) {
-		roles.add(role);
+
+	public void addRole(Role role) {
+		if(roles==null) {
+			roles = new ArrayList<>();
+		}
+		System.out.println("addroles");
+		UserRole userRole = new UserRole(this, role);
+		roles.add(userRole);
 	}
 
 	public boolean isTokenExpired() {
@@ -144,11 +154,19 @@ public class AppUser implements Serializable {
 		createAt = new Date();
 	}
 	
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppUser user = (AppUser) o;
+        return Objects.equals(username, user.username);
+    }
+ 
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
+    }
+
 	private static final long serialVersionUID = 1L;
-
-
-
-	
-	
 
 }

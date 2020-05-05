@@ -19,6 +19,6 @@ INSERT INTO `users` (username, password, enabled, create_at) VALUES ('admin','$2
 INSERT INTO `roles` (description, role, create_at) VALUES ('Usuari','ROLE_USER', NOW());
 INSERT INTO `roles` (description, role, create_at) VALUES ('Administrador','ROLE_ADMIN', NOW());
 /* POPULATE USERS ROLES */
-INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES (1,1, NOW());
-INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES (2,1, NOW());
-INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES (2,2, NOW());
+INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES ('olga', 1, NOW());
+INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES ('admin', 1, NOW());
+INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES ('admin', 2, NOW());

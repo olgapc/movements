@@ -1,48 +1,72 @@
 package com.movements.app.models.pks;
 
 import java.io.Serializable;
+import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
-import com.movements.app.models.entity.AppUser;
-import com.movements.app.models.entity.Role;
 
 @Embeddable
 public class UserRolePK implements Serializable {
 
-	@ManyToOne
-	@JoinColumn(name = "role_fk")
-	private Role role;
+	
+	@Column(name = "user_fk")
+	private String userId;
 
-	@ManyToOne
-	@JoinColumn(name = "user_fk")
-	private AppUser user;
+	@Column(name = "role_fk")
+	private Long roleId;
+
 
 	public UserRolePK() {
 	}
 
-	public UserRolePK(Role role, AppUser user) {
-		this.role = role;
-		this.user = user;
+	public UserRolePK(String userId, Long roleId) {
+		this.roleId = roleId;
+		this.userId = userId;
 	}
 
-	public Role getRole() {
-		return role;
+	
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public AppUser getUser() {
-		return user;
+	public Long getRoleId() {
+		return roleId;
 	}
 
-	public void setUser(AppUser user) {
-		this.user = user;
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
 	}
+
+	@Override
+	public int hashCode() {
+		
+		return Objects.hash(userId,roleId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(this==obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		UserRolePK that = (UserRolePK) obj;
+		return Objects.equals(userId, that.userId) && Objects.equals(roleId, that.roleId);
+		
+	}
+
+
 
 	private static final long serialVersionUID = 1L;
 

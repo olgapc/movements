@@ -30,14 +30,15 @@
 				</div>
 			
 			<div>
-				<select class="form-control" id="companyType" th:field="*{companyType}">
+				<select class="form-control" id="companyType" th:field="*{companyType}" th:errorclass="'form-control is-invalid'">
 					<option value="">--Tipus empresa--</option>
 					<option th:each="companyType: ${companyTypesList}"
-						th:text="${companyType.description}" th:value="${companyType.id}"></option>
+						th:text="${companyType.description}" th:value="${companyType.id}" ></option>
 				</select>
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('companyType')}" th:errors="*{companyType}"></small>
 			</div>
 			</div>
-			<div th:if="${#fields.hasErrors('companyType')}" th:errors="*{companyType}"></div>
+			
 			
 			<div class="form-group row">
 				<label for="email" class="col-sm-2 col-form-label">Mail</label>
@@ -77,6 +78,7 @@
 					<input type="file" name="file" class="form-control" />
 				</div>
 			</div>
+			
 			<div class="form-group row">
 				<div class="col-sm-6">
 					<input type="submit" value="Guardar" class="btn btn-outline-info" />

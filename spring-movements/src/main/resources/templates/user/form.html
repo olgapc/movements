@@ -44,27 +44,32 @@
 				<label for="enabled" class="col-sm-2 col-form-label">Enabled</label>
 				<div class="col-sm-4">
 					<input type="checkbox" th:field="*{enabled}"
-						th:errorclass="'form-control is-invalid'" class="form-check-input big-checkbox"/> <small
-						class="form-text text-danger" th:if="${#fields.hasErrors('enabled')}"
-						th:errors="*{enabled}"></small>
+						 class="form-check-input big-checkbox"/> 
 				</div>	
 			</div>
 			
+			
 			<div class="form-group row">
-				<label for="roles" class="col-sm-2 col-form-label">Rols</label>
-				<div class="col-sm-4" th:each="role: ${rolesList}">
-					<input type="checkbox" th:field="*{roles}" th:value="${role.id}"
-						th:errorclass="'form-control is-invalid'" class="form-check-input big-checkbox"/> 
-					<label th:for="${#ids.prev('roles')}" th:text="${role.description}"></label>	
-						<small
-						class="form-text text-danger" th:if="${#fields.hasErrors('roles')}"
-						th:errors="*{roles}"></small>
+				<label class="col-sm-2 col-form-label">Rols</label>
+				
+				<div class="col-sm-4" th:each="role, stat: ${rolesList}">
+					<input type="checkbox" th:name="roles" th:id="'roleId'+${stat.count}" th:value="${role.id}"
+						 class="form-check-input big-checkbox"/> 
+						 <!--  input type="text" th:field="*{roles}" th:id="'userId'+${stat.count}" th:value="${username}">-->
+						
+					
+					<label  th:text="${role.description}"></label>	
+						
 				</div>	
+				<!--  th:for="'role'+${iterStat.count}"-->
+				<!--  small
+						class="form-text text-danger" th:if="${#fields.hasErrors('roles?.userRolePK?.role?.id')}"
+						th:errors="*{roles?.userRolePK?.role?.id}"></small>-->
 			</div>
 			
 			<div class="form-group row">
 				<div class="col-sm-6">
-					<input type="submit" th:value="${title}"
+					<input type="submit" value="Guardar"
 						class="btn btn-outline-info" />
 				</div>
 			</div>

@@ -282,10 +282,10 @@ public class TaskController {
 			}
 		}
 
-		if (result.hasErrors()) {
-			model.addAttribute("title", "Crear tasca");
-			return "/task/form";
-		}
+		/*
+		 * if (result.hasErrors()) { model.addAttribute("title", "Crear tasca"); return
+		 * "/task/form"; }
+		 */
 
 		taskService.save(task);
 

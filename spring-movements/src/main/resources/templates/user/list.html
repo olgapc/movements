@@ -47,7 +47,7 @@
 						th:text="${user.username}"></a></td>
 					<td><input class="form-check-input big-checkbox" type="checkbox" disabled="disabled"
 						th:checked="${user.enabled}"/></td>
-					<td>
+					<td><ul><li th:each="role: ${user.roles}" th:text="${role.description}"></li></ul></td>
 					<td th:text="${#dates.format(user.createAt, 'dd-MM-yyyy HH:mm')}"></td>
 					<td><a class="btn btn-outline-info btn-xs"
 						th:href="@{/user/form/} + ${user.id}">Modificar</a> <a
