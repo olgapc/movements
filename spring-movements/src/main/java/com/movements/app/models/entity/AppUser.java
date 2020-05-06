@@ -68,7 +68,7 @@ public class AppUser implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
 	private Date createAt;
 
-	@Convert(converter = UserRoleConverter.class)
+	//@Convert(converter = UserRoleConverter.class)
 	@JsonIgnoreProperties({ "user", "hibernateLazyInitializer" })
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserRole> roles = new ArrayList<>();
@@ -81,12 +81,12 @@ public class AppUser implements Serializable {
 		this.username = username;
 	}
 	
-	public String getId() {
-		return username;
+	public Long getId() {
+		return id;
 	}
 
-	public void setId(String id) {
-		this.username = id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getUsername() {

@@ -11,9 +11,9 @@ public interface IUserService {
 
 	public void save(AppUser user);
 
-	public AppUser findById(String id);
+	public AppUser findById(Long id);
 	
-	public void delete(String id);
+	public void delete(Long id);
 
 	public List<Role> listRoles();
 	

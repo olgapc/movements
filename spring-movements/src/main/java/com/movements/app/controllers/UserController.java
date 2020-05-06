@@ -55,8 +55,8 @@ public class UserController {
 
 	}
 
-	@GetMapping(value = "/user/view/{username}")
-	public String view(@PathVariable(value = "username") String id, Map<String, Object> model,
+	@GetMapping(value = "/user/view/{id}")
+	public String view(@PathVariable(value = "id") Long id, Map<String, Object> model,
 			RedirectAttributes flash) {
 
 		AppUser user = userService.findById(id);
@@ -88,13 +88,13 @@ public class UserController {
 		return "/user/form";
 	}
 
-	@RequestMapping(value = "/user/form/{username}")
-	public String edit(@PathVariable(value = "username") String id, Map<String, Object> model,
+	@RequestMapping(value = "/user/form/{id}")
+	public String edit(@PathVariable(value = "id") Long id, Map<String, Object> model,
 			RedirectAttributes flash) {
 
 		AppUser user = null;
 
-		if (!id.isEmpty()) {
+		if (id!=null) {
 			user = userService.findById(id);
 			if (user == null) {
 				flash.addFlashAttribute("error", "L'identificador de l'usuari no existeix a la BdD");
@@ -188,9 +188,9 @@ public class UserController {
 		return "redirect:/user/list";
 	}
 
-	@RequestMapping(value = "/user/delete/{username}")
-	public String delete(@PathVariable(value = "username") String id, RedirectAttributes flash) {
-		if (!id.isEmpty()) {
+	@RequestMapping(value = "/user/delete/{id}")
+	public String delete(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+		if (id!=null) {
 			userService.delete(id);
 			flash.addFlashAttribute("success", "Usuari eliminat correctament");
 		}
