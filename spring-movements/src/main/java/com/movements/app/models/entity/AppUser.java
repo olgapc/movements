@@ -3,6 +3,7 @@ package com.movements.app.models.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -24,6 +25,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -34,14 +39,16 @@ import com.movements.app.models.service.IUserService;
 
 @Entity
 @Table(name = "users")
+@NaturalIdCache
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AppUser implements Serializable {
 //https://vladmihalcea.com/the-best-way-to-map-a-many-to-many-association-with-extra-columns-when-using-jpa-and-hibernate/
 	
-	//@Id
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//private Long id;
-
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@NaturalId
 	@NotEmpty
 	@Size(min = 4, max = 60)
 	@Column(/* length = 30, */ unique = true)
@@ -64,7 +71,7 @@ public class AppUser implements Serializable {
 	@Convert(converter = UserRoleConverter.class)
 	@JsonIgnoreProperties({ "user", "hibernateLazyInitializer" })
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UserRole> roles;
+	private List<UserRole> roles = new ArrayList<>();
 
 	public AppUser() {
 		
@@ -133,12 +140,22 @@ public class AppUser implements Serializable {
 	}
 
 	public void addRole(Role role) {
-		if(roles==null) {
-			roles = new ArrayList<>();
-		}
 		System.out.println("addroles");
 		UserRole userRole = new UserRole(this, role);
 		roles.add(userRole);
+	}
+	
+	public void removeRole(Role role) {
+		for (Iterator<UserRole> iterator = roles.iterator();
+				iterator.hasNext();) {
+			UserRole userRole = iterator.next();
+			
+			if(userRole.getRole().equals(role) && userRole.getUser().equals(this)) {
+				iterator.remove();
+				userRole.setRole(null);
+				userRole.setUser(null);
+			}
+		}
 	}
 
 	public boolean isTokenExpired() {

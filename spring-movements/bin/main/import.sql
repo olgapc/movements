@@ -13,12 +13,12 @@ INSERT INTO informations (id, description, create_at) VALUES (3, 'dades treballa
 INSERT INTO employees (id, employee_name, nif, naf, email, phone, create_at, company_fk) VALUES (1, 'Primer treballador', '234455', '24245', 'olgapc@gmail.com', '83563563', NOW(), 1);
 INSERT INTO employees (id, employee_name, nif, naf, email, phone, create_at, company_fk) VALUES (2, 'Segon treballador', '23665', '24665', 'olgapc2@gmail.com', '677773', NOW(), 1);
 /* POPULATE USERS */
-INSERT INTO `users` (username, password, enabled, create_at) VALUES ('olga','$2a$10$O9wxmH/AeyZZzIS09Wp8YOEMvFnbRVJ8B4dmAMVSGloR62lj.yqXG', 1, NOW());
-INSERT INTO `users` (username, password, enabled, create_at) VALUES ('admin','$2a$10$DOMDxjYyfZ/e7RcBfUpzqeaCs8pLgcizuiQWXPkU35nOhZlFcE9MS', 1, NOW());
+INSERT INTO `users` (id, username, password, enabled, create_at) VALUES (1, 'olga','$2a$10$O9wxmH/AeyZZzIS09Wp8YOEMvFnbRVJ8B4dmAMVSGloR62lj.yqXG', 1, NOW());
+INSERT INTO `users` (id, username, password, enabled, create_at) VALUES (2, 'admin','$2a$10$DOMDxjYyfZ/e7RcBfUpzqeaCs8pLgcizuiQWXPkU35nOhZlFcE9MS', 1, NOW());
 /* POPULATE ROLES */
 INSERT INTO `roles` (description, role, create_at) VALUES ('Usuari','ROLE_USER', NOW());
 INSERT INTO `roles` (description, role, create_at) VALUES ('Administrador','ROLE_ADMIN', NOW());
 /* POPULATE USERS ROLES */
-INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES ('olga', 1, NOW());
-INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES ('admin', 1, NOW());
-INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES ('admin', 2, NOW());
+INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES (1, 1, NOW());
+INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES (2, 1, NOW());
+INSERT INTO `users_roles` (user_fk, role_fk, create_at) VALUES (2, 2, NOW());
