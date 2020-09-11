@@ -366,8 +366,10 @@ public class TaskController {
 			flash.addFlashAttribute("error", "L'identificador de la informació no pot ser zero");
 			return "redirect:/information/list";
 		}
+		
 		model.put("information", information);
 		model.put("title", "Formulari d'Informació");
+		
 		return "/information/form";
 	}
 
@@ -387,6 +389,7 @@ public class TaskController {
 		taskService.saveInformation(information);
 		status.setComplete();
 		flash.addFlashAttribute("success", flashMessage);
+		
 		return "redirect:/information/list";
 	}
 

@@ -16,7 +16,7 @@ import com.movements.app.models.dao.IUserDao;
 import com.movements.app.models.entity.Role;
 import com.movements.app.models.pks.UserRolePK;
 
-@Converter
+//@Converter
 public class UserRoleConverter implements AttributeConverter<List<Role>, String[]> {
 
 	@Autowired
@@ -43,7 +43,7 @@ public class UserRoleConverter implements AttributeConverter<List<Role>, String[
 		List<Role> roles = new ArrayList<Role>();
 		for (int i = 1; i < joined.length; i++) {
 
-			roles.add(roleDao.findById(Long.parseLong(joined[i])));
+			roles.add(roleDao.findById(Long.parseLong(joined[i])).orElse(null));
 		}
 		return roles;
 	}
